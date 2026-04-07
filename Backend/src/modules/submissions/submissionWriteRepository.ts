@@ -25,6 +25,12 @@ type CreateSubmissionRecordInput = {
     audienceFit: boolean;
     recommendation: 'approve' | 'manual_review' | 'reject';
   };
+  verificationMeta: {
+    provider: string;
+    model: string | null;
+    degraded: boolean;
+    reason: string | null;
+  };
 };
 
 export async function createSubmissionForClaimedTask(
@@ -109,6 +115,10 @@ export async function createSubmissionForClaimedTask(
           submissionId: submissionRecord.id,
           recommendation: verificationReport.recommendation,
           score: verificationReport.score,
+          provider: input.verificationMeta.provider,
+          model: input.verificationMeta.model,
+          degraded: input.verificationMeta.degraded,
+          reason: input.verificationMeta.reason,
         },
       },
     ]);
@@ -120,4 +130,3 @@ export async function createSubmissionForClaimedTask(
     };
   });
 }
-

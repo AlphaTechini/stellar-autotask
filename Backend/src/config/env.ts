@@ -41,6 +41,17 @@ const envSchema = z.object({
   STELLAR_TRANSACTION_TIMEOUT_SECONDS: z.coerce.number().int().positive().default(30),
   STELLAR_TRANSACTION_POLL_INTERVAL_MS: z.coerce.number().int().positive().default(1000),
   STELLAR_TRANSACTION_POLL_TIMEOUT_MS: z.coerce.number().int().positive().default(45000),
+  GROQ_API_KEY: z.string().min(1).optional(),
+  GROQ_API_URL: z.string().url().default('https://api.groq.com/openai/v1'),
+  GROQ_WRITING_MODEL: z
+    .string()
+    .min(1)
+    .default('meta-llama/llama-4-scout-17b-16e-instruct'),
+  GROQ_WRITING_MAX_INPUT_CHARS: z.coerce.number().int().positive().default(12000),
+  GEMINI_API_KEY: z.string().min(1).optional(),
+  GEMINI_API_URL: z.string().url().default('https://generativelanguage.googleapis.com/v1beta'),
+  GEMINI_DESIGN_MODEL: z.string().min(1).default('gemini-3.1-flash-lite-preview'),
+  GEMINI_IMAGE_MAX_INLINE_BYTES: z.coerce.number().int().positive().default(20_000_000),
   SCHEDULER_AUTO_PAYOUT_ENABLED: booleanStringSchema,
   SCHEDULER_AUTO_PAYOUT_INTERVAL_MS: z.coerce.number().int().positive().default(30000),
 });

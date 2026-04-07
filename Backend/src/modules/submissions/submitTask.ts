@@ -1,10 +1,11 @@
+import { loadEnv } from '../../config/env.js';
 import type { DatabaseClient } from '../../db/client.js';
 import { isTaskSubmittable } from '../../lib/taskStateMachine.js';
 import { findTaskRecordById } from '../tasks/taskReadRepository.js';
-import { createVerificationReport } from './createVerificationReport.js';
 import { runDeterministicSubmissionChecks } from './deterministicSubmissionChecks.js';
 import { sanitizeSubmissionInput } from './sanitizeSubmissionInput.js';
 import { createSubmissionForClaimedTask } from './submissionWriteRepository.js';
+import { verifyWritingSubmission } from '../verification/verifyWritingSubmission.js';
 
 type SubmitTaskInput = {
   contentText: string;
@@ -77,7 +78,22 @@ export async function submitTask(
     minWordCount: existingTask.minWordCount,
     requiredKeywords: existingTask.requiredKeywords,
   });
-  const verificationReport = createVerificationReport(deterministicResult);
+  const verificationResult = await verifyWritingSubmission(loadEnv(), {
+    task: {
+      title: existingTask.title,
+      description: existingTask.description,
+      brief: existingTask.brief,
+      requiredKeywords: existingTask.requiredKeywords,
+      targetAudience: existingTask.targetAudience,
+      tone: existingTask.tone,
+      minWordCount: existingTask.minWordCount,
+    },
+    submission: {
+      contentText: sanitizedInput.contentText,
+      notes: sanitizedInput.notes,
+    },
+    deterministicResult,
+  });
 
   const createdSubmission = await createSubmissionForClaimedTask(db, {
     taskId,
@@ -86,7 +102,8 @@ export async function submitTask(
     notes: sanitizedInput.notes,
     documentUrl: sanitizedInput.documentUrl,
     reviewWindowHours: existingTask.reviewWindowHours,
-    verificationReport,
+    verificationReport: verificationResult.verificationReport,
+    verificationMeta: verificationResult.meta,
   });
 
   if (!createdSubmission) {
@@ -100,4 +117,3 @@ export async function submitTask(
     verificationReport: createdSubmission.verificationReport,
   };
 }
-

@@ -18,6 +18,7 @@ To find manual review logic visit [review/README.md](file:///C:/Hackathons/Stell
 To find submission and deterministic verification logic visit [submissions/README.md](file:///C:/Hackathons/Stellar%201/stellar-autotask/Backend/src/modules/submissions/README.md).
 To find task creation and task read logic visit [tasks/README.md](file:///C:/Hackathons/Stellar%201/stellar-autotask/Backend/src/modules/tasks/README.md).
 To find user write-path logic visit [users/README.md](file:///C:/Hackathons/Stellar%201/stellar-autotask/Backend/src/modules/users/README.md).
+To find provider-backed verification logic visit [verification/README.md](file:///C:/Hackathons/Stellar%201/stellar-autotask/Backend/src/modules/verification/README.md).
 
 The wallet authentication module can be found in [auth/README.md](file:///C:/Hackathons/Stellar%201/stellar-autotask/Backend/src/modules/auth/README.md).
 The claim module can be found in [claims/README.md](file:///C:/Hackathons/Stellar%201/stellar-autotask/Backend/src/modules/claims/README.md).
@@ -28,4 +29,5 @@ The review module can be found in [review/README.md](file:///C:/Hackathons/Stell
 The submission module can be found in [submissions/README.md](file:///C:/Hackathons/Stellar%201/stellar-autotask/Backend/src/modules/submissions/README.md).
 The task module can be found in [tasks/README.md](file:///C:/Hackathons/Stellar%201/stellar-autotask/Backend/src/modules/tasks/README.md).
 The user repository module can be found in [users/README.md](file:///C:/Hackathons/Stellar%201/stellar-autotask/Backend/src/modules/users/README.md).
+The verification module can be found in [verification/README.md](file:///C:/Hackathons/Stellar%201/stellar-autotask/Backend/src/modules/verification/README.md).
 

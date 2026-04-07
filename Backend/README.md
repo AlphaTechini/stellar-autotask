@@ -22,4 +22,5 @@ The payout module can be found in [src/modules/payouts/README.md](file:///C:/Hac
 The review module can be found in [src/modules/review/README.md](file:///C:/Hackathons/Stellar%201/stellar-autotask/Backend/src/modules/review/README.md).
 The submission module can be found in [src/modules/submissions/README.md](file:///C:/Hackathons/Stellar%201/stellar-autotask/Backend/src/modules/submissions/README.md).
 The task module can be found in [src/modules/tasks/README.md](file:///C:/Hackathons/Stellar%201/stellar-autotask/Backend/src/modules/tasks/README.md).
+The verification module can be found in [src/modules/verification/README.md](file:///C:/Hackathons/Stellar%201/stellar-autotask/Backend/src/modules/verification/README.md).
 
