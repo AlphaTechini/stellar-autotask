@@ -9,7 +9,7 @@ I use this folder for user persistence logic that should stay reusable across au
 
 ## File Navigation
 
-To find user upsert logic visit [userWriteRepository.ts](C:/Hackathons/Stellar%201/stellar-platform/Backend/src/modules/users/userWriteRepository.ts).
+To find user upsert logic visit [userWriteRepository.ts](file:///C:/Hackathons/Stellar%201/stellar-autotask/Backend/src/modules/users/userWriteRepository.ts).
 
-The user write path can be found in [userWriteRepository.ts](C:/Hackathons/Stellar%201/stellar-platform/Backend/src/modules/users/userWriteRepository.ts).
+The user write path can be found in [userWriteRepository.ts](file:///C:/Hackathons/Stellar%201/stellar-autotask/Backend/src/modules/users/userWriteRepository.ts).
 

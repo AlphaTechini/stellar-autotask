@@ -10,11 +10,11 @@ I use this folder for wallet authentication. This is the first real backend writ
 
 ## File Navigation
 
-To find wallet auth route wiring visit [walletAuthRoutes.ts](C:/Hackathons/Stellar%201/stellar-platform/Backend/src/modules/auth/walletAuthRoutes.ts).
-To find challenge creation logic visit [createWalletChallenge.ts](C:/Hackathons/Stellar%201/stellar-platform/Backend/src/modules/auth/createWalletChallenge.ts).
-To find challenge verification logic visit [verifyWalletChallenge.ts](C:/Hackathons/Stellar%201/stellar-platform/Backend/src/modules/auth/verifyWalletChallenge.ts).
-To find token issuance logic visit [issueAuthToken.ts](C:/Hackathons/Stellar%201/stellar-platform/Backend/src/modules/auth/issueAuthToken.ts).
+To find wallet auth route wiring visit [walletAuthRoutes.ts](file:///C:/Hackathons/Stellar%201/stellar-autotask/Backend/src/modules/auth/walletAuthRoutes.ts).
+To find challenge creation logic visit [createWalletChallenge.ts](file:///C:/Hackathons/Stellar%201/stellar-autotask/Backend/src/modules/auth/createWalletChallenge.ts).
+To find challenge verification logic visit [verifyWalletChallenge.ts](file:///C:/Hackathons/Stellar%201/stellar-autotask/Backend/src/modules/auth/verifyWalletChallenge.ts).
+To find token issuance logic visit [issueAuthToken.ts](file:///C:/Hackathons/Stellar%201/stellar-autotask/Backend/src/modules/auth/issueAuthToken.ts).
 
-The auth route module can be found in [walletAuthRoutes.ts](C:/Hackathons/Stellar%201/stellar-platform/Backend/src/modules/auth/walletAuthRoutes.ts).
-The user creation connection can be found in [../users/userWriteRepository.ts](C:/Hackathons/Stellar%201/stellar-platform/Backend/src/modules/users/userWriteRepository.ts).
+The auth route module can be found in [walletAuthRoutes.ts](file:///C:/Hackathons/Stellar%201/stellar-autotask/Backend/src/modules/auth/walletAuthRoutes.ts).
+The user creation connection can be found in [../users/userWriteRepository.ts](file:///C:/Hackathons/Stellar%201/stellar-autotask/Backend/src/modules/users/userWriteRepository.ts).
 

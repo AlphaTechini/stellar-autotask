@@ -9,9 +9,11 @@ I use this folder for Fastify app bootstrap code.
 
 ## File Navigation
 
-To find server construction logic visit [buildServer.ts](C:/Hackathons/Stellar%201/stellar-platform/Backend/src/app/buildServer.ts).
+To find server construction logic visit [buildServer.ts](file:///C:/Hackathons/Stellar%201/stellar-autotask/Backend/src/app/buildServer.ts).
+To find plugin registration logic visit [registerPlugins.ts](file:///C:/Hackathons/Stellar%201/stellar-autotask/Backend/src/app/registerPlugins.ts).
+To find route registration logic visit [registerRoutes.ts](file:///C:/Hackathons/Stellar%201/stellar-autotask/Backend/src/app/registerRoutes.ts).
 
-To find plugin registration logic visit [registerPlugins.ts](C:/Hackathons/Stellar%201/stellar-platform/Backend/src/app/registerPlugins.ts).
-
-To find route registration logic visit [registerRoutes.ts](C:/Hackathons/Stellar%201/stellar-platform/Backend/src/app/registerRoutes.ts).
+The server construction layer can be found in [buildServer.ts](file:///C:/Hackathons/Stellar%201/stellar-autotask/Backend/src/app/buildServer.ts).
+The plugin registration layer can be found in [registerPlugins.ts](file:///C:/Hackathons/Stellar%201/stellar-autotask/Backend/src/app/registerPlugins.ts).
+The route registration layer can be found in [registerRoutes.ts](file:///C:/Hackathons/Stellar%201/stellar-autotask/Backend/src/app/registerRoutes.ts).
 

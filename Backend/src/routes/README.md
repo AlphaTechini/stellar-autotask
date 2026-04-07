@@ -9,5 +9,7 @@ I use this folder for HTTP route modules.
 
 ## File Navigation
 
-To find health route logic visit [healthRoutes.ts](C:/Hackathons/Stellar%201/stellar-platform/Backend/src/routes/healthRoutes.ts).
+To find health route logic visit [healthRoutes.ts](file:///C:/Hackathons/Stellar%201/stellar-autotask/Backend/src/routes/healthRoutes.ts).
+
+The health route can be found in [healthRoutes.ts](file:///C:/Hackathons/Stellar%201/stellar-autotask/Backend/src/routes/healthRoutes.ts).
 

@@ -10,10 +10,10 @@ I use this folder for task funding confirmation. This module owns the write path
 
 ## File Navigation
 
-To find funding route wiring visit [fundingRoutes.ts](C:/Hackathons/Stellar%201/stellar-platform/Backend/src/modules/funding/fundingRoutes.ts).
-To find funding orchestration logic visit [confirmTaskFunding.ts](C:/Hackathons/Stellar%201/stellar-platform/Backend/src/modules/funding/confirmTaskFunding.ts).
-To find funding persistence logic visit [fundingWriteRepository.ts](C:/Hackathons/Stellar%201/stellar-platform/Backend/src/modules/funding/fundingWriteRepository.ts).
+To find funding route wiring visit [fundingRoutes.ts](file:///C:/Hackathons/Stellar%201/stellar-autotask/Backend/src/modules/funding/fundingRoutes.ts).
+To find funding orchestration logic visit [confirmTaskFunding.ts](file:///C:/Hackathons/Stellar%201/stellar-autotask/Backend/src/modules/funding/confirmTaskFunding.ts).
+To find funding persistence logic visit [fundingWriteRepository.ts](file:///C:/Hackathons/Stellar%201/stellar-autotask/Backend/src/modules/funding/fundingWriteRepository.ts).
 
-The funding route module can be found in [fundingRoutes.ts](C:/Hackathons/Stellar%201/stellar-platform/Backend/src/modules/funding/fundingRoutes.ts).
-The task transition helper can be found in [../../lib/taskStateMachine.ts](C:/Hackathons/Stellar%201/stellar-platform/Backend/src/lib/taskStateMachine.ts).
+The funding route module can be found in [fundingRoutes.ts](file:///C:/Hackathons/Stellar%201/stellar-autotask/Backend/src/modules/funding/fundingRoutes.ts).
+The task transition helper can be found in [../../lib/taskStateMachine.ts](file:///C:/Hackathons/Stellar%201/stellar-autotask/Backend/src/lib/taskStateMachine.ts).
 
