@@ -7,6 +7,7 @@ I use this folder for task creation and task reads. This module stores task requ
 - I keep task creation separate from funding so task details can be saved before a payment is confirmed.
 - I rely on the funding module to move tasks into `OPEN`, which keeps claimability tied to explicit money state.
 - I keep list and detail reads narrow for V1 so the API reflects the real workflow instead of growing into generic search too early.
+- I let `GET /tasks` filter by either `clientId` or `workerId` so the frontend can render creator and assigned-worker dashboards without adding a second read endpoint.
 
 ## File Navigation
 

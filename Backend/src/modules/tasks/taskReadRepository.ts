@@ -5,6 +5,7 @@ import { tasks } from '../../db/schema/tasks.js';
 export type ListTasksFilters = {
   status?: typeof tasks.$inferSelect.status;
   clientId?: string;
+  workerId?: string;
 };
 
 export async function listTaskRecords(
@@ -21,6 +22,10 @@ export async function listTaskRecords(
 
       if (filters.clientId) {
         conditions.push(eq(task.clientId, filters.clientId));
+      }
+
+      if (filters.workerId) {
+        conditions.push(eq(task.workerId, filters.workerId));
       }
 
       if (conditions.length === 0) {

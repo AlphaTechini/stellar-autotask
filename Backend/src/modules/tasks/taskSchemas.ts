@@ -31,6 +31,7 @@ export const listTasksQuerySchema = z.object({
     ])
     .optional(),
   clientId: z.string().uuid().optional(),
+  workerId: z.string().uuid().optional(),
 });
 
 export const taskParamsSchema = z.object({
