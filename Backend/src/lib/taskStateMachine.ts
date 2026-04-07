@@ -2,6 +2,7 @@ export const TASK_INITIAL_STATUS = 'DRAFT' as const;
 export const TASK_FUNDABLE_STATUS = 'DRAFT' as const;
 export const TASK_CLAIMABLE_STATUS = 'OPEN' as const;
 export const TASK_CLAIMED_STATUS = 'CLAIMED' as const;
+export const TASK_SUBMITTED_STATUS = 'SUBMITTED' as const;
 export const TASK_PENDING_REVIEW_STATUS = 'PENDING_REVIEW' as const;
 export const TASK_APPROVED_STATUS = 'APPROVED' as const;
 export const TASK_AUTO_APPROVED_STATUS = 'AUTO_APPROVED' as const;
@@ -21,6 +22,10 @@ export function isTaskFundable(status: string) {
 
 export function isTaskClaimable(status: string) {
   return status === TASK_CLAIMABLE_STATUS;
+}
+
+export function isTaskSubmittable(status: string) {
+  return status === TASK_CLAIMED_STATUS;
 }
 
 export function isTaskPendingReview(status: string) {

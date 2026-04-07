@@ -16,8 +16,10 @@ To find backend architecture logic visit [Architecture.md](file:///C:/Hackathons
 The backend system design can be found in [Architecture.md](file:///C:/Hackathons/Stellar%201/stellar-autotask/Backend/Architecture.md).
 The authentication module can be found in [src/modules/auth/README.md](file:///C:/Hackathons/Stellar%201/stellar-autotask/Backend/src/modules/auth/README.md).
 The claim module can be found in [src/modules/claims/README.md](file:///C:/Hackathons/Stellar%201/stellar-autotask/Backend/src/modules/claims/README.md).
+The development helper module can be found in [src/modules/dev/README.md](file:///C:/Hackathons/Stellar%201/stellar-autotask/Backend/src/modules/dev/README.md).
 The funding module can be found in [src/modules/funding/README.md](file:///C:/Hackathons/Stellar%201/stellar-autotask/Backend/src/modules/funding/README.md).
 The payout module can be found in [src/modules/payouts/README.md](file:///C:/Hackathons/Stellar%201/stellar-autotask/Backend/src/modules/payouts/README.md).
 The review module can be found in [src/modules/review/README.md](file:///C:/Hackathons/Stellar%201/stellar-autotask/Backend/src/modules/review/README.md).
+The submission module can be found in [src/modules/submissions/README.md](file:///C:/Hackathons/Stellar%201/stellar-autotask/Backend/src/modules/submissions/README.md).
 The task module can be found in [src/modules/tasks/README.md](file:///C:/Hackathons/Stellar%201/stellar-autotask/Backend/src/modules/tasks/README.md).
 
