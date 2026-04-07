@@ -9,6 +9,9 @@ I use this folder for Fastify plugins that attach shared runtime capabilities.
 
 ## File Navigation
 
-To find database plugin logic visit [database.ts](C:/Hackathons/Stellar%201/stellar-platform/Backend/src/plugins/database.ts).
-To find auth context parsing logic visit [authContext.ts](C:/Hackathons/Stellar%201/stellar-platform/Backend/src/plugins/authContext.ts).
+To find database plugin logic visit [database.ts](file:///C:/Hackathons/Stellar%201/stellar-autotask/Backend/src/plugins/database.ts).
+To find auth context parsing logic visit [authContext.ts](file:///C:/Hackathons/Stellar%201/stellar-autotask/Backend/src/plugins/authContext.ts).
+To find scheduler auto-payout logic visit [scheduler.ts](file:///C:/Hackathons/Stellar%201/stellar-autotask/Backend/src/plugins/scheduler.ts).
+
+The scheduler plugin can be found in [scheduler.ts](file:///C:/Hackathons/Stellar%201/stellar-autotask/Backend/src/plugins/scheduler.ts).
 

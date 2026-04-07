@@ -11,11 +11,13 @@ I am using this folder for the Fastify backend that drives task creation, fundin
 
 ## File Navigation
 
-To find backend architecture logic visit [Architecture.md](C:/Hackathons/Stellar%201/stellar-platform/Backend/Architecture.md).
+To find backend architecture logic visit [Architecture.md](file:///C:/Hackathons/Stellar%201/stellar-autotask/Backend/Architecture.md).
 
-The backend system design can be found in [Architecture.md](C:/Hackathons/Stellar%201/stellar-platform/Backend/Architecture.md).
-The authentication module can be found in [src/modules/auth/README.md](C:/Hackathons/Stellar%201/stellar-platform/Backend/src/modules/auth/README.md).
-The claim module can be found in [src/modules/claims/README.md](C:/Hackathons/Stellar%201/stellar-platform/Backend/src/modules/claims/README.md).
-The funding module can be found in [src/modules/funding/README.md](C:/Hackathons/Stellar%201/stellar-platform/Backend/src/modules/funding/README.md).
-The task module can be found in [src/modules/tasks/README.md](C:/Hackathons/Stellar%201/stellar-platform/Backend/src/modules/tasks/README.md).
+The backend system design can be found in [Architecture.md](file:///C:/Hackathons/Stellar%201/stellar-autotask/Backend/Architecture.md).
+The authentication module can be found in [src/modules/auth/README.md](file:///C:/Hackathons/Stellar%201/stellar-autotask/Backend/src/modules/auth/README.md).
+The claim module can be found in [src/modules/claims/README.md](file:///C:/Hackathons/Stellar%201/stellar-autotask/Backend/src/modules/claims/README.md).
+The funding module can be found in [src/modules/funding/README.md](file:///C:/Hackathons/Stellar%201/stellar-autotask/Backend/src/modules/funding/README.md).
+The payout module can be found in [src/modules/payouts/README.md](file:///C:/Hackathons/Stellar%201/stellar-autotask/Backend/src/modules/payouts/README.md).
+The review module can be found in [src/modules/review/README.md](file:///C:/Hackathons/Stellar%201/stellar-autotask/Backend/src/modules/review/README.md).
+The task module can be found in [src/modules/tasks/README.md](file:///C:/Hackathons/Stellar%201/stellar-autotask/Backend/src/modules/tasks/README.md).
 

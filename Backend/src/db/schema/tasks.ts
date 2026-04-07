@@ -47,7 +47,6 @@ export const tasks = pgTable(
     index('tasks_worker_id_idx').on(table.workerId),
     index('tasks_active_submission_id_idx').on(table.activeSubmissionId),
     index('tasks_status_idx').on(table.status),
-    uniqueIndex('tasks_id_worker_id_unique').on(table.id, table.workerId),
     check('tasks_title_not_blank', sql`length(trim(${table.title})) > 0`),
     check('tasks_description_not_blank', sql`length(trim(${table.description})) > 0`),
     check('tasks_brief_not_blank', sql`length(trim(${table.brief})) > 0`),

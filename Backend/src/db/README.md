@@ -9,7 +9,9 @@ I use this folder for database-facing backend code.
 
 ## File Navigation
 
-To find schema logic visit [schema/index.ts](C:/Hackathons/Stellar%201/stellar-platform/Backend/src/db/schema/index.ts).
+To find schema logic visit [schema/index.ts](file:///C:/Hackathons/Stellar%201/stellar-autotask/Backend/src/db/schema/index.ts).
+To find runtime database client logic visit [client.ts](file:///C:/Hackathons/Stellar%201/stellar-autotask/Backend/src/db/client.ts).
 
-The database schema can be found in [schema/index.ts](C:/Hackathons/Stellar%201/stellar-platform/Backend/src/db/schema/index.ts).
+The database schema can be found in [schema/index.ts](file:///C:/Hackathons/Stellar%201/stellar-autotask/Backend/src/db/schema/index.ts).
+The Drizzle postgres client setup can be found in [client.ts](file:///C:/Hackathons/Stellar%201/stellar-autotask/Backend/src/db/client.ts).
 

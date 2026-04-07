@@ -30,3 +30,5 @@ export const reviewDecisionEnum = pgEnum('review_decision', ['approve', 'reject'
 export const allowedClaimantTypeEnum = pgEnum('allowed_claimant_type', ['human', 'agent', 'both']);
 
 export const payoutTriggeredByEnum = pgEnum('payout_triggered_by', ['client', 'system', 'agent']);
+
+export const payoutStatusEnum = pgEnum('payout_status', ['pending', 'confirmed', 'failed']);

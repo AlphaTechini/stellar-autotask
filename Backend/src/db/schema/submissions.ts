@@ -2,7 +2,6 @@ import { sql } from 'drizzle-orm';
 import {
   boolean,
   check,
-  foreignKey,
   index,
   integer,
   jsonb,
@@ -37,11 +36,6 @@ export const submissions = pgTable(
     index('submissions_worker_id_idx').on(table.workerId),
     index('submissions_submitted_at_idx').on(table.submittedAt),
     uniqueIndex('submissions_id_task_id_unique').on(table.id, table.taskId),
-    foreignKey({
-      name: 'submissions_task_worker_claim_fk',
-      columns: [table.taskId, table.workerId],
-      foreignColumns: [tasks.id, tasks.workerId],
-    }),
   ],
 );
 

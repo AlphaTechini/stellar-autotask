@@ -7,6 +7,7 @@ export function createDatabaseClient(env: AppEnv) {
   const client = postgres(env.DATABASE_URL, {
     max: env.DATABASE_MAX_CONNECTIONS,
     ssl: env.DATABASE_SSL === 'require' ? 'require' : undefined,
+    prepare: env.DATABASE_ENABLE_PREPARED_STATEMENTS,
   });
 
   return {
