@@ -2,6 +2,8 @@ import { getBackendBaseUrl } from './backendConfig';
 import type {
 	AuthSuccess,
 	CreateTaskInput,
+	SubmitTaskInput,
+	TaskPayoutStatus,
 	TaskFilters,
 	TaskRecord,
 	TaskReportSnapshot
@@ -103,6 +105,9 @@ export function createBackendClient(context: BackendClientContext) {
 		getTaskReport(id: string) {
 			return apiRequest<TaskReportSnapshot>(context, `/tasks/${id}/report`);
 		},
+		getTaskPayoutStatus(id: string) {
+			return apiRequest<{ payoutStatus: TaskPayoutStatus }>(context, `/tasks/${id}/payout-status`);
+		},
 		createTask(input: CreateTaskInput) {
 			return apiRequest<{ task: TaskRecord }>(context, '/tasks', {
 				method: 'POST',
@@ -112,6 +117,72 @@ export function createBackendClient(context: BackendClientContext) {
 		claimTask(id: string) {
 			return apiRequest<{ task: TaskRecord }>(context, `/tasks/${id}/claim`, {
 				method: 'POST'
+			});
+		},
+		submitTask(id: string, input: SubmitTaskInput) {
+			return apiRequest<{
+				task: TaskRecord;
+				submission: {
+					id: string;
+					taskId: string;
+					workerId: string;
+					contentText: string;
+					notes: string | null;
+					documentUrl: string | null;
+					submittedAt: string;
+					createdAt: string;
+				};
+				verificationReport: {
+					id: string;
+					taskId: string;
+					submissionId: string;
+					summary: string;
+					score: number;
+					keywordCoverage: string[];
+					missingRequirements: string[];
+					toneMatch: boolean;
+					audienceFit: boolean;
+					recommendation: 'approve' | 'manual_review' | 'reject';
+					createdAt: string;
+				};
+			}>(context, `/tasks/${id}/submit`, {
+				method: 'POST',
+				body: input
+			});
+		},
+		approveTask(id: string) {
+			return apiRequest<{
+				task: TaskRecord;
+				payout: {
+					id: string;
+					taskId: string;
+					amount: string;
+					assetCode: string;
+					workerWalletAddress: string;
+					txHash: string | null;
+					status: 'pending' | 'confirmed' | 'failed';
+					triggeredBy: 'client' | 'system' | 'agent';
+					paidAt: string | null;
+					createdAt: string;
+				};
+			}>(context, `/tasks/${id}/approve`, {
+				method: 'POST'
+			});
+		},
+		rejectTask(id: string, input: { reason: string }) {
+			return apiRequest<{
+				task: TaskRecord;
+				reviewDecision: {
+					id: string;
+					taskId: string;
+					reviewerUserId: string;
+					decision: 'approve' | 'reject';
+					reason: string | null;
+					createdAt: string;
+				};
+			}>(context, `/tasks/${id}/reject`, {
+				method: 'POST',
+				body: input
 			});
 		}
 	};

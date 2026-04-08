@@ -74,7 +74,7 @@ export type VerificationReport = {
 	missingRequirements: string[];
 	toneMatch: boolean;
 	audienceFit: boolean;
-	recommendation: 'approve' | 'reject' | 'needs_revision';
+	recommendation: 'approve' | 'manual_review' | 'reject';
 	createdAt: string;
 };
 
@@ -100,8 +100,8 @@ export type PayoutRecord = {
 	assetCode: string;
 	workerWalletAddress: string;
 	txHash: string | null;
-	status: 'pending' | 'paid' | 'failed';
-	triggeredBy: 'manual_approval' | 'auto_release';
+	status: 'pending' | 'confirmed' | 'failed';
+	triggeredBy: 'client' | 'system' | 'agent';
 	paidAt: string | null;
 	createdAt: string;
 };
@@ -111,6 +111,7 @@ export type TaskPayoutStatus = {
 	taskStatus: TaskStatus;
 	isPayoutEligible: boolean;
 	hasConfirmedFunding: boolean;
+	workerWalletAddress: string | null;
 	payout: PayoutRecord | null;
 };
 
@@ -134,6 +135,12 @@ export type CreateTaskInput = {
 	currencyAsset: string;
 	reviewWindowHours: number;
 	allowedClaimantType: 'human' | 'agent' | 'both';
+};
+
+export type SubmitTaskInput = {
+	contentText: string;
+	notes?: string;
+	documentUrl?: string;
 };
 
 export type TaskFilters = {

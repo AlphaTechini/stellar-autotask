@@ -1,14 +1,31 @@
-<script lang="ts">
-</script>
+<footer class="z-50 mt-auto flex w-full flex-col items-center justify-between gap-4 border-t border-slate-800/30 bg-slate-950 px-8 py-8 md:flex-row">
+	<div class="flex flex-col items-center gap-2 md:items-start">
+		<span class="font-['Manrope'] text-xs font-bold tracking-wide text-cyan-400">
+			Stellar Autotask
+		</span>
+		<span class="font-['Manrope'] text-xs tracking-wide text-slate-500">
+			Writing-task workflow on Stellar Testnet.
+		</span>
+	</div>
 
-<footer class="w-full py-8 mt-auto bg-slate-950 border-t border-slate-800/30 flex flex-col md:flex-row justify-between items-center px-8 gap-4 z-50">
-<div class="flex flex-col items-center md:items-start gap-2">
-<span class="text-cyan-400 font-bold font-['Manrope'] text-xs tracking-wide">Luminal Freelance</span>
-<span class="text-slate-500 font-['Manrope'] text-xs tracking-wide">© 2024 Kinetic Luminescence. Powered by AI Verification.</span>
-</div>
-<div class="flex gap-8">
-<a class="text-slate-500 hover:text-cyan-400 transition-colors font-['Manrope'] text-xs tracking-wide" href="#">Privacy Policy</a>
-<a class="text-slate-500 hover:text-cyan-400 transition-colors font-['Manrope'] text-xs tracking-wide" href="#">Terms of Service</a>
-<a class="text-slate-500 hover:text-cyan-400 transition-colors font-['Manrope'] text-xs tracking-wide" href="#">Agent API Access</a>
-</div>
+	<div class="flex gap-8">
+		<a
+			class="font-['Manrope'] text-xs tracking-wide text-slate-500 transition-colors hover:text-cyan-400"
+			href="/auth"
+		>
+			Auth
+		</a>
+		<a
+			class="font-['Manrope'] text-xs tracking-wide text-slate-500 transition-colors hover:text-cyan-400"
+			href="/marketplace"
+		>
+			Marketplace
+		</a>
+		<a
+			class="font-['Manrope'] text-xs tracking-wide text-slate-500 transition-colors hover:text-cyan-400"
+			href="/create-task"
+		>
+			Create task
+		</a>
+	</div>
 </footer>

@@ -14,11 +14,11 @@
 		<header class="rounded-3xl border border-slate-800 bg-slate-900/70 p-8">
 			<p class="text-xs font-semibold uppercase tracking-[0.3em] text-cyan-400">Create task</p>
 			<h1 class="mt-4 font-['Space_Grotesk'] text-4xl font-bold tracking-tight text-white">
-				Create a real backend task instead of a stitched mock
+				Create a writing task
 			</h1>
 			<p class="mt-3 max-w-2xl text-sm leading-6 text-slate-300">
-				Submitting this form hits `POST /tasks` on the backend and redirects to the new
-				task detail route after success.
+				Define the writing brief here, then move into funding on Stellar Testnet after the
+				task record is created.
 			</p>
 		</header>
 
@@ -196,7 +196,7 @@
 
 			<div class="flex items-center justify-between gap-4">
 				<p class="text-sm text-slate-400">
-					Funding remains a separate step. This task only creates the backend record.
+					Funding remains a separate step. This page creates the task record only.
 				</p>
 				<button
 					class="rounded-2xl bg-cyan-400 px-5 py-3 font-semibold text-slate-950 transition hover:bg-cyan-300 disabled:cursor-not-allowed disabled:opacity-60"

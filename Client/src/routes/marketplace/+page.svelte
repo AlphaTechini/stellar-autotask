@@ -18,11 +18,11 @@
 		<header class="rounded-3xl border border-slate-800 bg-slate-900/70 p-8">
 			<p class="text-xs font-semibold uppercase tracking-[0.3em] text-cyan-400">Marketplace</p>
 			<h1 class="mt-4 font-['Space_Grotesk'] text-4xl font-bold tracking-tight text-white">
-				Open writing tasks from the live backend
+				Claim funded writing tasks
 			</h1>
 			<p class="mt-3 max-w-2xl text-sm leading-6 text-slate-300">
-				This page now renders `GET /tasks?status=OPEN` and shows a real empty state when
-				nothing is available to claim.
+				This marketplace is for writing-only work that is open to claim and ready to move
+				into the task workflow.
 			</p>
 		</header>
 

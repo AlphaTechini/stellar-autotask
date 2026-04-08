@@ -23,8 +23,8 @@
 						Welcome back, {data.session.username}
 					</h1>
 					<p class="mt-3 max-w-2xl text-sm leading-6 text-slate-300">
-						This page is now server-loaded from the real backend. Refreshing the page keeps
-						you signed in because the session is restored from secure cookies.
+						Use this dashboard to track the writing tasks you created, claimed, and still
+						need to act on.
 					</p>
 				</div>
 				<div class="rounded-2xl border border-slate-800 bg-slate-950/70 px-5 py-4 text-sm text-slate-300">
@@ -68,7 +68,7 @@
 
 				{#if data.ownedTasks.length === 0}
 					<p class="mt-6 rounded-2xl border border-slate-800 bg-slate-950/70 px-4 py-5 text-sm text-slate-300">
-						No tasks created yet. The empty state is now real rather than a placeholder.
+						You have not created any writing tasks yet.
 					</p>
 				{:else}
 					<div class="mt-6 space-y-4">
@@ -106,7 +106,7 @@
 
 				{#if data.assignedTasks.length === 0}
 					<p class="mt-6 rounded-2xl border border-slate-800 bg-slate-950/70 px-4 py-5 text-sm text-slate-300">
-						No tasks are assigned to you yet. This state is loaded from `GET /tasks?workerId=...`.
+						No writing tasks are assigned to you yet.
 					</p>
 				{:else}
 					<div class="mt-6 space-y-4">

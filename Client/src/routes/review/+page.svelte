@@ -1,5 +1,24 @@
-<script lang="ts">
-	import ReviewApproval from '$lib/components/stitch/ReviewApproval.svelte';
-</script>
+<svelte:head>
+	<title>Review | Stellar Autotask</title>
+</svelte:head>
 
-<ReviewApproval />
+<main class="min-h-screen bg-slate-950 px-6 py-20 text-slate-100">
+	<section class="mx-auto max-w-3xl rounded-3xl border border-slate-800 bg-slate-900/70 p-10">
+		<p class="text-xs font-semibold uppercase tracking-[0.3em] text-cyan-400">Route cleanup</p>
+		<h1 class="mt-4 font-['Space_Grotesk'] text-4xl font-bold tracking-tight text-white">
+			This flat review route has been retired.
+		</h1>
+		<p class="mt-4 text-sm leading-7 text-slate-300">
+			The old design-oriented approval screen and its hardcoded assets were removed. Review
+			should move into a task-scoped route backed by real task state.
+		</p>
+		<div class="mt-8 flex flex-wrap gap-4">
+			<a class="rounded-2xl bg-cyan-400 px-5 py-3 font-semibold text-slate-950 transition hover:bg-cyan-300" href="/dashboard">
+				Open dashboard
+			</a>
+			<a class="rounded-2xl border border-slate-700 px-5 py-3 font-semibold text-slate-100 transition hover:border-cyan-400/40" href="/marketplace">
+				Browse marketplace
+			</a>
+		</div>
+	</section>
+</main>

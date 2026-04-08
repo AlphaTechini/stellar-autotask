@@ -22,6 +22,39 @@
 			data.session.id !== data.task.clientId
 		);
 	}
+
+	function canSubmitTask() {
+		return (
+			data.task.status === 'CLAIMED' &&
+			data.session?.role === 'worker' &&
+			data.session.id === data.task.workerId
+		);
+	}
+
+	function canOpenReport() {
+		return ['SUBMITTED', 'PENDING_REVIEW', 'APPROVED', 'AUTO_APPROVED', 'REJECTED', 'PAID'].includes(
+			data.task.status
+		);
+	}
+
+	function canOpenReview() {
+		return (
+			data.task.status === 'PENDING_REVIEW' &&
+			data.session?.role === 'client' &&
+			data.session.id === data.task.clientId
+		);
+	}
+
+	function canOpenReceipt() {
+		if (!data.report) {
+			return false;
+		}
+
+		return (
+			Boolean(data.report.payoutStatus.payout) ||
+			['APPROVED', 'AUTO_APPROVED', 'PAID'].includes(data.task.status)
+		);
+	}
 </script>
 
 <svelte:head>
@@ -184,6 +217,34 @@
 								{claiming ? 'Claiming...' : 'Claim task'}
 							</button>
 						</form>
+					{:else if canSubmitTask()}
+						<a
+							class="mt-6 block rounded-2xl bg-cyan-400 px-4 py-3 text-center font-semibold text-slate-950 transition hover:bg-cyan-300"
+							href={`/task/${data.task.id}/submit`}
+						>
+							Continue to submit
+						</a>
+					{:else if canOpenReview()}
+						<a
+							class="mt-6 block rounded-2xl bg-cyan-400 px-4 py-3 text-center font-semibold text-slate-950 transition hover:bg-cyan-300"
+							href={`/task/${data.task.id}/review`}
+						>
+							Open review
+						</a>
+					{:else if canOpenReceipt()}
+						<a
+							class="mt-6 block rounded-2xl bg-cyan-400 px-4 py-3 text-center font-semibold text-slate-950 transition hover:bg-cyan-300"
+							href={`/task/${data.task.id}/receipt`}
+						>
+							Open receipt
+						</a>
+					{:else if canOpenReport()}
+						<a
+							class="mt-6 block rounded-2xl bg-cyan-400 px-4 py-3 text-center font-semibold text-slate-950 transition hover:bg-cyan-300"
+							href={`/task/${data.task.id}/report`}
+						>
+							Open report
+						</a>
 					{:else if !data.session}
 						<a
 							class="mt-6 block rounded-2xl bg-cyan-400 px-4 py-3 text-center font-semibold text-slate-950 transition hover:bg-cyan-300"
@@ -223,6 +284,31 @@
 									{data.report.payoutStatus.payout?.status ?? 'No payout record'}
 								</span>
 							</div>
+						</div>
+
+						<div class="mt-6 flex flex-wrap gap-3">
+							<a
+								class="rounded-full border border-slate-700 px-4 py-2 text-xs font-semibold uppercase tracking-[0.22em] text-slate-200 transition hover:border-cyan-400/40 hover:text-white"
+								href={`/task/${data.task.id}/report`}
+							>
+								Open report
+							</a>
+							{#if canOpenReview()}
+								<a
+									class="rounded-full border border-cyan-400/30 bg-cyan-400/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.22em] text-cyan-200 transition hover:border-cyan-300 hover:text-white"
+									href={`/task/${data.task.id}/review`}
+								>
+									Review task
+								</a>
+							{/if}
+							{#if canOpenReceipt()}
+								<a
+									class="rounded-full border border-cyan-400/30 bg-cyan-400/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.22em] text-cyan-200 transition hover:border-cyan-300 hover:text-white"
+									href={`/task/${data.task.id}/receipt`}
+								>
+									Payout receipt
+								</a>
+							{/if}
 						</div>
 					</article>
 				{/if}
