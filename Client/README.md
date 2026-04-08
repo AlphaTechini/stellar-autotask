@@ -1,42 +1,27 @@
-# sv
+# Client
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+I use this SvelteKit app as the frontend shell for the Stellar writing-task workflow. The current focus is replacing stitched static pages with server-driven state, cookie-backed sessions, and typed backend integration.
 
-## Creating a project
+## Architectural Decisions And Tradeoffs
 
-If you're seeing this, you've probably already done this step. Congrats!
+- I keep backend calls inside SvelteKit server loads and actions so the JWT stays in httpOnly cookies instead of browser-managed storage.
+- I use a narrow typed contract layer instead of adding another runtime schema package because the first integration pass needs reliability without extra dependency churn.
+- I keep development login behind an explicit frontend env flag because wallet challenge signing belongs to the next auth task, not this infrastructure pass.
 
-```sh
-# create a new project
-npx sv create my-app
-```
+## Environment
 
-To recreate this project with the same configuration:
+- I load the backend base URL from `PUBLIC_BACKEND_BASE_URL` or `BACKEND_BASE_URL`.
+- I keep `.env` out of source control through the existing `.gitignore`.
+- I gate temporary development auth with `PUBLIC_ENABLE_DEV_AUTH=true`.
 
-```sh
-# recreate this project
-pnpm dlx sv@0.14.0 create --template minimal --types ts --add prettier eslint tailwindcss="plugins:typography,forms" devtools-json mcp="ide:gemini+setup:remote" --install pnpm Frontend
-```
+## File Navigation
 
-## Developing
+To find the frontend server integration boundary visit [src/lib/server/backendApi.ts](file:///C:/Hackathons/Stellar%201/stellar-autotask/Client/src/lib/server/backendApi.ts).
+To find cookie-backed session persistence visit [src/lib/server/session.ts](file:///C:/Hackathons/Stellar%201/stellar-autotask/Client/src/lib/server/session.ts).
+To find the authenticated dashboard load visit [src/routes/dashboard/+page.server.ts](file:///C:/Hackathons/Stellar%201/stellar-autotask/Client/src/routes/dashboard/+page.server.ts).
+To find task creation and redirect handling visit [src/routes/create-task/+page.server.ts](file:///C:/Hackathons/Stellar%201/stellar-autotask/Client/src/routes/create-task/+page.server.ts).
+To find task detail loading and claim mutation handling visit [src/routes/task/[id]/+page.server.ts](file:///C:/Hackathons/Stellar%201/stellar-autotask/Client/src/routes/task/%5Bid%5D/+page.server.ts).
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```sh
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
-
-## Building
-
-To create a production version of your app:
-
-```sh
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+The backend connection can be found in [src/lib/server/backendApi.ts](file:///C:/Hackathons/Stellar%201/stellar-autotask/Client/src/lib/server/backendApi.ts).
+The session restoration path can be found in [src/hooks.server.ts](file:///C:/Hackathons/Stellar%201/stellar-autotask/Client/src/hooks.server.ts).
+The task detail connection can be found in [src/routes/task/[id]/+page.server.ts](file:///C:/Hackathons/Stellar%201/stellar-autotask/Client/src/routes/task/%5Bid%5D/+page.server.ts).
