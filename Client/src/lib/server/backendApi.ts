@@ -6,7 +6,8 @@ import type {
 	TaskPayoutStatus,
 	TaskFilters,
 	TaskRecord,
-	TaskReportSnapshot
+	TaskReportSnapshot,
+	WalletChallenge
 } from '$lib/contracts/api';
 import type { AppSession } from './session';
 
@@ -89,6 +90,22 @@ export function createBackendClient(context: BackendClientContext) {
 	return {
 		devLogin(input: DevLoginInput) {
 			return apiRequest<AuthSuccess>(context, '/dev/auth/login', {
+				method: 'POST',
+				body: input
+			});
+		},
+		requestWalletChallenge(input: { walletAddress: string }) {
+			return apiRequest<WalletChallenge>(context, '/auth/wallet/challenge', {
+				method: 'POST',
+				body: input
+			});
+		},
+		verifyWallet(input: {
+			transactionXdr: string;
+			username?: string;
+			role?: 'client' | 'worker';
+		}) {
+			return apiRequest<AuthSuccess>(context, '/auth/wallet/verify', {
 				method: 'POST',
 				body: input
 			});

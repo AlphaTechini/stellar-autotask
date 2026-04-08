@@ -31,6 +31,13 @@ export type AuthSuccess = {
 	user: UserProfile;
 };
 
+export type WalletChallenge = {
+	transactionXdr: string;
+	networkPassphrase: string;
+	expiresAt: string;
+	walletAddress: string;
+};
+
 export type TaskRecord = {
 	id: string;
 	clientId: string;

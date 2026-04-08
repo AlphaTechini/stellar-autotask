@@ -10,7 +10,8 @@ I keep route-level server loads and actions here so each page owns its own data 
 ## File Navigation
 
 To find the shared session layout load visit [+layout.server.ts](file:///C:/Hackathons/Stellar%201/stellar-autotask/Client/src/routes/+layout.server.ts).
-To find development login handling visit [auth/+page.server.ts](file:///C:/Hackathons/Stellar%201/stellar-autotask/Client/src/routes/auth/+page.server.ts).
+To find wallet auth handling visit [auth/+page.server.ts](file:///C:/Hackathons/Stellar%201/stellar-autotask/Client/src/routes/auth/+page.server.ts).
+To find wallet challenge proxy handling visit [auth/challenge/+server.ts](file:///C:/Hackathons/Stellar%201/stellar-autotask/Client/src/routes/auth/challenge/+server.ts).
 To find dashboard data loading visit [dashboard/+page.server.ts](file:///C:/Hackathons/Stellar%201/stellar-autotask/Client/src/routes/dashboard/+page.server.ts).
 To find marketplace data loading visit [marketplace/+page.server.ts](file:///C:/Hackathons/Stellar%201/stellar-autotask/Client/src/routes/marketplace/+page.server.ts).
 To find task creation handling visit [create-task/+page.server.ts](file:///C:/Hackathons/Stellar%201/stellar-autotask/Client/src/routes/create-task/+page.server.ts).
@@ -22,3 +23,4 @@ The layout session surface can be found in [+layout.server.ts](file:///C:/Hackat
 The authenticated task creation flow can be found in [create-task/+page.server.ts](file:///C:/Hackathons/Stellar%201/stellar-autotask/Client/src/routes/create-task/+page.server.ts).
 The task review server boundary can be found in [task/[id]/review/+page.server.ts](file:///C:/Hackathons/Stellar%201/stellar-autotask/Client/src/routes/task/%5Bid%5D/review/+page.server.ts).
 The payout receipt server boundary can be found in [task/[id]/receipt/+page.server.ts](file:///C:/Hackathons/Stellar%201/stellar-autotask/Client/src/routes/task/%5Bid%5D/receipt/+page.server.ts).
+The wallet challenge proxy can be found in [auth/challenge/+server.ts](file:///C:/Hackathons/Stellar%201/stellar-autotask/Client/src/routes/auth/challenge/+server.ts).

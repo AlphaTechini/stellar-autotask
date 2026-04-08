@@ -4,17 +4,80 @@ import { createBackendClient, BackendApiError } from '$lib/server/backendApi';
 import { isDevAuthEnabled } from '$lib/server/backendConfig';
 import { writeSession } from '$lib/server/session';
 
-export const load: PageServerLoad = async ({ locals }) => {
+function resolveRedirectTarget(value: string | null) {
+	if (!value || !value.startsWith('/')) {
+		return '/dashboard';
+	}
+
+	return value;
+}
+
+export const load: PageServerLoad = async ({ locals, url }) => {
 	if (locals.session) {
 		throw redirect(303, '/dashboard');
 	}
 
 	return {
-		isDevAuthEnabled: isDevAuthEnabled()
+		redirectTo: resolveRedirectTarget(url.searchParams.get('redirectTo'))
 	};
 };
 
 export const actions: Actions = {
+	walletVerify: async ({ request, fetch, cookies, locals }) => {
+		if (locals.session) {
+			throw redirect(303, '/dashboard');
+		}
+
+		const formData = await request.formData();
+		const username = String(formData.get('username') ?? '').trim();
+		const role = String(formData.get('role') ?? '').trim();
+		const transactionXdr = String(formData.get('transactionXdr') ?? '').trim();
+		const redirectTo = resolveRedirectTarget(String(formData.get('redirectTo') ?? '').trim() || null);
+
+		if (!transactionXdr) {
+			return fail(400, {
+				error: 'A signed wallet challenge is required before sign-in can continue.',
+				values: {
+					username,
+					role
+				}
+			});
+		}
+
+		try {
+			const api = createBackendClient({ fetch, session: null });
+			const result = await api.verifyWallet({
+				transactionXdr,
+				...(username ? { username } : {}),
+				...(role === 'client' || role === 'worker' ? { role } : {})
+			});
+
+			writeSession(cookies, {
+				token: result.token,
+				user: {
+					id: result.user.id,
+					username: result.user.username,
+					role: result.user.role,
+					walletAddress: result.user.walletAddress,
+					authType: result.user.authType
+				}
+			});
+
+			throw redirect(303, redirectTo);
+		} catch (error) {
+			if (error instanceof BackendApiError) {
+				return fail(error.status, {
+					error: error.message,
+					values: {
+						username,
+						role
+					}
+				});
+			}
+
+			throw error;
+		}
+	},
 	devLogin: async ({ request, fetch, cookies, locals }) => {
 		if (locals.session) {
 			throw redirect(303, '/dashboard');

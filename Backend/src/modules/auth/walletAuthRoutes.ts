@@ -31,11 +31,18 @@ const walletAuthRoutes: FastifyPluginAsync = async (fastify) => {
       const userWriteResult = await upsertWalletHumanUser(fastify.db, {
         walletAddress: verifiedChallenge.walletAddress,
         username: input.username,
+        role: input.role,
       });
 
       if (userWriteResult.kind === 'missing_username') {
         throw fastify.httpErrors.badRequest(
           'Username is required the first time this wallet signs in.',
+        );
+      }
+
+      if (userWriteResult.kind === 'missing_role') {
+        throw fastify.httpErrors.badRequest(
+          'Role is required the first time this wallet signs in.',
         );
       }
 

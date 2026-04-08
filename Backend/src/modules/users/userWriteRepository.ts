@@ -8,6 +8,7 @@ type UserRecord = typeof users.$inferSelect;
 export type UpsertWalletHumanUserInput = {
   walletAddress: string;
   username?: string;
+  role?: 'client' | 'worker';
 };
 
 export async function upsertWalletHumanUser(
@@ -16,6 +17,7 @@ export async function upsertWalletHumanUser(
 ) {
   const normalizedWalletAddress = input.walletAddress.trim().toUpperCase();
   const normalizedUsername = input.username?.trim();
+  const normalizedRole = input.role;
 
   const existingUser = await db.query.users.findFirst({
     where: eq(users.stellarWalletAddress, normalizedWalletAddress),
@@ -28,11 +30,17 @@ export async function upsertWalletHumanUser(
       };
     }
 
+    if (!normalizedRole) {
+      return {
+        kind: 'missing_role' as const,
+      };
+    }
+
     const [createdUser] = await db
       .insert(users)
       .values({
         username: normalizedUsername,
-        role: 'client',
+        role: normalizedRole,
         stellarWalletAddress: normalizedWalletAddress,
         authType: 'wallet_human',
       })
@@ -81,5 +89,6 @@ export async function upsertWalletHumanUser(
 
 export type WalletHumanUserWriteResult =
   | Awaited<ReturnType<typeof upsertWalletHumanUser>>
+  | { kind: 'missing_role' }
   | { kind: 'missing_username' }
   | { kind: 'auth_type_conflict'; user: UserRecord };

@@ -7,6 +7,7 @@ I use this folder for wallet authentication. This is the first real backend writ
 - I use a short-lived Stellar transaction challenge so the backend verifies wallet control before issuing an app token.
 - I keep challenge verification stateless for now because it is fast to ship and safe enough when paired with a short expiry and backend signature checks.
 - I route all user creation and profile mutation through the user repository so `updatedAt` stays consistent across write paths.
+- I only allow human wallet onboarding through this route, and I require a first-time human role choice so browser sign-in does not silently default every new wallet to one role.
 
 ## File Navigation
 
