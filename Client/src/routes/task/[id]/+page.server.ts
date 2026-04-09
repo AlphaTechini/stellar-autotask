@@ -18,7 +18,7 @@ const REPORTABLE_STATUSES = new Set([
 const STELLAR_TX_HASH_PATTERN = /^[A-Fa-f0-9]{64}$/;
 const NATIVE_ASSET_CODE = 'XLM';
 
-export const load: PageServerLoad = async ({ params, fetch, locals }) => {
+export const load: PageServerLoad = async ({ params, fetch, locals, url }) => {
 	const api = createBackendClient({ fetch, session: locals.session });
 
 	try {
@@ -32,6 +32,7 @@ export const load: PageServerLoad = async ({ params, fetch, locals }) => {
 			task,
 			report,
 			payoutStatus,
+			highlightFundingStep: url.searchParams.get('from') === 'create-task',
 			platformFundingWallet: getPlatformFundingWallet(),
 			stellarHorizonUrl: getStellarHorizonUrl(),
 			stellarNetworkPassphrase: getStellarNetworkPassphrase(),

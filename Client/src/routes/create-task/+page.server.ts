@@ -16,7 +16,14 @@ export const load: PageServerLoad = async (event) => {
 	const session = requireSession(event);
 
 	return {
-		session: session.user
+		session: session.user,
+		createdFromExamples: {
+			title: 'Stellar wallet onboarding explainer',
+			brief: 'Write a concise product explainer for first-time Stellar wallet users.',
+			requiredKeywords: 'stellar, wallet, onboarding',
+			targetAudience: 'Developers and crypto-curious product users',
+			tone: 'Clear, practical, and confident'
+		}
 	};
 };
 
@@ -81,7 +88,7 @@ export const actions: Actions = {
 				allowedClaimantType: values.allowedClaimantType as 'human' | 'agent' | 'both'
 			});
 
-			throw redirect(303, `/task/${result.task.id}`);
+			throw redirect(303, `/task/${result.task.id}?from=create-task`);
 		} catch (error) {
 			if (error instanceof BackendApiError) {
 				return fail(error.status, {

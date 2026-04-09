@@ -151,6 +151,148 @@
 		);
 	}
 
+	function isOwnerClientViewer() {
+		return data.session?.role === 'client' && data.session.id === data.task.clientId;
+	}
+
+	function isOtherWorkerViewer() {
+		return (
+			data.session?.role === 'worker' &&
+			Boolean(data.task.workerId) &&
+			data.session.id !== data.task.workerId
+		);
+	}
+
+	function waitingState() {
+		if (!data.session) {
+			return null;
+		}
+
+		if (data.task.status === 'DRAFT' && !isOwnerClient()) {
+			return {
+				title: 'Waiting for client funding',
+				copy:
+					'This brief is saved, but it cannot move into the marketplace until the client confirms the Stellar Testnet funding step.',
+				ctaLabel: null,
+				href: null
+			};
+		}
+
+		if (data.task.status === 'OPEN' && isOwnerClientViewer()) {
+			return {
+				title: 'Waiting for a worker claim',
+				copy:
+					'Funding is confirmed. The next move belongs to a worker who picks up the brief from the marketplace.',
+				ctaLabel: 'Open marketplace',
+				href: '/marketplace'
+			};
+		}
+
+		if (data.task.status === 'OPEN' && data.session.role !== 'worker') {
+			return {
+				title: 'Open for workers',
+				copy:
+					'This funded task is waiting on a worker claim. Your next useful checkpoint will be the report and review state once work begins.',
+				ctaLabel: null,
+				href: null
+			};
+		}
+
+		if (data.task.status === 'CLAIMED' && isOwnerClientViewer()) {
+			return {
+				title: 'Waiting for the writing draft',
+				copy:
+					'The task is already assigned. The next step belongs to the worker, who needs to submit the writing before review can begin.',
+				ctaLabel: null,
+				href: null
+			};
+		}
+
+		if (data.task.status === 'CLAIMED' && isOtherWorkerViewer()) {
+			return {
+				title: 'Assigned to another worker',
+				copy:
+					'This brief is no longer claimable from your account because another worker already owns the submission step.',
+				ctaLabel: 'Browse other tasks',
+				href: '/marketplace'
+			};
+		}
+
+		if (data.task.status === 'PENDING_REVIEW' && !isOwnerClientViewer()) {
+			return {
+				title: 'Waiting for client review',
+				copy:
+					'The draft and verification output are in place. The next move belongs to the client, who can approve for payout or reject with feedback.',
+				ctaLabel: 'Open report',
+				href: `/task/${data.task.id}/report`
+			};
+		}
+
+		if (data.task.status === 'SUBMITTED' && isAssignedWorker()) {
+			return {
+				title: 'Verification is running',
+				copy:
+					'Your draft is already submitted. The next useful checkpoint is the report route once verification output finishes attaching to the task.',
+				ctaLabel: 'Open report',
+				href: `/task/${data.task.id}/report`
+			};
+		}
+
+		if (data.task.status === 'SUBMITTED' && isOwnerClientViewer()) {
+			return {
+				title: 'Waiting for verification output',
+				copy:
+					'The worker has already submitted the draft. Once verification finishes, this task will move into the review-ready flow.',
+				ctaLabel: 'Open report',
+				href: `/task/${data.task.id}/report`
+			};
+		}
+
+		if (data.task.status === 'REJECTED' && isAssignedWorker()) {
+			return {
+				title: 'Review feedback is available',
+				copy:
+					'The client has already sent this task back. Use the report route to inspect the saved reason and verification context before revising anything.',
+				ctaLabel: 'Open report',
+				href: `/task/${data.task.id}/report`
+			};
+		}
+
+		if (['APPROVED', 'AUTO_APPROVED'].includes(data.task.status) && !canOpenReceipt()) {
+			return {
+				title: 'Waiting for payout visibility',
+				copy:
+					'Approval is recorded, but payout visibility has not surfaced on the receipt route yet. Check back once the backend records the payout state.',
+				ctaLabel: null,
+				href: null
+			};
+		}
+
+		return {
+			title: 'Waiting on the workflow',
+			copy:
+				'This task is aligned to the backend state machine and is currently waiting on another actor or on the next valid state transition.',
+			ctaLabel: null,
+			href: null
+		};
+	}
+
+	function reportPreviewTitle() {
+		if (data.task.status === 'PENDING_REVIEW') {
+			return 'Review-ready snapshot';
+		}
+
+		if (data.task.status === 'REJECTED') {
+			return 'Revision snapshot';
+		}
+
+		if (['APPROVED', 'AUTO_APPROVED', 'PAID'].includes(data.task.status)) {
+			return 'Completed workflow snapshot';
+		}
+
+		return 'Report preview';
+	}
+
 	function fundingStateLabel() {
 		if (data.payoutStatus.hasConfirmedFunding) {
 			return 'Funding confirmed';
@@ -469,6 +611,15 @@
 					</h1>
 					<p class="mt-4 max-w-3xl text-sm leading-7 text-slate-300">{data.task.brief}</p>
 					<p class="mt-4 max-w-3xl text-sm leading-7 text-slate-300">{introCopy()}</p>
+					{#if data.highlightFundingStep && canFundTask()}
+						<div class="mt-5 max-w-3xl rounded-[1.5rem] border border-cyan-400/20 bg-cyan-400/10 px-5 py-4 text-sm leading-7 text-cyan-100">
+							<div class="font-semibold text-white">Task created. Funding is next.</div>
+							<p class="mt-2">
+								This draft is saved and ready for the Stellar Testnet payment step below. Once
+								you confirm the XLM funding transaction, the task can open for claims.
+							</p>
+						</div>
+					{/if}
 				</div>
 
 				<div class="grid w-full gap-4 sm:grid-cols-2 xl:max-w-xl">
@@ -817,14 +968,22 @@
 							</a>
 						</div>
 					{:else}
+						{@const fallback = waitingState()}
 						<div class="mt-6 rounded-[1.5rem] border border-slate-800 bg-slate-950/70 p-6">
 							<h3 class="font-['Space_Grotesk'] text-2xl font-semibold text-white">
-								Waiting on the workflow
+								{fallback?.title}
 							</h3>
 							<p class="mt-4 text-sm leading-7 text-slate-300">
-								This task is not blocked by missing UI controls. It is waiting on the backend
-								state machine or on another actor to complete the next valid step.
+								{fallback?.copy}
 							</p>
+							{#if fallback?.ctaLabel && fallback?.href}
+								<a
+									class="mt-6 inline-flex items-center justify-center rounded-2xl border border-slate-700 px-5 py-3 font-semibold text-slate-100 transition hover:border-cyan-400/30 hover:text-white"
+									href={fallback.href}
+								>
+									{fallback.ctaLabel}
+								</a>
+							{/if}
 						</div>
 					{/if}
 				</article>
@@ -889,8 +1048,13 @@
 							<div>
 								<p class="text-xs uppercase tracking-[0.22em] text-slate-500">Workflow evidence</p>
 								<h2 class="mt-3 font-['Space_Grotesk'] text-3xl font-semibold text-white">
-									Report snapshot
+									{reportPreviewTitle()}
 								</h2>
+								<p class="mt-3 max-w-2xl text-sm leading-6 text-slate-300">
+									I keep only the high-signal report state here so the hub stays focused on next
+									actions. The full verification summary and deeper evidence live in the
+									dedicated report route.
+								</p>
 							</div>
 							<a
 								class="text-sm font-medium text-cyan-300 transition hover:text-cyan-200"
@@ -900,7 +1064,7 @@
 							</a>
 						</div>
 
-						<div class="mt-6 grid gap-5 md:grid-cols-3">
+						<div class="mt-6 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
 							<div class="rounded-[1.5rem] border border-slate-800 bg-slate-950/70 p-5">
 								<div class="text-xs uppercase tracking-[0.22em] text-slate-500">Submitted</div>
 								<div class="mt-4 text-sm leading-7 text-white">
@@ -919,16 +1083,19 @@
 									{data.report.latestReviewDecision?.decision ?? 'No review saved yet'}
 								</div>
 							</div>
-						</div>
-
-						{#if data.report.verificationReport}
-							<div class="mt-6 rounded-[1.5rem] border border-slate-800 bg-slate-950/70 p-5">
-								<div class="text-xs uppercase tracking-[0.22em] text-slate-500">Summary</div>
-								<p class="mt-4 text-sm leading-7 text-slate-200">
-									{data.report.verificationReport.summary}
-								</p>
+							<div class="rounded-[1.5rem] border border-slate-800 bg-slate-950/70 p-5">
+								<div class="text-xs uppercase tracking-[0.22em] text-slate-500">Recommendation</div>
+								<div class="mt-4 text-sm leading-7 text-white">
+									{data.report.verificationReport?.recommendation ?? 'No recommendation yet'}
+								</div>
 							</div>
-						{/if}
+							<div class="rounded-[1.5rem] border border-slate-800 bg-slate-950/70 p-5">
+								<div class="text-xs uppercase tracking-[0.22em] text-slate-500">Payout visibility</div>
+								<div class="mt-4 text-sm leading-7 text-white">
+									{data.report.payoutStatus.payout?.status ?? 'No payout record yet'}
+								</div>
+							</div>
+						</div>
 					</article>
 				{/if}
 			</div>

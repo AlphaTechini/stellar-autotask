@@ -3,6 +3,11 @@
 
 	let { data } = $props();
 	let claimingTaskId = $state<string | null>(null);
+	const claimantTypeLabel = {
+		human: 'Human workers',
+		agent: 'Agents only',
+		both: 'Humans or agents'
+	} as const;
 
 	function formatDate(value: string) {
 		return new Intl.DateTimeFormat(undefined, { dateStyle: 'medium' }).format(new Date(value));
@@ -21,9 +26,34 @@
 				Claim funded writing tasks
 			</h1>
 			<p class="mt-3 max-w-2xl text-sm leading-6 text-slate-300">
-				Browse funded writing work that is already ready to claim, then continue through the
-				task hub into submission and report handling.
+				Browse funded writing briefs that are already open for work. After a successful claim,
+				you continue in the task workflow to submit the draft, follow verification, and track
+				review or payout status.
 			</p>
+
+			<div class="mt-6 grid gap-4 md:grid-cols-3">
+				<div class="rounded-2xl border border-slate-800 bg-slate-950/70 p-4">
+					<div class="text-xs font-semibold uppercase tracking-[0.24em] text-cyan-300">1. Claim</div>
+					<p class="mt-3 text-sm leading-6 text-slate-300">
+						Only funded writing tasks appear here, so claiming is the start of active work, not
+						a waiting list.
+					</p>
+				</div>
+				<div class="rounded-2xl border border-slate-800 bg-slate-950/70 p-4">
+					<div class="text-xs font-semibold uppercase tracking-[0.24em] text-cyan-300">2. Continue</div>
+					<p class="mt-3 text-sm leading-6 text-slate-300">
+						After claim, the app sends you straight into the task workflow so you can move toward
+						submission without hunting for the next page.
+					</p>
+				</div>
+				<div class="rounded-2xl border border-slate-800 bg-slate-950/70 p-4">
+					<div class="text-xs font-semibold uppercase tracking-[0.24em] text-cyan-300">3. Deliver</div>
+					<p class="mt-3 text-sm leading-6 text-slate-300">
+						Each card stays concise enough to scan quickly, while the task route carries the full
+						brief and deeper workflow context before you submit.
+					</p>
+				</div>
+			</div>
 		</header>
 
 		{#if data.tasks.length === 0}
@@ -54,6 +84,10 @@
 
 						<p class="mt-4 text-sm leading-6 text-slate-300">{task.brief}</p>
 
+						<div class="mt-5 rounded-2xl border border-slate-800 bg-slate-950/70 px-4 py-4 text-sm leading-6 text-slate-300">
+							<span class="font-medium text-white">Writing fit:</span> {task.tone} for {task.targetAudience}.
+						</div>
+
 						<div class="mt-6 flex flex-wrap gap-2">
 							{#each task.requiredKeywords as keyword}
 								<span class="rounded-full border border-slate-700 px-3 py-1 text-xs text-cyan-200">
@@ -66,6 +100,16 @@
 							<span>Created {formatDate(task.createdAt)}</span>
 							<span>{task.reviewWindowHours}h review window</span>
 							<span>{task.minWordCount} min words</span>
+							<span>{claimantTypeLabel[task.allowedClaimantType]}</span>
+						</div>
+
+						<div class="mt-6 rounded-2xl border border-cyan-400/15 bg-cyan-400/5 px-4 py-4 text-sm leading-6 text-slate-300">
+							<div class="font-medium text-white">After claim</div>
+							<p class="mt-2">
+								You will continue in the task workflow for this brief, where submission,
+								verification, review, and receipt visibility stay in one place. Open the task
+								page first if you want the full brief before taking the claim.
+							</p>
 						</div>
 
 						<div class="mt-6 flex flex-wrap gap-3">
@@ -92,9 +136,16 @@
 										type="submit"
 										disabled={claimingTaskId === task.id}
 									>
-										{claimingTaskId === task.id ? 'Claiming...' : 'Claim and continue'}
+										{claimingTaskId === task.id ? 'Claiming and opening workflow...' : 'Claim and open workflow'}
 									</button>
 								</form>
+							{:else if !data.session}
+								<a
+									class="rounded-2xl bg-cyan-400 px-4 py-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-300"
+									href="/auth?redirectTo=/marketplace"
+								>
+									Sign in to claim
+								</a>
 							{/if}
 						</div>
 					</article>

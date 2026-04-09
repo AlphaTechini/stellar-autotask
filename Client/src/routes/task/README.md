@@ -7,6 +7,7 @@ I keep task-scoped route logic here because task creation, viewing, and claiming
 - I use the task detail route as the workflow hub because it needs to connect draft funding, worker claims, and role-aware routing before the deeper task-scoped routes take over.
 - I keep final funding confirmation on the server boundary so the frontend can launch the Freighter payment flow in the browser, then let the backend validate the recorded hash and final task state.
 - I keep a legacy-task fallback message in the hub so older non-XLM drafts are clearly constrained without suggesting that the launch flow still supports them.
+- I keep only a compact report preview in the hub because the page should stay action-first while the dedicated report route holds the fuller verification and review detail.
 
 ## File Navigation
 

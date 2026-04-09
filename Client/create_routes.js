@@ -7,11 +7,7 @@ const routes = [
   { component: 'CreateTask', route: 'src/routes/create-task' },
   { component: 'TaskDetails', route: 'src/routes/task/[id]' },
   { component: 'UserDashboard', route: 'src/routes/dashboard' },
-  { component: 'Authentication', route: 'src/routes/auth' },
-  { component: 'SubmitWork', route: 'src/routes/submit' },
-  { component: 'AIVerificationReport', route: 'src/routes/report' },
-  { component: 'ReviewApproval', route: 'src/routes/review' },
-  { component: 'PaymentReceipt', route: 'src/routes/receipt' }
+  { component: 'Authentication', route: 'src/routes/auth' }
 ];
 
 routes.forEach(({ component, route }) => {
