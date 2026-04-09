@@ -1,13 +1,11 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import { requestAccess, signTransaction } from '@stellar/freighter-api';
 	import type { WalletChallenge } from '$lib/contracts/api';
 
 	let { data, form } = $props();
 
 	let walletForm: HTMLFormElement | null = $state(null);
 	let username = $state('');
-	let role = $state<'client' | 'worker'>('worker');
 	let walletAddress = $state('');
 	let transactionXdr = $state('');
 	let challengeExpiresAt = $state<string | null>(null);
@@ -17,10 +15,6 @@
 
 	$effect(() => {
 		username = form?.values?.username ?? username;
-		const nextRole = form?.values?.role;
-		if (nextRole === 'client' || nextRole === 'worker') {
-			role = nextRole;
-		}
 	});
 
 	function formatDate(value: string | null) {
@@ -39,11 +33,20 @@
 			return error;
 		}
 
-		if (error && typeof error === 'object' && 'message' in error && typeof error.message === 'string') {
+		if (
+			error &&
+			typeof error === 'object' &&
+			'message' in error &&
+			typeof error.message === 'string'
+		) {
 			return error.message;
 		}
 
 		return 'The wallet request could not be completed.';
+	}
+
+	async function loadFreighterApi() {
+		return import('@stellar/freighter-api');
 	}
 
 	async function requestChallenge(address: string) {
@@ -83,6 +86,7 @@
 		transactionXdr = '';
 
 		try {
+			const { requestAccess, signTransaction } = await loadFreighterApi();
 			walletStage = 'connecting';
 			const accessResult = await requestAccess();
 
@@ -152,10 +156,14 @@
 	<title>Authentication | Stellar Autotask</title>
 </svelte:head>
 
-<main class="min-h-screen bg-[radial-gradient(circle_at_top,rgba(34,211,238,0.14),transparent_24%),linear-gradient(180deg,#020617_0%,#08111f_40%,#020617_100%)] px-6 py-20 text-slate-100">
+<main
+	class="min-h-screen bg-[radial-gradient(circle_at_top,rgba(34,211,238,0.14),transparent_24%),linear-gradient(180deg,#020617_0%,#08111f_40%,#020617_100%)] px-6 py-20 text-slate-100"
+>
 	<div class="mx-auto grid max-w-6xl gap-10 lg:grid-cols-[1.05fr_0.95fr]">
-		<section class="rounded-[2rem] border border-cyan-400/20 bg-slate-950/80 p-10 shadow-[0_30px_90px_rgba(8,145,178,0.16)] backdrop-blur-xl">
-			<p class="mb-4 text-xs font-semibold uppercase tracking-[0.3em] text-cyan-300">
+		<section
+			class="rounded-[2rem] border border-cyan-400/20 bg-slate-950/80 p-10 shadow-[0_30px_90px_rgba(8,145,178,0.16)] backdrop-blur-xl"
+		>
+			<p class="mb-4 text-xs font-semibold tracking-[0.3em] text-cyan-300 uppercase">
 				Wallet-first access
 			</p>
 			<h1 class="max-w-3xl font-['Space_Grotesk'] text-4xl font-bold tracking-tight text-white">
@@ -169,21 +177,23 @@
 
 			<div class="mt-10 grid gap-4 md:grid-cols-2">
 				<div class="rounded-[1.5rem] border border-slate-800 bg-slate-900/70 p-5">
-					<div class="text-xs uppercase tracking-[0.22em] text-slate-500">Flow</div>
+					<div class="text-xs tracking-[0.22em] text-slate-500 uppercase">Flow</div>
 					<div class="mt-3 text-sm leading-7 text-slate-200">
 						Connect wallet, request challenge, sign in Freighter, then verify on the backend.
 					</div>
 				</div>
 				<div class="rounded-[1.5rem] border border-slate-800 bg-slate-900/70 p-5">
-					<div class="text-xs uppercase tracking-[0.22em] text-slate-500">Redirect target</div>
-					<div class="mt-3 break-all text-sm leading-7 text-cyan-200">
+					<div class="text-xs tracking-[0.22em] text-slate-500 uppercase">Redirect target</div>
+					<div class="mt-3 text-sm leading-7 break-all text-cyan-200">
 						{data.redirectTo}
 					</div>
 				</div>
 			</div>
 
 			<div class="mt-8 rounded-[1.5rem] border border-slate-800 bg-slate-900/60 p-6">
-				<h2 class="font-['Space_Grotesk'] text-xl font-semibold text-white">What this auth step does</h2>
+				<h2 class="font-['Space_Grotesk'] text-xl font-semibold text-white">
+					What this auth step does
+				</h2>
 				<ul class="mt-4 space-y-3 text-sm leading-6 text-slate-300">
 					<li>Confirms wallet control through a short-lived Stellar challenge.</li>
 					<li>Creates the first wallet-backed human profile when a username is supplied.</li>
@@ -195,7 +205,9 @@
 
 		<section class="rounded-[2rem] border border-slate-800 bg-slate-900/70 p-8">
 			<div class="border-b border-slate-800 pb-6">
-				<h2 class="font-['Space_Grotesk'] text-3xl font-semibold text-white">Sign in with Freighter</h2>
+				<h2 class="font-['Space_Grotesk'] text-3xl font-semibold text-white">
+					Sign in with Freighter
+				</h2>
 				<p class="mt-3 text-sm leading-6 text-slate-300">
 					Use a Stellar wallet already connected to Freighter. If this wallet has never signed in
 					before, include a username so the backend can create the profile.
@@ -225,7 +237,7 @@
 					<input
 						id="username"
 						name="username"
-						class="w-full rounded-[1.25rem] border border-slate-700 bg-slate-950 px-4 py-3 text-white outline-none transition focus:border-cyan-400"
+						class="w-full rounded-[1.25rem] border border-slate-700 bg-slate-950 px-4 py-3 text-white transition outline-none focus:border-cyan-400"
 						bind:value={username}
 						placeholder="writername"
 					/>
@@ -234,56 +246,17 @@
 					</p>
 				</div>
 
-				<div>
-					<span class="mb-3 block text-sm font-medium text-slate-200">Human role</span>
-					<div class="grid gap-3 sm:grid-cols-2">
-						<label class="cursor-pointer rounded-[1.25rem] border px-4 py-4 transition {role === 'client'
-							? 'border-cyan-400/40 bg-cyan-400/10'
-							: 'border-slate-700 bg-slate-950'}">
-							<input
-								class="sr-only"
-								type="radio"
-								name="role"
-								value="client"
-								bind:group={role}
-							/>
-							<div class="text-sm font-semibold text-white">Client</div>
-							<div class="mt-2 text-sm leading-6 text-slate-300">
-								Create tasks, fund them, and review submissions for payout.
-							</div>
-						</label>
-
-						<label class="cursor-pointer rounded-[1.25rem] border px-4 py-4 transition {role === 'worker'
-							? 'border-cyan-400/40 bg-cyan-400/10'
-							: 'border-slate-700 bg-slate-950'}">
-							<input
-								class="sr-only"
-								type="radio"
-								name="role"
-								value="worker"
-								bind:group={role}
-							/>
-							<div class="text-sm font-semibold text-white">Worker</div>
-							<div class="mt-2 text-sm leading-6 text-slate-300">
-								Claim funded writing tasks, submit drafts, and track payout state.
-							</div>
-						</label>
-					</div>
-					<p class="mt-3 text-sm leading-6 text-slate-400">
-						This applies to first-time human wallet onboarding. Returning users keep the role
-						already stored by the backend.
-					</p>
-				</div>
-
 				<div class="rounded-[1.5rem] border border-slate-800 bg-slate-950/80 p-5">
 					<div class="flex items-center justify-between gap-4">
 						<div>
-							<div class="text-xs uppercase tracking-[0.22em] text-slate-500">Connected wallet</div>
-							<div class="mt-3 break-all text-sm leading-7 text-cyan-300">
+							<div class="text-xs tracking-[0.22em] text-slate-500 uppercase">Connected wallet</div>
+							<div class="mt-3 text-sm leading-7 break-all text-cyan-300">
 								{walletAddress || 'No wallet connected yet'}
 							</div>
 						</div>
-						<div class="rounded-full border border-cyan-400/20 bg-cyan-400/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.22em] text-cyan-200">
+						<div
+							class="rounded-full border border-cyan-400/20 bg-cyan-400/10 px-3 py-1 text-xs font-semibold tracking-[0.22em] text-cyan-200 uppercase"
+						>
 							{walletStage}
 						</div>
 					</div>
@@ -301,19 +274,25 @@
 				</div>
 
 				{#if walletNotice}
-					<p class="rounded-[1.25rem] border border-cyan-400/30 bg-cyan-400/10 px-4 py-3 text-sm text-cyan-100">
+					<p
+						class="rounded-[1.25rem] border border-cyan-400/30 bg-cyan-400/10 px-4 py-3 text-sm text-cyan-100"
+					>
 						{walletNotice}
 					</p>
 				{/if}
 
 				{#if walletError}
-					<p class="rounded-[1.25rem] border border-rose-500/40 bg-rose-500/10 px-4 py-3 text-sm text-rose-200">
+					<p
+						class="rounded-[1.25rem] border border-rose-500/40 bg-rose-500/10 px-4 py-3 text-sm text-rose-200"
+					>
 						{walletError}
 					</p>
 				{/if}
 
 				{#if form?.error}
-					<p class="rounded-[1.25rem] border border-rose-500/40 bg-rose-500/10 px-4 py-3 text-sm text-rose-200">
+					<p
+						class="rounded-[1.25rem] border border-rose-500/40 bg-rose-500/10 px-4 py-3 text-sm text-rose-200"
+					>
 						{form.error}
 					</p>
 				{/if}

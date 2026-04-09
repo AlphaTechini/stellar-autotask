@@ -40,12 +40,6 @@ const walletAuthRoutes: FastifyPluginAsync = async (fastify) => {
         );
       }
 
-      if (userWriteResult.kind === 'missing_role') {
-        throw fastify.httpErrors.badRequest(
-          'Role is required the first time this wallet signs in.',
-        );
-      }
-
       if (userWriteResult.kind === 'auth_type_conflict') {
         throw fastify.httpErrors.conflict(
           'This wallet is already bound to a different authentication type.',

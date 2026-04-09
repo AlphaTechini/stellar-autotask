@@ -12,8 +12,7 @@ type DashboardActionGroup = {
 	tasks: TaskRecord[];
 };
 
-const CLIENT_RECEIPT_STATUSES: TaskStatus[] = ['APPROVED', 'AUTO_APPROVED', 'PAID'];
-const WORKER_RECEIPT_STATUSES: TaskStatus[] = ['APPROVED', 'AUTO_APPROVED', 'PAID'];
+const RECEIPT_STATUSES: TaskStatus[] = ['APPROVED', 'AUTO_APPROVED', 'PAID'];
 
 function byMostRecentUpdate(left: TaskRecord, right: TaskRecord) {
 	return new Date(right.updatedAt).getTime() - new Date(left.updatedAt).getTime();
@@ -41,7 +40,7 @@ function createGroup(
 	};
 }
 
-function createClientGroups(tasks: TaskRecord[]) {
+function createOwnedGroups(tasks: TaskRecord[]) {
 	return [
 		createGroup(
 			'fund-next',
@@ -65,12 +64,12 @@ function createClientGroups(tasks: TaskRecord[]) {
 			'Approved work lands here so you can confirm payout visibility without hunting through older tasks.',
 			'No approved or paid tasks need receipt follow-up right now.',
 			'Open receipt',
-			pickTasks(tasks, CLIENT_RECEIPT_STATUSES)
+			pickTasks(tasks, RECEIPT_STATUSES)
 		)
 	];
 }
 
-function createWorkerGroups(tasks: TaskRecord[]) {
+function createAssignedGroups(tasks: TaskRecord[]) {
 	return [
 		createGroup(
 			'submit-next',
@@ -94,7 +93,7 @@ function createWorkerGroups(tasks: TaskRecord[]) {
 			'Approved and paid work stays here so you can jump straight to payout visibility.',
 			'No approved or paid tasks need a receipt check right now.',
 			'Open receipt',
-			pickTasks(tasks, WORKER_RECEIPT_STATUSES)
+			pickTasks(tasks, RECEIPT_STATUSES)
 		)
 	];
 }
@@ -104,10 +103,7 @@ export const load: PageServerLoad = async (event) => {
 	const api = createBackendClient({ fetch: event.fetch, session });
 
 	const ownedTasksPromise = api.listTasks({ clientId: session.user.id });
-	const assignedTasksPromise =
-		session.user.role === 'worker'
-			? api.listTasks({ workerId: session.user.id })
-			: Promise.resolve({ tasks: [] });
+	const assignedTasksPromise = api.listTasks({ workerId: session.user.id });
 	const openTasksPromise = api.listTasks({ status: 'OPEN' });
 
 	const [ownedTasks, assignedTasks, openTasks] = await Promise.all([
@@ -121,7 +117,11 @@ export const load: PageServerLoad = async (event) => {
 		ownedTasks: ownedTasks.tasks,
 		assignedTasks: assignedTasks.tasks,
 		openTasks: openTasks.tasks,
-		clientGroups: createClientGroups(ownedTasks.tasks),
-		workerGroups: createWorkerGroups(assignedTasks.tasks)
+		ownedGroups: createOwnedGroups(ownedTasks.tasks),
+		assignedGroups: createAssignedGroups(assignedTasks.tasks),
+		actionGroups: [
+			...createOwnedGroups(ownedTasks.tasks),
+			...createAssignedGroups(assignedTasks.tasks)
+		]
 	};
 };

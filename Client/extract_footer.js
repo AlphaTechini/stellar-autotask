@@ -5,7 +5,7 @@ const componentsDir = path.join(process.cwd(), 'src', 'lib', 'components', 'stit
 const commonDir = path.join(process.cwd(), 'src', 'lib', 'components', 'common');
 
 if (!fs.existsSync(commonDir)) {
-  fs.mkdirSync(commonDir, { recursive: true });
+	fs.mkdirSync(commonDir, { recursive: true });
 }
 
 // Fixed Footer content from PlatformLandingPage.svelte
@@ -27,24 +27,24 @@ const footerContent = `<script lang="ts">
 
 fs.writeFileSync(path.join(commonDir, 'Footer.svelte'), footerContent, 'utf8');
 
-const files = fs.readdirSync(componentsDir).filter(f => f.endsWith('.svelte'));
+const files = fs.readdirSync(componentsDir).filter((f) => f.endsWith('.svelte'));
 
-files.forEach(file => {
-  const filePath = path.join(componentsDir, file);
-  let content = fs.readFileSync(filePath, 'utf8');
+files.forEach((file) => {
+	const filePath = path.join(componentsDir, file);
+	let content = fs.readFileSync(filePath, 'utf8');
 
-  // Regex to remove the footer block
-  // <footer ...>...</footer>
-  content = content.replace(/<footer[\s\S]*?<\/footer>/i, '<Footer />');
+	// Regex to remove the footer block
+	// <footer ...>...</footer>
+	content = content.replace(/<footer[\s\S]*?<\/footer>/i, '<Footer />');
 
-  // Add the import to <script lang="ts"> block
-  const importStatement = `import Footer from '../common/Footer.svelte';\n`;
-  if (content.includes('<script lang="ts">')) {
-      content = content.replace('<script lang="ts">', `<script lang="ts">\n${importStatement}`);
-  } else {
-      content = `<script lang="ts">\n${importStatement}</script>\n\n` + content;
-  }
+	// Add the import to <script lang="ts"> block
+	const importStatement = `import Footer from '../common/Footer.svelte';\n`;
+	if (content.includes('<script lang="ts">')) {
+		content = content.replace('<script lang="ts">', `<script lang="ts">\n${importStatement}`);
+	} else {
+		content = `<script lang="ts">\n${importStatement}</script>\n\n` + content;
+	}
 
-  fs.writeFileSync(filePath, content, 'utf8');
-  console.log(`Replaced footer in ${file}`);
+	fs.writeFileSync(filePath, content, 'utf8');
+	console.log(`Replaced footer in ${file}`);
 });

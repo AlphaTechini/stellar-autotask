@@ -26,9 +26,7 @@
 
 	function isClientReviewer() {
 		return (
-			data.session.id === data.report.task.clientId &&
-			data.session.role === 'client' &&
-			data.report.task.status === 'PENDING_REVIEW'
+			data.session.id === data.report.task.clientId && data.report.task.status === 'PENDING_REVIEW'
 		);
 	}
 
@@ -44,14 +42,16 @@
 	<title>Report | {data.report.task.title}</title>
 </svelte:head>
 
-<main class="min-h-screen bg-[radial-gradient(circle_at_top,rgba(34,211,238,0.12),transparent_24%),linear-gradient(180deg,#020617_0%,#08111f_40%,#020617_100%)] px-6 py-12 text-slate-100">
+<main
+	class="min-h-screen bg-[radial-gradient(circle_at_top,rgba(34,211,238,0.12),transparent_24%),linear-gradient(180deg,#020617_0%,#08111f_40%,#020617_100%)] px-6 py-12 text-slate-100"
+>
 	<div class="mx-auto max-w-7xl space-y-8">
-		<header class="rounded-[2rem] border border-cyan-400/20 bg-slate-950/75 p-8 shadow-[0_30px_90px_rgba(8,145,178,0.14)] backdrop-blur-xl">
+		<header
+			class="rounded-[2rem] border border-cyan-400/20 bg-slate-950/75 p-8 shadow-[0_30px_90px_rgba(8,145,178,0.14)] backdrop-blur-xl"
+		>
 			<div class="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
 				<div>
-					<p class="text-xs font-semibold uppercase tracking-[0.28em] text-cyan-300">
-						Task report
-					</p>
+					<p class="text-xs font-semibold tracking-[0.28em] text-cyan-300 uppercase">Task report</p>
 					<h1 class="mt-4 font-['Space_Grotesk'] text-4xl font-bold tracking-tight text-white">
 						{data.report.task.title}
 					</h1>
@@ -62,7 +62,9 @@
 				</div>
 
 				<div class="flex flex-wrap gap-3">
-					<span class="rounded-full border border-cyan-400/20 bg-cyan-400/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.22em] text-cyan-200">
+					<span
+						class="rounded-full border border-cyan-400/20 bg-cyan-400/10 px-4 py-2 text-xs font-semibold tracking-[0.22em] text-cyan-200 uppercase"
+					>
 						{data.report.task.status}
 					</span>
 					<a
@@ -93,9 +95,11 @@
 		<section class="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
 			<div class="space-y-6">
 				<article class="rounded-[2rem] border border-slate-800 bg-slate-900/70 p-8">
-					<div class="flex flex-col gap-4 border-b border-slate-800 pb-6 md:flex-row md:items-end md:justify-between">
+					<div
+						class="flex flex-col gap-4 border-b border-slate-800 pb-6 md:flex-row md:items-end md:justify-between"
+					>
 						<div>
-							<p class="text-xs uppercase tracking-[0.22em] text-slate-500">Submission snapshot</p>
+							<p class="text-xs tracking-[0.22em] text-slate-500 uppercase">Submission snapshot</p>
 							<h2 class="mt-3 font-['Space_Grotesk'] text-3xl font-semibold text-white">
 								Writing delivery
 							</h2>
@@ -108,25 +112,25 @@
 					{#if data.report.submission}
 						<div class="mt-6 space-y-5">
 							<div class="rounded-[1.5rem] border border-slate-800 bg-slate-950/80 p-5">
-								<div class="text-xs uppercase tracking-[0.22em] text-slate-500">Content</div>
-								<div class="mt-4 whitespace-pre-wrap text-sm leading-7 text-slate-100">
+								<div class="text-xs tracking-[0.22em] text-slate-500 uppercase">Content</div>
+								<div class="mt-4 text-sm leading-7 whitespace-pre-wrap text-slate-100">
 									{data.report.submission.contentText}
 								</div>
 							</div>
 
 							<div class="grid gap-5 md:grid-cols-2">
 								<div class="rounded-[1.5rem] border border-slate-800 bg-slate-950/80 p-5">
-									<div class="text-xs uppercase tracking-[0.22em] text-slate-500">Notes</div>
-									<div class="mt-4 whitespace-pre-wrap text-sm leading-7 text-slate-300">
+									<div class="text-xs tracking-[0.22em] text-slate-500 uppercase">Notes</div>
+									<div class="mt-4 text-sm leading-7 whitespace-pre-wrap text-slate-300">
 										{data.report.submission.notes ?? 'No notes were provided.'}
 									</div>
 								</div>
 
 								<div class="rounded-[1.5rem] border border-slate-800 bg-slate-950/80 p-5">
-									<div class="text-xs uppercase tracking-[0.22em] text-slate-500">Document URL</div>
+									<div class="text-xs tracking-[0.22em] text-slate-500 uppercase">Document URL</div>
 									{#if data.report.submission.documentUrl}
 										<a
-											class="mt-4 block break-all text-sm leading-7 text-cyan-300 hover:text-cyan-200"
+											class="mt-4 block text-sm leading-7 break-all text-cyan-300 hover:text-cyan-200"
 											href={data.report.submission.documentUrl}
 											target="_blank"
 											rel="noreferrer"
@@ -149,16 +153,18 @@
 				</article>
 
 				<article class="rounded-[2rem] border border-slate-800 bg-slate-900/70 p-8">
-					<div class="flex flex-col gap-4 border-b border-slate-800 pb-6 md:flex-row md:items-end md:justify-between">
+					<div
+						class="flex flex-col gap-4 border-b border-slate-800 pb-6 md:flex-row md:items-end md:justify-between"
+					>
 						<div>
-							<p class="text-xs uppercase tracking-[0.22em] text-slate-500">Verification</p>
+							<p class="text-xs tracking-[0.22em] text-slate-500 uppercase">Verification</p>
 							<h2 class="mt-3 font-['Space_Grotesk'] text-3xl font-semibold text-white">
 								Backend report output
 							</h2>
 						</div>
 						{#if data.report.verificationReport}
 							<div class="text-right">
-								<div class="text-xs uppercase tracking-[0.22em] text-slate-500">Score</div>
+								<div class="text-xs tracking-[0.22em] text-slate-500 uppercase">Score</div>
 								<div class="mt-2 font-['Space_Grotesk'] text-3xl font-bold text-cyan-200">
 									{data.report.verificationReport.score}
 								</div>
@@ -170,8 +176,14 @@
 						<div class="mt-6 space-y-6">
 							<div class="rounded-[1.5rem] border border-slate-800 bg-slate-950/80 p-5">
 								<div class="flex flex-wrap items-center justify-between gap-4">
-									<div class="text-xs uppercase tracking-[0.22em] text-slate-500">Recommendation</div>
-									<span class="rounded-full border px-3 py-1 text-xs font-semibold uppercase tracking-[0.22em] {recommendationTone(data.report.verificationReport.recommendation)}">
+									<div class="text-xs tracking-[0.22em] text-slate-500 uppercase">
+										Recommendation
+									</div>
+									<span
+										class="rounded-full border px-3 py-1 text-xs font-semibold tracking-[0.22em] uppercase {recommendationTone(
+											data.report.verificationReport.recommendation
+										)}"
+									>
 										{data.report.verificationReport.recommendation}
 									</span>
 								</div>
@@ -182,11 +194,15 @@
 
 							<div class="grid gap-5 md:grid-cols-2">
 								<div class="rounded-[1.5rem] border border-slate-800 bg-slate-950/80 p-5">
-									<div class="text-xs uppercase tracking-[0.22em] text-slate-500">Keyword coverage</div>
+									<div class="text-xs tracking-[0.22em] text-slate-500 uppercase">
+										Keyword coverage
+									</div>
 									{#if data.report.verificationReport.keywordCoverage.length > 0}
 										<div class="mt-4 flex flex-wrap gap-2">
 											{#each data.report.verificationReport.keywordCoverage as keyword}
-												<span class="rounded-full border border-cyan-400/20 bg-cyan-400/10 px-3 py-1 text-xs font-medium text-cyan-200">
+												<span
+													class="rounded-full border border-cyan-400/20 bg-cyan-400/10 px-3 py-1 text-xs font-medium text-cyan-200"
+												>
 													{keyword}
 												</span>
 											{/each}
@@ -199,7 +215,9 @@
 								</div>
 
 								<div class="rounded-[1.5rem] border border-slate-800 bg-slate-950/80 p-5">
-									<div class="text-xs uppercase tracking-[0.22em] text-slate-500">Missing requirements</div>
+									<div class="text-xs tracking-[0.22em] text-slate-500 uppercase">
+										Missing requirements
+									</div>
 									{#if data.report.verificationReport.missingRequirements.length > 0}
 										<ul class="mt-4 space-y-3 text-sm leading-6 text-slate-300">
 											{#each data.report.verificationReport.missingRequirements as requirement}
@@ -229,12 +247,15 @@
 						<div class="flex items-center justify-between gap-4">
 							<span>Payout</span>
 							<span class="text-right text-white">
-								{data.report.task.payoutAmount} {data.report.task.currencyAsset}
+								{data.report.task.payoutAmount}
+								{data.report.task.currencyAsset}
 							</span>
 						</div>
 						<div class="flex items-center justify-between gap-4">
 							<span>Review deadline</span>
-							<span class="text-right text-white">{formatDate(data.report.task.reviewDeadline)}</span>
+							<span class="text-right text-white"
+								>{formatDate(data.report.task.reviewDeadline)}</span
+							>
 						</div>
 						<div class="flex items-center justify-between gap-4">
 							<span>Target audience</span>
@@ -264,8 +285,8 @@
 								</span>
 							</div>
 							<div class="rounded-[1.5rem] border border-slate-800 bg-slate-950/80 p-4">
-								<div class="text-xs uppercase tracking-[0.22em] text-slate-500">Reason</div>
-								<div class="mt-3 whitespace-pre-wrap text-sm leading-6 text-slate-200">
+								<div class="text-xs tracking-[0.22em] text-slate-500 uppercase">Reason</div>
+								<div class="mt-3 text-sm leading-6 whitespace-pre-wrap text-slate-200">
 									{data.report.latestReviewDecision.reason ?? 'No reason was recorded.'}
 								</div>
 							</div>
@@ -278,7 +299,9 @@
 				</article>
 
 				<article class="rounded-[2rem] border border-slate-800 bg-slate-900/70 p-6">
-					<h2 class="font-['Space_Grotesk'] text-2xl font-semibold text-white">Payout visibility</h2>
+					<h2 class="font-['Space_Grotesk'] text-2xl font-semibold text-white">
+						Payout visibility
+					</h2>
 					<div class="mt-6 space-y-4 text-sm text-slate-300">
 						<div class="flex items-center justify-between gap-4">
 							<span>Eligible</span>
@@ -300,8 +323,10 @@
 						</div>
 						{#if data.report.payoutStatus.payout?.txHash}
 							<div class="rounded-[1.5rem] border border-slate-800 bg-slate-950/80 p-4">
-								<div class="text-xs uppercase tracking-[0.22em] text-slate-500">Transaction hash</div>
-								<div class="mt-3 break-all text-sm leading-6 text-cyan-300">
+								<div class="text-xs tracking-[0.22em] text-slate-500 uppercase">
+									Transaction hash
+								</div>
+								<div class="mt-3 text-sm leading-6 break-all text-cyan-300">
 									{data.report.payoutStatus.payout.txHash}
 								</div>
 							</div>
@@ -309,7 +334,9 @@
 					</div>
 				</article>
 
-				<article class="rounded-[2rem] border border-slate-800 bg-[linear-gradient(160deg,rgba(8,47,73,0.55),rgba(15,23,42,0.92))] p-6">
+				<article
+					class="rounded-[2rem] border border-slate-800 bg-[linear-gradient(160deg,rgba(8,47,73,0.55),rgba(15,23,42,0.92))] p-6"
+				>
 					<h2 class="font-['Space_Grotesk'] text-2xl font-semibold text-white">Next step</h2>
 					{#if isClientReviewer()}
 						<p class="mt-4 text-sm leading-7 text-slate-200">

@@ -1,7 +1,5 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import { getNetworkDetails, requestAccess, signTransaction } from '@stellar/freighter-api';
-	import { Asset, BASE_FEE, Horizon, Operation, TransactionBuilder } from '@stellar/stellar-sdk';
 
 	let { data, form } = $props();
 	let fundingForm: HTMLFormElement | null = $state(null);
@@ -73,7 +71,9 @@
 							: null;
 					const operationCodes =
 						'operations' in extras.result_codes && Array.isArray(extras.result_codes.operations)
-							? extras.result_codes.operations.filter((value): value is string => typeof value === 'string')
+							? extras.result_codes.operations.filter(
+									(value): value is string => typeof value === 'string'
+								)
 							: [];
 
 					if (transactionCode || operationCodes.length > 0) {
@@ -86,12 +86,20 @@
 		return 'The wallet funding request could not be completed.';
 	}
 
+	async function loadFreighterApi() {
+		return import('@stellar/freighter-api');
+	}
+
+	async function loadStellarSdk() {
+		return import('@stellar/stellar-sdk');
+	}
+
 	function isOwnerClient() {
-		return data.session?.role === 'client' && data.session.id === data.task.clientId;
+		return Boolean(data.session) && data.session.id === data.task.clientId;
 	}
 
 	function isAssignedWorker() {
-		return data.session?.role === 'worker' && data.session.id === data.task.workerId;
+		return Boolean(data.session) && data.session.id === data.task.workerId;
 	}
 
 	function canFundTask() {
@@ -120,9 +128,7 @@
 
 	function canClaimTask() {
 		return (
-			data.task.status === 'OPEN' &&
-			data.session?.role === 'worker' &&
-			data.session.id !== data.task.clientId
+			Boolean(data.session) && data.task.status === 'OPEN' && data.session.id !== data.task.clientId
 		);
 	}
 
@@ -131,15 +137,20 @@
 	}
 
 	function canOpenReport() {
-		return ['SUBMITTED', 'PENDING_REVIEW', 'APPROVED', 'AUTO_APPROVED', 'REJECTED', 'PAID'].includes(
-			data.task.status
-		);
+		return [
+			'SUBMITTED',
+			'PENDING_REVIEW',
+			'APPROVED',
+			'AUTO_APPROVED',
+			'REJECTED',
+			'PAID'
+		].includes(data.task.status);
 	}
 
 	function canOpenReview() {
 		return (
+			Boolean(data.session) &&
 			data.task.status === 'PENDING_REVIEW' &&
-			data.session?.role === 'client' &&
 			data.session.id === data.task.clientId
 		);
 	}
@@ -152,14 +163,12 @@
 	}
 
 	function isOwnerClientViewer() {
-		return data.session?.role === 'client' && data.session.id === data.task.clientId;
+		return Boolean(data.session) && data.session.id === data.task.clientId;
 	}
 
 	function isOtherWorkerViewer() {
 		return (
-			data.session?.role === 'worker' &&
-			Boolean(data.task.workerId) &&
-			data.session.id !== data.task.workerId
+			Boolean(data.session) && Boolean(data.task.workerId) && data.session.id !== data.task.workerId
 		);
 	}
 
@@ -171,8 +180,7 @@
 		if (data.task.status === 'DRAFT' && !isOwnerClient()) {
 			return {
 				title: 'Waiting for client funding',
-				copy:
-					'This brief is saved, but it cannot move into the marketplace until the client confirms the Stellar Testnet funding step.',
+				copy: 'This brief is saved, but it cannot move into the marketplace until the client confirms the Stellar Testnet funding step.',
 				ctaLabel: null,
 				href: null
 			};
@@ -181,18 +189,16 @@
 		if (data.task.status === 'OPEN' && isOwnerClientViewer()) {
 			return {
 				title: 'Waiting for a worker claim',
-				copy:
-					'Funding is confirmed. The next move belongs to a worker who picks up the brief from the marketplace.',
+				copy: 'Funding is confirmed. The next move belongs to a worker who picks up the brief from the marketplace.',
 				ctaLabel: 'Open marketplace',
 				href: '/marketplace'
 			};
 		}
 
-		if (data.task.status === 'OPEN' && data.session.role !== 'worker') {
+		if (data.task.status === 'OPEN' && !canClaimTask()) {
 			return {
 				title: 'Open for workers',
-				copy:
-					'This funded task is waiting on a worker claim. Your next useful checkpoint will be the report and review state once work begins.',
+				copy: 'This funded task is waiting on a claim from another wallet. Your next useful checkpoint will be the report and review state once work begins.',
 				ctaLabel: null,
 				href: null
 			};
@@ -201,8 +207,7 @@
 		if (data.task.status === 'CLAIMED' && isOwnerClientViewer()) {
 			return {
 				title: 'Waiting for the writing draft',
-				copy:
-					'The task is already assigned. The next step belongs to the worker, who needs to submit the writing before review can begin.',
+				copy: 'The task is already assigned. The next step belongs to the worker, who needs to submit the writing before review can begin.',
 				ctaLabel: null,
 				href: null
 			};
@@ -211,8 +216,7 @@
 		if (data.task.status === 'CLAIMED' && isOtherWorkerViewer()) {
 			return {
 				title: 'Assigned to another worker',
-				copy:
-					'This brief is no longer claimable from your account because another worker already owns the submission step.',
+				copy: 'This brief is no longer claimable from your account because another worker already owns the submission step.',
 				ctaLabel: 'Browse other tasks',
 				href: '/marketplace'
 			};
@@ -221,8 +225,7 @@
 		if (data.task.status === 'PENDING_REVIEW' && !isOwnerClientViewer()) {
 			return {
 				title: 'Waiting for client review',
-				copy:
-					'The draft and verification output are in place. The next move belongs to the client, who can approve for payout or reject with feedback.',
+				copy: 'The draft and verification output are in place. The next move belongs to the client, who can approve for payout or reject with feedback.',
 				ctaLabel: 'Open report',
 				href: `/task/${data.task.id}/report`
 			};
@@ -231,8 +234,7 @@
 		if (data.task.status === 'SUBMITTED' && isAssignedWorker()) {
 			return {
 				title: 'Verification is running',
-				copy:
-					'Your draft is already submitted. The next useful checkpoint is the report route once verification output finishes attaching to the task.',
+				copy: 'Your draft is already submitted. The next useful checkpoint is the report route once verification output finishes attaching to the task.',
 				ctaLabel: 'Open report',
 				href: `/task/${data.task.id}/report`
 			};
@@ -241,8 +243,7 @@
 		if (data.task.status === 'SUBMITTED' && isOwnerClientViewer()) {
 			return {
 				title: 'Waiting for verification output',
-				copy:
-					'The worker has already submitted the draft. Once verification finishes, this task will move into the review-ready flow.',
+				copy: 'The worker has already submitted the draft. Once verification finishes, this task will move into the review-ready flow.',
 				ctaLabel: 'Open report',
 				href: `/task/${data.task.id}/report`
 			};
@@ -251,8 +252,7 @@
 		if (data.task.status === 'REJECTED' && isAssignedWorker()) {
 			return {
 				title: 'Review feedback is available',
-				copy:
-					'The client has already sent this task back. Use the report route to inspect the saved reason and verification context before revising anything.',
+				copy: 'The client has already sent this task back. Use the report route to inspect the saved reason and verification context before revising anything.',
 				ctaLabel: 'Open report',
 				href: `/task/${data.task.id}/report`
 			};
@@ -261,8 +261,7 @@
 		if (['APPROVED', 'AUTO_APPROVED'].includes(data.task.status) && !canOpenReceipt()) {
 			return {
 				title: 'Waiting for payout visibility',
-				copy:
-					'Approval is recorded, but payout visibility has not surfaced on the receipt route yet. Check back once the backend records the payout state.',
+				copy: 'Approval is recorded, but payout visibility has not surfaced on the receipt route yet. Check back once the backend records the payout state.',
 				ctaLabel: null,
 				href: null
 			};
@@ -270,8 +269,7 @@
 
 		return {
 			title: 'Waiting on the workflow',
-			copy:
-				'This task is aligned to the backend state machine and is currently waiting on another actor or on the next valid state transition.',
+			copy: 'This task is aligned to the backend state machine and is currently waiting on another actor or on the next valid state transition.',
 			ctaLabel: null,
 			href: null
 		};
@@ -413,7 +411,8 @@
 			},
 			{
 				label: 'Report',
-				detail: 'Verification output and review state stay task-scoped instead of living on a flat route.'
+				detail:
+					'Verification output and review state stay task-scoped instead of living on a flat route.'
 			},
 			{
 				label: 'Receipt',
@@ -501,6 +500,8 @@
 		fundingTxHash = '';
 
 		try {
+			const { getNetworkDetails, requestAccess, signTransaction } = await loadFreighterApi();
+			const { Asset, BASE_FEE, Horizon, Operation, TransactionBuilder } = await loadStellarSdk();
 			fundingStage = 'connecting';
 			const accessResult = await requestAccess();
 
@@ -593,30 +594,42 @@
 	<title>{data.task.title} | Stellar Autotask</title>
 </svelte:head>
 
-<main class="min-h-screen bg-[radial-gradient(circle_at_top,rgba(34,211,238,0.14),transparent_24%),linear-gradient(180deg,#020617_0%,#08111f_42%,#020617_100%)] px-6 py-12 text-slate-100">
+<main
+	class="min-h-screen bg-[radial-gradient(circle_at_top,rgba(34,211,238,0.14),transparent_24%),linear-gradient(180deg,#020617_0%,#08111f_42%,#020617_100%)] px-6 py-12 text-slate-100"
+>
 	<div class="mx-auto max-w-7xl space-y-8">
-		<header class="overflow-hidden rounded-[2rem] border border-cyan-400/20 bg-slate-950/80 p-8 shadow-[0_30px_90px_rgba(8,145,178,0.16)] backdrop-blur-xl">
+		<header
+			class="overflow-hidden rounded-[2rem] border border-cyan-400/20 bg-slate-950/80 p-8 shadow-[0_30px_90px_rgba(8,145,178,0.16)] backdrop-blur-xl"
+		>
 			<div class="flex flex-col gap-8 xl:flex-row xl:items-end xl:justify-between">
 				<div class="max-w-4xl">
 					<div class="flex flex-wrap items-center gap-3">
-						<span class="rounded-full border border-cyan-400/20 bg-cyan-400/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] text-cyan-200">
+						<span
+							class="rounded-full border border-cyan-400/20 bg-cyan-400/10 px-4 py-2 text-xs font-semibold tracking-[0.24em] text-cyan-200 uppercase"
+						>
 							{data.task.status}
 						</span>
-						<span class="rounded-full border border-slate-700 bg-slate-900/70 px-4 py-2 text-xs font-semibold uppercase tracking-[0.22em] text-slate-200">
+						<span
+							class="rounded-full border border-slate-700 bg-slate-900/70 px-4 py-2 text-xs font-semibold tracking-[0.22em] text-slate-200 uppercase"
+						>
 							{fundingStateLabel()}
 						</span>
 					</div>
-					<h1 class="mt-5 font-['Space_Grotesk'] text-4xl font-bold tracking-tight text-white md:text-5xl">
+					<h1
+						class="mt-5 font-['Space_Grotesk'] text-4xl font-bold tracking-tight text-white md:text-5xl"
+					>
 						{data.task.title}
 					</h1>
 					<p class="mt-4 max-w-3xl text-sm leading-7 text-slate-300">{data.task.brief}</p>
 					<p class="mt-4 max-w-3xl text-sm leading-7 text-slate-300">{introCopy()}</p>
 					{#if data.highlightFundingStep && canFundTask()}
-						<div class="mt-5 max-w-3xl rounded-[1.5rem] border border-cyan-400/20 bg-cyan-400/10 px-5 py-4 text-sm leading-7 text-cyan-100">
+						<div
+							class="mt-5 max-w-3xl rounded-[1.5rem] border border-cyan-400/20 bg-cyan-400/10 px-5 py-4 text-sm leading-7 text-cyan-100"
+						>
 							<div class="font-semibold text-white">Task created. Funding is next.</div>
 							<p class="mt-2">
-								This draft is saved and ready for the Stellar Testnet payment step below. Once
-								you confirm the XLM funding transaction, the task can open for claims.
+								This draft is saved and ready for the Stellar Testnet payment step below. Once you
+								confirm the XLM funding transaction, the task can open for claims.
 							</p>
 						</div>
 					{/if}
@@ -624,14 +637,16 @@
 
 				<div class="grid w-full gap-4 sm:grid-cols-2 xl:max-w-xl">
 					<div class="rounded-[1.5rem] border border-slate-800 bg-slate-900/70 p-5">
-						<div class="text-xs uppercase tracking-[0.22em] text-slate-500">Payout target</div>
+						<div class="text-xs tracking-[0.22em] text-slate-500 uppercase">Payout target</div>
 						<div class="mt-3 font-['Space_Grotesk'] text-3xl font-bold text-white">
 							{data.task.payoutAmount}
 						</div>
-						<div class="mt-2 text-sm text-cyan-200">{data.task.currencyAsset} on Stellar Testnet</div>
+						<div class="mt-2 text-sm text-cyan-200">
+							{data.task.currencyAsset} on Stellar Testnet
+						</div>
 					</div>
 					<div class="rounded-[1.5rem] border border-slate-800 bg-slate-900/70 p-5">
-						<div class="text-xs uppercase tracking-[0.22em] text-slate-500">Assignment</div>
+						<div class="text-xs tracking-[0.22em] text-slate-500 uppercase">Assignment</div>
 						<div class="mt-3 font-['Space_Grotesk'] text-2xl font-bold text-white">
 							{assignmentLabel()}
 						</div>
@@ -640,13 +655,15 @@
 						</div>
 					</div>
 					<div class="rounded-[1.5rem] border border-slate-800 bg-slate-900/70 p-5">
-						<div class="text-xs uppercase tracking-[0.22em] text-slate-500">Created</div>
+						<div class="text-xs tracking-[0.22em] text-slate-500 uppercase">Created</div>
 						<div class="mt-3 text-sm leading-6 text-white">{formatDate(data.task.createdAt)}</div>
 						<div class="mt-2 text-sm text-slate-400">Updated {formatDate(data.task.updatedAt)}</div>
 					</div>
 					<div class="rounded-[1.5rem] border border-slate-800 bg-slate-900/70 p-5">
-						<div class="text-xs uppercase tracking-[0.22em] text-slate-500">Review deadline</div>
-						<div class="mt-3 text-sm leading-6 text-white">{formatDate(data.task.reviewDeadline)}</div>
+						<div class="text-xs tracking-[0.22em] text-slate-500 uppercase">Review deadline</div>
+						<div class="mt-3 text-sm leading-6 text-white">
+							{formatDate(data.task.reviewDeadline)}
+						</div>
 						<div class="mt-2 text-sm text-slate-400">
 							Worker wallet {formatWallet(data.payoutStatus.workerWalletAddress)}
 						</div>
@@ -659,8 +676,10 @@
 			{#each workflowSteps() as step, index}
 				<article class="rounded-[1.5rem] border p-5 {workflowTone(index)}">
 					<div class="flex items-center justify-between gap-4">
-						<div class="text-xs uppercase tracking-[0.22em] opacity-80">{step.label}</div>
-						<div class="rounded-full border border-current/20 bg-slate-950/30 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.22em]">
+						<div class="text-xs tracking-[0.22em] uppercase opacity-80">{step.label}</div>
+						<div
+							class="rounded-full border border-current/20 bg-slate-950/30 px-3 py-1 text-[11px] font-semibold tracking-[0.22em] uppercase"
+						>
 							{workflowBadge(index)}
 						</div>
 					</div>
@@ -672,9 +691,11 @@
 		<section class="grid gap-6 lg:grid-cols-[1.08fr_0.92fr]">
 			<div class="space-y-6">
 				<article class="rounded-[2rem] border border-slate-800 bg-slate-900/70 p-8">
-					<div class="flex flex-col gap-4 border-b border-slate-800 pb-6 md:flex-row md:items-end md:justify-between">
+					<div
+						class="flex flex-col gap-4 border-b border-slate-800 pb-6 md:flex-row md:items-end md:justify-between"
+					>
 						<div>
-							<p class="text-xs uppercase tracking-[0.22em] text-slate-500">Workflow hub</p>
+							<p class="text-xs tracking-[0.22em] text-slate-500 uppercase">Workflow hub</p>
 							<h2 class="mt-3 font-['Space_Grotesk'] text-3xl font-semibold text-white">
 								Next move
 							</h2>
@@ -713,8 +734,8 @@
 								Sign in to act on this task
 							</h3>
 							<p class="mt-4 max-w-2xl text-sm leading-7 text-slate-200">
-								Wallet authentication decides whether you can fund the task as the client, claim
-								it as a worker, or continue into review and payout visibility.
+								Wallet authentication decides whether you can fund the task as the client, claim it
+								as a worker, or continue into review and payout visibility.
 							</p>
 							<a
 								class="mt-6 inline-flex items-center justify-center rounded-2xl bg-cyan-400 px-5 py-3 font-semibold text-slate-950 transition hover:bg-cyan-300"
@@ -742,9 +763,11 @@
 							<input type="hidden" name="assetCode" value={data.task.currencyAsset} />
 							<input type="hidden" name="txHash" value={fundingTxHash} />
 
-							<div class="flex flex-col gap-4 border-b border-cyan-400/10 pb-6 lg:flex-row lg:items-end lg:justify-between">
+							<div
+								class="flex flex-col gap-4 border-b border-cyan-400/10 pb-6 lg:flex-row lg:items-end lg:justify-between"
+							>
 								<div>
-									<p class="text-xs font-semibold uppercase tracking-[0.22em] text-cyan-200">
+									<p class="text-xs font-semibold tracking-[0.22em] text-cyan-200 uppercase">
 										Client action
 									</p>
 									<h3 class="mt-3 font-['Space_Grotesk'] text-3xl font-semibold text-white">
@@ -756,7 +779,9 @@
 										hash.
 									</p>
 								</div>
-								<div class="rounded-[1.25rem] border border-slate-800 bg-slate-950/60 px-4 py-3 text-sm text-slate-200">
+								<div
+									class="rounded-[1.25rem] border border-slate-800 bg-slate-950/60 px-4 py-3 text-sm text-slate-200"
+								>
 									<div>{data.task.payoutAmount} {data.task.currencyAsset}</div>
 									<div class="mt-1 text-slate-400">Required match for this task</div>
 								</div>
@@ -764,14 +789,14 @@
 
 							<div class="mt-6 grid gap-5 md:grid-cols-2">
 								<div class="rounded-[1.5rem] border border-slate-800 bg-slate-950/70 p-5">
-									<div class="text-xs uppercase tracking-[0.22em] text-slate-500">From wallet</div>
-									<div class="mt-3 break-all text-sm leading-7 text-cyan-200">
+									<div class="text-xs tracking-[0.22em] text-slate-500 uppercase">From wallet</div>
+									<div class="mt-3 text-sm leading-7 break-all text-cyan-200">
 										{fundingWalletAddress || data.session.walletAddress}
 									</div>
 								</div>
 								<div class="rounded-[1.5rem] border border-slate-800 bg-slate-950/70 p-5">
-									<div class="text-xs uppercase tracking-[0.22em] text-slate-500">To wallet</div>
-									<div class="mt-3 break-all text-sm leading-7 text-cyan-200">
+									<div class="text-xs tracking-[0.22em] text-slate-500 uppercase">To wallet</div>
+									<div class="mt-3 text-sm leading-7 break-all text-cyan-200">
 										{data.platformFundingWallet}
 									</div>
 								</div>
@@ -780,16 +805,16 @@
 							<div class="mt-6 rounded-[1.5rem] border border-slate-800 bg-slate-950/70 p-5">
 								<div class="flex items-center justify-between gap-4">
 									<div>
-										<div class="text-xs uppercase tracking-[0.22em] text-slate-500">
+										<div class="text-xs tracking-[0.22em] text-slate-500 uppercase">
 											Funding stage
 										</div>
 										<div class="mt-3 text-sm font-semibold text-white">{fundingStage}</div>
 									</div>
 									<div>
-										<div class="text-xs uppercase tracking-[0.22em] text-slate-500">
+										<div class="text-xs tracking-[0.22em] text-slate-500 uppercase">
 											Transaction hash
 										</div>
-										<div class="mt-3 break-all text-right text-sm leading-6 text-cyan-300">
+										<div class="mt-3 text-right text-sm leading-6 break-all text-cyan-300">
 											{fundingTxHash || 'Not submitted yet'}
 										</div>
 									</div>
@@ -802,19 +827,25 @@
 							</div>
 
 							{#if fundingNotice}
-								<p class="mt-4 rounded-[1.25rem] border border-cyan-400/30 bg-cyan-400/10 px-4 py-3 text-sm text-cyan-100">
+								<p
+									class="mt-4 rounded-[1.25rem] border border-cyan-400/30 bg-cyan-400/10 px-4 py-3 text-sm text-cyan-100"
+								>
 									{fundingNotice}
 								</p>
 							{/if}
 
 							{#if fundingError}
-								<p class="mt-4 rounded-[1.25rem] border border-rose-500/40 bg-rose-500/10 px-4 py-3 text-sm text-rose-200">
+								<p
+									class="mt-4 rounded-[1.25rem] border border-rose-500/40 bg-rose-500/10 px-4 py-3 text-sm text-rose-200"
+								>
 									{fundingError}
 								</p>
 							{/if}
 
 							{#if form?.error && form.intent === 'fund'}
-								<p class="mt-4 rounded-[1.25rem] border border-rose-500/40 bg-rose-500/10 px-4 py-3 text-sm text-rose-200">
+								<p
+									class="mt-4 rounded-[1.25rem] border border-rose-500/40 bg-rose-500/10 px-4 py-3 text-sm text-rose-200"
+								>
 									{form.error}
 								</p>
 							{/if}
@@ -871,12 +902,14 @@
 								Claim and continue into submission
 							</h3>
 							<p class="mt-4 text-sm leading-7 text-slate-200">
-								Funding is already confirmed. Claiming here assigns the task to your worker
-								profile and sends you straight into the writing submission route.
+								Funding is already confirmed. Claiming here assigns the task to your worker profile
+								and sends you straight into the writing submission route.
 							</p>
 
 							{#if form?.error && form.intent !== 'fund'}
-								<p class="mt-4 rounded-[1.25rem] border border-rose-500/40 bg-rose-500/10 px-4 py-3 text-sm text-rose-200">
+								<p
+									class="mt-4 rounded-[1.25rem] border border-rose-500/40 bg-rose-500/10 px-4 py-3 text-sm text-rose-200"
+								>
 									{form.error}
 								</p>
 							{/if}
@@ -956,9 +989,9 @@
 								Inspect the report state
 							</h3>
 							<p class="mt-4 text-sm leading-7 text-slate-300">
-								The task is already in its report-aware workflow stage. Open the task report to
-								see the submission snapshot, verification output, review decision, and payout
-								visibility together.
+								The task is already in its report-aware workflow stage. Open the task report to see
+								the submission snapshot, verification output, review decision, and payout visibility
+								together.
 							</p>
 							<a
 								class="mt-6 inline-flex items-center justify-center rounded-2xl border border-slate-700 px-5 py-3 font-semibold text-slate-100 transition hover:border-cyan-400/30 hover:text-white"
@@ -989,9 +1022,11 @@
 				</article>
 
 				<article class="rounded-[2rem] border border-slate-800 bg-slate-900/70 p-8">
-					<div class="flex flex-col gap-4 border-b border-slate-800 pb-6 md:flex-row md:items-end md:justify-between">
+					<div
+						class="flex flex-col gap-4 border-b border-slate-800 pb-6 md:flex-row md:items-end md:justify-between"
+					>
 						<div>
-							<p class="text-xs uppercase tracking-[0.22em] text-slate-500">Task brief</p>
+							<p class="text-xs tracking-[0.22em] text-slate-500 uppercase">Task brief</p>
 							<h2 class="mt-3 font-['Space_Grotesk'] text-3xl font-semibold text-white">
 								Writing requirements
 							</h2>
@@ -1001,31 +1036,33 @@
 
 					<div class="mt-6 grid gap-5 md:grid-cols-2">
 						<div class="rounded-[1.5rem] border border-slate-800 bg-slate-950/70 p-5 md:col-span-2">
-							<div class="text-xs uppercase tracking-[0.22em] text-slate-500">Description</div>
-							<div class="mt-4 whitespace-pre-wrap text-sm leading-7 text-slate-200">
+							<div class="text-xs tracking-[0.22em] text-slate-500 uppercase">Description</div>
+							<div class="mt-4 text-sm leading-7 whitespace-pre-wrap text-slate-200">
 								{data.task.description}
 							</div>
 						</div>
 						<div class="rounded-[1.5rem] border border-slate-800 bg-slate-950/70 p-5">
-							<div class="text-xs uppercase tracking-[0.22em] text-slate-500">Target audience</div>
+							<div class="text-xs tracking-[0.22em] text-slate-500 uppercase">Target audience</div>
 							<div class="mt-4 text-sm leading-7 text-white">{data.task.targetAudience}</div>
 						</div>
 						<div class="rounded-[1.5rem] border border-slate-800 bg-slate-950/70 p-5">
-							<div class="text-xs uppercase tracking-[0.22em] text-slate-500">Tone</div>
+							<div class="text-xs tracking-[0.22em] text-slate-500 uppercase">Tone</div>
 							<div class="mt-4 text-sm leading-7 text-white">{data.task.tone}</div>
 						</div>
 						<div class="rounded-[1.5rem] border border-slate-800 bg-slate-950/70 p-5">
-							<div class="text-xs uppercase tracking-[0.22em] text-slate-500">Minimum words</div>
+							<div class="text-xs tracking-[0.22em] text-slate-500 uppercase">Minimum words</div>
 							<div class="mt-4 text-sm leading-7 text-white">{data.task.minWordCount}</div>
 						</div>
 						<div class="rounded-[1.5rem] border border-slate-800 bg-slate-950/70 p-5">
-							<div class="text-xs uppercase tracking-[0.22em] text-slate-500">Allowed claimant type</div>
+							<div class="text-xs tracking-[0.22em] text-slate-500 uppercase">
+								Allowed claimant type
+							</div>
 							<div class="mt-4 text-sm leading-7 text-white">{data.task.allowedClaimantType}</div>
 						</div>
 					</div>
 
 					<div class="mt-6">
-						<div class="text-xs uppercase tracking-[0.22em] text-slate-500">Required keywords</div>
+						<div class="text-xs tracking-[0.22em] text-slate-500 uppercase">Required keywords</div>
 						{#if data.task.requiredKeywords.length === 0}
 							<p class="mt-4 text-sm leading-7 text-slate-300">
 								No required keywords were added to this brief.
@@ -1033,7 +1070,9 @@
 						{:else}
 							<div class="mt-4 flex flex-wrap gap-2">
 								{#each data.task.requiredKeywords as keyword}
-									<span class="rounded-full border border-cyan-400/20 bg-cyan-400/10 px-3 py-1 text-xs font-medium text-cyan-200">
+									<span
+										class="rounded-full border border-cyan-400/20 bg-cyan-400/10 px-3 py-1 text-xs font-medium text-cyan-200"
+									>
 										{keyword}
 									</span>
 								{/each}
@@ -1044,16 +1083,18 @@
 
 				{#if data.report}
 					<article class="rounded-[2rem] border border-slate-800 bg-slate-900/70 p-8">
-						<div class="flex flex-col gap-4 border-b border-slate-800 pb-6 md:flex-row md:items-end md:justify-between">
+						<div
+							class="flex flex-col gap-4 border-b border-slate-800 pb-6 md:flex-row md:items-end md:justify-between"
+						>
 							<div>
-								<p class="text-xs uppercase tracking-[0.22em] text-slate-500">Workflow evidence</p>
+								<p class="text-xs tracking-[0.22em] text-slate-500 uppercase">Workflow evidence</p>
 								<h2 class="mt-3 font-['Space_Grotesk'] text-3xl font-semibold text-white">
 									{reportPreviewTitle()}
 								</h2>
 								<p class="mt-3 max-w-2xl text-sm leading-6 text-slate-300">
 									I keep only the high-signal report state here so the hub stays focused on next
-									actions. The full verification summary and deeper evidence live in the
-									dedicated report route.
+									actions. The full verification summary and deeper evidence live in the dedicated
+									report route.
 								</p>
 							</div>
 							<a
@@ -1066,31 +1107,37 @@
 
 						<div class="mt-6 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
 							<div class="rounded-[1.5rem] border border-slate-800 bg-slate-950/70 p-5">
-								<div class="text-xs uppercase tracking-[0.22em] text-slate-500">Submitted</div>
+								<div class="text-xs tracking-[0.22em] text-slate-500 uppercase">Submitted</div>
 								<div class="mt-4 text-sm leading-7 text-white">
 									{formatDate(data.report.submission?.submittedAt ?? null)}
 								</div>
 							</div>
 							<div class="rounded-[1.5rem] border border-slate-800 bg-slate-950/70 p-5">
-								<div class="text-xs uppercase tracking-[0.22em] text-slate-500">Verification score</div>
+								<div class="text-xs tracking-[0.22em] text-slate-500 uppercase">
+									Verification score
+								</div>
 								<div class="mt-4 font-['Space_Grotesk'] text-3xl font-bold text-cyan-200">
 									{data.report.verificationReport?.score ?? 'N/A'}
 								</div>
 							</div>
 							<div class="rounded-[1.5rem] border border-slate-800 bg-slate-950/70 p-5">
-								<div class="text-xs uppercase tracking-[0.22em] text-slate-500">Latest decision</div>
+								<div class="text-xs tracking-[0.22em] text-slate-500 uppercase">
+									Latest decision
+								</div>
 								<div class="mt-4 text-sm leading-7 text-white">
 									{data.report.latestReviewDecision?.decision ?? 'No review saved yet'}
 								</div>
 							</div>
 							<div class="rounded-[1.5rem] border border-slate-800 bg-slate-950/70 p-5">
-								<div class="text-xs uppercase tracking-[0.22em] text-slate-500">Recommendation</div>
+								<div class="text-xs tracking-[0.22em] text-slate-500 uppercase">Recommendation</div>
 								<div class="mt-4 text-sm leading-7 text-white">
 									{data.report.verificationReport?.recommendation ?? 'No recommendation yet'}
 								</div>
 							</div>
 							<div class="rounded-[1.5rem] border border-slate-800 bg-slate-950/70 p-5">
-								<div class="text-xs uppercase tracking-[0.22em] text-slate-500">Payout visibility</div>
+								<div class="text-xs tracking-[0.22em] text-slate-500 uppercase">
+									Payout visibility
+								</div>
 								<div class="mt-4 text-sm leading-7 text-white">
 									{data.report.payoutStatus.payout?.status ?? 'No payout record yet'}
 								</div>
@@ -1102,7 +1149,9 @@
 
 			<aside class="space-y-6">
 				<article class="rounded-[2rem] border border-slate-800 bg-slate-900/70 p-6">
-					<h2 class="font-['Space_Grotesk'] text-2xl font-semibold text-white">Funding and payout</h2>
+					<h2 class="font-['Space_Grotesk'] text-2xl font-semibold text-white">
+						Funding and payout
+					</h2>
 					<div class="mt-6 space-y-4 text-sm text-slate-300">
 						<div class="flex items-center justify-between gap-4">
 							<span>Funding confirmed</span>
@@ -1132,8 +1181,10 @@
 
 					{#if data.platformFundingWallet}
 						<div class="mt-6 rounded-[1.5rem] border border-slate-800 bg-slate-950/70 p-5">
-							<div class="text-xs uppercase tracking-[0.22em] text-slate-500">Platform funding wallet</div>
-							<div class="mt-3 break-all text-sm leading-7 text-cyan-300">
+							<div class="text-xs tracking-[0.22em] text-slate-500 uppercase">
+								Platform funding wallet
+							</div>
+							<div class="mt-3 text-sm leading-7 break-all text-cyan-300">
 								{data.platformFundingWallet}
 							</div>
 						</div>
@@ -1141,8 +1192,10 @@
 
 					{#if data.payoutStatus.payout?.txHash}
 						<div class="mt-6 rounded-[1.5rem] border border-slate-800 bg-slate-950/70 p-5">
-							<div class="text-xs uppercase tracking-[0.22em] text-slate-500">Recorded payout tx</div>
-							<div class="mt-3 break-all text-sm leading-7 text-cyan-300">
+							<div class="text-xs tracking-[0.22em] text-slate-500 uppercase">
+								Recorded payout tx
+							</div>
+							<div class="mt-3 text-sm leading-7 break-all text-cyan-300">
 								{data.payoutStatus.payout.txHash}
 							</div>
 						</div>
@@ -1162,16 +1215,21 @@
 							</div>
 						</a>
 						<a
-							class="block rounded-[1.5rem] border border-slate-800 bg-slate-950/70 p-5 transition hover:border-cyan-400/30 {canOpenReport() ? '' : 'pointer-events-none opacity-50'}"
+							class="block rounded-[1.5rem] border border-slate-800 bg-slate-950/70 p-5 transition hover:border-cyan-400/30 {canOpenReport()
+								? ''
+								: 'pointer-events-none opacity-50'}"
 							href={canOpenReport() ? `/task/${data.task.id}/report` : `/task/${data.task.id}`}
 						>
 							<div class="text-sm font-semibold text-white">Report</div>
 							<div class="mt-2 text-sm leading-6 text-slate-300">
-								Read the submission snapshot, verification output, review history, and payout visibility.
+								Read the submission snapshot, verification output, review history, and payout
+								visibility.
 							</div>
 						</a>
 						<a
-							class="block rounded-[1.5rem] border border-slate-800 bg-slate-950/70 p-5 transition hover:border-cyan-400/30 {canSubmitTask() ? '' : 'pointer-events-none opacity-50'}"
+							class="block rounded-[1.5rem] border border-slate-800 bg-slate-950/70 p-5 transition hover:border-cyan-400/30 {canSubmitTask()
+								? ''
+								: 'pointer-events-none opacity-50'}"
 							href={canSubmitTask() ? `/task/${data.task.id}/submit` : `/task/${data.task.id}`}
 						>
 							<div class="text-sm font-semibold text-white">Submit</div>
@@ -1180,7 +1238,9 @@
 							</div>
 						</a>
 						<a
-							class="block rounded-[1.5rem] border border-slate-800 bg-slate-950/70 p-5 transition hover:border-cyan-400/30 {canOpenReview() ? '' : 'pointer-events-none opacity-50'}"
+							class="block rounded-[1.5rem] border border-slate-800 bg-slate-950/70 p-5 transition hover:border-cyan-400/30 {canOpenReview()
+								? ''
+								: 'pointer-events-none opacity-50'}"
 							href={canOpenReview() ? `/task/${data.task.id}/review` : `/task/${data.task.id}`}
 						>
 							<div class="text-sm font-semibold text-white">Review</div>
@@ -1189,12 +1249,15 @@
 							</div>
 						</a>
 						<a
-							class="block rounded-[1.5rem] border border-slate-800 bg-slate-950/70 p-5 transition hover:border-cyan-400/30 {canOpenReceipt() ? '' : 'pointer-events-none opacity-50'}"
+							class="block rounded-[1.5rem] border border-slate-800 bg-slate-950/70 p-5 transition hover:border-cyan-400/30 {canOpenReceipt()
+								? ''
+								: 'pointer-events-none opacity-50'}"
 							href={canOpenReceipt() ? `/task/${data.task.id}/receipt` : `/task/${data.task.id}`}
 						>
 							<div class="text-sm font-semibold text-white">Receipt</div>
 							<div class="mt-2 text-sm leading-6 text-slate-300">
-								Shows pending, confirmed, or failed payout state once the task reaches payout visibility.
+								Shows pending, confirmed, or failed payout state once the task reaches payout
+								visibility.
 							</div>
 						</a>
 					</div>

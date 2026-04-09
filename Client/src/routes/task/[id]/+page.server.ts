@@ -73,15 +73,16 @@ export const actions: Actions = {
 		const formData = await event.request.formData();
 		const values = {
 			amount: String(formData.get('amount') ?? '').trim(),
-			assetCode: String(formData.get('assetCode') ?? '').trim().toUpperCase(),
+			assetCode: String(formData.get('assetCode') ?? '')
+				.trim()
+				.toUpperCase(),
 			txHash: String(formData.get('txHash') ?? '').trim()
 		};
 
 		if (!platformFundingWallet) {
 			return fail(500, {
 				intent: 'fund',
-				error:
-					'The platform funding wallet is not configured for this frontend environment yet.',
+				error: 'The platform funding wallet is not configured for this frontend environment yet.',
 				values
 			});
 		}

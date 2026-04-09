@@ -67,12 +67,16 @@
 	<title>Review | {data.report.task.title}</title>
 </svelte:head>
 
-<main class="min-h-screen bg-[radial-gradient(circle_at_top,rgba(34,211,238,0.14),transparent_24%),linear-gradient(180deg,#020617_0%,#08111f_42%,#020617_100%)] px-6 py-12 text-slate-100">
+<main
+	class="min-h-screen bg-[radial-gradient(circle_at_top,rgba(34,211,238,0.14),transparent_24%),linear-gradient(180deg,#020617_0%,#08111f_42%,#020617_100%)] px-6 py-12 text-slate-100"
+>
 	<div class="mx-auto max-w-7xl space-y-8">
-		<header class="overflow-hidden rounded-[2rem] border border-cyan-400/20 bg-slate-950/80 p-8 shadow-[0_30px_90px_rgba(8,145,178,0.18)] backdrop-blur-xl">
+		<header
+			class="overflow-hidden rounded-[2rem] border border-cyan-400/20 bg-slate-950/80 p-8 shadow-[0_30px_90px_rgba(8,145,178,0.18)] backdrop-blur-xl"
+		>
 			<div class="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
 				<div>
-					<p class="text-xs font-semibold uppercase tracking-[0.28em] text-cyan-300">
+					<p class="text-xs font-semibold tracking-[0.28em] text-cyan-300 uppercase">
 						Client review
 					</p>
 					<h1 class="mt-4 font-['Space_Grotesk'] text-4xl font-bold tracking-tight text-white">
@@ -85,7 +89,9 @@
 				</div>
 
 				<div class="flex flex-wrap gap-3">
-					<span class="rounded-full border border-cyan-400/20 bg-cyan-400/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.22em] text-cyan-200">
+					<span
+						class="rounded-full border border-cyan-400/20 bg-cyan-400/10 px-4 py-2 text-xs font-semibold tracking-[0.22em] text-cyan-200 uppercase"
+					>
 						{data.report.task.status}
 					</span>
 					<a
@@ -103,15 +109,19 @@
 				<article class="rounded-[2rem] border border-slate-800 bg-slate-900/70 p-6">
 					<div class="flex items-start justify-between gap-4">
 						<div>
-							<p class="text-xs uppercase tracking-[0.22em] text-slate-500">Review window</p>
+							<p class="text-xs tracking-[0.22em] text-slate-500 uppercase">Review window</p>
 							<h2 class="mt-3 font-['Space_Grotesk'] text-2xl font-semibold text-white">
 								Decision timing
 							</h2>
 						</div>
 						<div class="rounded-2xl border border-cyan-400/20 bg-cyan-400/10 px-4 py-3 text-right">
-							<div class="text-[11px] uppercase tracking-[0.22em] text-cyan-200">Time left</div>
+							<div class="text-[11px] tracking-[0.22em] text-cyan-200 uppercase">Time left</div>
 							<div class="mt-2 font-['Space_Grotesk'] text-3xl font-bold text-white">
-								{hoursRemaining === null ? 'N/A' : hoursRemaining === 0 ? 'Closed' : `${hoursRemaining}h`}
+								{hoursRemaining === null
+									? 'N/A'
+									: hoursRemaining === 0
+										? 'Closed'
+										: `${hoursRemaining}h`}
 							</div>
 						</div>
 					</div>
@@ -143,7 +153,7 @@
 				<article class="rounded-[2rem] border border-slate-800 bg-slate-900/70 p-6">
 					<div class="flex flex-col gap-4 border-b border-slate-800 pb-5">
 						<div>
-							<p class="text-xs uppercase tracking-[0.22em] text-slate-500">Verification</p>
+							<p class="text-xs tracking-[0.22em] text-slate-500 uppercase">Verification</p>
 							<h2 class="mt-3 font-['Space_Grotesk'] text-2xl font-semibold text-white">
 								Backend signal
 							</h2>
@@ -152,7 +162,9 @@
 							<div class="flex items-center justify-between gap-4">
 								<div class="text-sm text-slate-400">Recommendation</div>
 								<span
-									class="rounded-full border px-3 py-1 text-xs font-semibold uppercase tracking-[0.22em] {recommendationTone(data.report.verificationReport.recommendation)}"
+									class="rounded-full border px-3 py-1 text-xs font-semibold tracking-[0.22em] uppercase {recommendationTone(
+										data.report.verificationReport.recommendation
+									)}"
 								>
 									{data.report.verificationReport.recommendation}
 								</span>
@@ -164,7 +176,7 @@
 						<div class="mt-6 space-y-5">
 							<div class="rounded-[1.5rem] border border-slate-800 bg-slate-950/80 p-5">
 								<div class="flex items-center justify-between gap-4">
-									<div class="text-xs uppercase tracking-[0.22em] text-slate-500">Score</div>
+									<div class="text-xs tracking-[0.22em] text-slate-500 uppercase">Score</div>
 									<div class="font-['Space_Grotesk'] text-3xl font-bold text-cyan-200">
 										{data.report.verificationReport.score}
 									</div>
@@ -176,11 +188,15 @@
 
 							<div class="grid gap-5">
 								<div class="rounded-[1.5rem] border border-slate-800 bg-slate-950/80 p-5">
-									<div class="text-xs uppercase tracking-[0.22em] text-slate-500">Keyword coverage</div>
+									<div class="text-xs tracking-[0.22em] text-slate-500 uppercase">
+										Keyword coverage
+									</div>
 									{#if data.report.verificationReport.keywordCoverage.length > 0}
 										<div class="mt-4 flex flex-wrap gap-2">
 											{#each data.report.verificationReport.keywordCoverage as keyword}
-												<span class="rounded-full border border-cyan-400/20 bg-cyan-400/10 px-3 py-1 text-xs font-medium text-cyan-200">
+												<span
+													class="rounded-full border border-cyan-400/20 bg-cyan-400/10 px-3 py-1 text-xs font-medium text-cyan-200"
+												>
 													{keyword}
 												</span>
 											{/each}
@@ -193,7 +209,9 @@
 								</div>
 
 								<div class="rounded-[1.5rem] border border-slate-800 bg-slate-950/80 p-5">
-									<div class="text-xs uppercase tracking-[0.22em] text-slate-500">Missing requirements</div>
+									<div class="text-xs tracking-[0.22em] text-slate-500 uppercase">
+										Missing requirements
+									</div>
 									{#if data.report.verificationReport.missingRequirements.length > 0}
 										<ul class="mt-4 space-y-3 text-sm leading-6 text-slate-300">
 											{#each data.report.verificationReport.missingRequirements as requirement}
@@ -210,13 +228,15 @@
 						</div>
 					{:else}
 						<p class="mt-6 text-sm leading-7 text-slate-300">
-							No verification report is available yet, so review should wait for the backend
-							report surface to populate.
+							No verification report is available yet, so review should wait for the backend report
+							surface to populate.
 						</p>
 					{/if}
 				</article>
 
-				<article class="rounded-[2rem] border border-slate-800 bg-[linear-gradient(160deg,rgba(8,47,73,0.55),rgba(15,23,42,0.92))] p-6">
+				<article
+					class="rounded-[2rem] border border-slate-800 bg-[linear-gradient(160deg,rgba(8,47,73,0.55),rgba(15,23,42,0.92))] p-6"
+				>
 					<h2 class="font-['Space_Grotesk'] text-2xl font-semibold text-white">Payout handoff</h2>
 					<div class="mt-5 space-y-4 text-sm text-slate-200">
 						<div class="flex items-center justify-between gap-4">
@@ -243,9 +263,11 @@
 
 			<div class="space-y-6">
 				<article class="rounded-[2rem] border border-slate-800 bg-slate-900/70 p-8">
-					<div class="flex flex-col gap-4 border-b border-slate-800 pb-6 md:flex-row md:items-end md:justify-between">
+					<div
+						class="flex flex-col gap-4 border-b border-slate-800 pb-6 md:flex-row md:items-end md:justify-between"
+					>
 						<div>
-							<p class="text-xs uppercase tracking-[0.22em] text-slate-500">Submission</p>
+							<p class="text-xs tracking-[0.22em] text-slate-500 uppercase">Submission</p>
 							<h2 class="mt-3 font-['Space_Grotesk'] text-3xl font-semibold text-white">
 								Writing delivery
 							</h2>
@@ -258,25 +280,25 @@
 					{#if data.report.submission}
 						<div class="mt-6 space-y-5">
 							<div class="rounded-[1.5rem] border border-slate-800 bg-slate-950/80 p-5">
-								<div class="text-xs uppercase tracking-[0.22em] text-slate-500">Content text</div>
-								<div class="mt-4 whitespace-pre-wrap text-sm leading-7 text-slate-100">
+								<div class="text-xs tracking-[0.22em] text-slate-500 uppercase">Content text</div>
+								<div class="mt-4 text-sm leading-7 whitespace-pre-wrap text-slate-100">
 									{data.report.submission.contentText}
 								</div>
 							</div>
 
 							<div class="grid gap-5 md:grid-cols-2">
 								<div class="rounded-[1.5rem] border border-slate-800 bg-slate-950/80 p-5">
-									<div class="text-xs uppercase tracking-[0.22em] text-slate-500">Worker notes</div>
-									<div class="mt-4 whitespace-pre-wrap text-sm leading-7 text-slate-300">
+									<div class="text-xs tracking-[0.22em] text-slate-500 uppercase">Worker notes</div>
+									<div class="mt-4 text-sm leading-7 whitespace-pre-wrap text-slate-300">
 										{data.report.submission.notes ?? 'No notes were provided.'}
 									</div>
 								</div>
 
 								<div class="rounded-[1.5rem] border border-slate-800 bg-slate-950/80 p-5">
-									<div class="text-xs uppercase tracking-[0.22em] text-slate-500">Document URL</div>
+									<div class="text-xs tracking-[0.22em] text-slate-500 uppercase">Document URL</div>
 									{#if data.report.submission.documentUrl}
 										<a
-											class="mt-4 block break-all text-sm leading-7 text-cyan-300 hover:text-cyan-200"
+											class="mt-4 block text-sm leading-7 break-all text-cyan-300 hover:text-cyan-200"
 											href={data.report.submission.documentUrl}
 											target="_blank"
 											rel="noreferrer"
@@ -299,9 +321,11 @@
 				</article>
 
 				<article class="rounded-[2rem] border border-slate-800 bg-slate-900/70 p-8">
-					<div class="flex flex-col gap-4 border-b border-slate-800 pb-6 md:flex-row md:items-end md:justify-between">
+					<div
+						class="flex flex-col gap-4 border-b border-slate-800 pb-6 md:flex-row md:items-end md:justify-between"
+					>
 						<div>
-							<p class="text-xs uppercase tracking-[0.22em] text-slate-500">Decision</p>
+							<p class="text-xs tracking-[0.22em] text-slate-500 uppercase">Decision</p>
 							<h2 class="mt-3 font-['Space_Grotesk'] text-3xl font-semibold text-white">
 								Approve or reject
 							</h2>
@@ -327,7 +351,7 @@
 								};
 							}}
 						>
-							<p class="text-xs font-semibold uppercase tracking-[0.22em] text-emerald-200">
+							<p class="text-xs font-semibold tracking-[0.22em] text-emerald-200 uppercase">
 								Approve
 							</p>
 							<h3 class="mt-4 font-['Space_Grotesk'] text-2xl font-semibold text-white">
@@ -339,7 +363,9 @@
 							</p>
 
 							{#if form?.error && form.intent === 'approve'}
-								<p class="mt-6 rounded-[1.25rem] border border-rose-500/40 bg-rose-500/10 px-4 py-3 text-sm text-rose-200">
+								<p
+									class="mt-6 rounded-[1.25rem] border border-rose-500/40 bg-rose-500/10 px-4 py-3 text-sm text-rose-200"
+								>
 									{form.error}
 								</p>
 							{/if}
@@ -365,15 +391,13 @@
 								};
 							}}
 						>
-							<p class="text-xs font-semibold uppercase tracking-[0.22em] text-rose-200">
-								Reject
-							</p>
+							<p class="text-xs font-semibold tracking-[0.22em] text-rose-200 uppercase">Reject</p>
 							<h3 class="mt-4 font-['Space_Grotesk'] text-2xl font-semibold text-white">
 								Send back with a reason
 							</h3>
 							<p class="mt-4 text-sm leading-7 text-slate-300">
-								Use rejection when the backend report or your manual review shows the writing is
-								not ready for payout. A reason is required and will be saved in review history.
+								Use rejection when the backend report or your manual review shows the writing is not
+								ready for payout. A reason is required and will be saved in review history.
 							</p>
 
 							<label class="mt-6 block text-sm font-medium text-slate-200" for="reason">
@@ -383,14 +407,16 @@
 								id="reason"
 								name="reason"
 								rows="6"
-								class="mt-3 w-full rounded-[1.5rem] border border-slate-800 bg-slate-950/80 px-5 py-4 text-white outline-none transition focus:border-rose-400"
+								class="mt-3 w-full rounded-[1.5rem] border border-slate-800 bg-slate-950/80 px-5 py-4 text-white transition outline-none focus:border-rose-400"
 								bind:value={rejectionReason}
 								placeholder="Explain what needs to change before this writing can be approved."
 								required
 							></textarea>
 
 							{#if form?.error && form.intent === 'reject'}
-								<p class="mt-4 rounded-[1.25rem] border border-rose-500/40 bg-rose-500/10 px-4 py-3 text-sm text-rose-200">
+								<p
+									class="mt-4 rounded-[1.25rem] border border-rose-500/40 bg-rose-500/10 px-4 py-3 text-sm text-rose-200"
+								>
 									{form.error}
 								</p>
 							{/if}

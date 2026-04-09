@@ -21,11 +21,7 @@
 	}
 
 	function dashboardIntro() {
-		if (data.session.role === 'client') {
-			return 'Start with the tasks that need funding, jump straight into reviews waiting on you, and keep payout receipts close once work is approved.';
-		}
-
-		return 'See the writing tasks that need submission first, keep report follow-up close, and treat the lower sections as broader history rather than the immediate queue.';
+		return 'Start with the tasks that need funding, submission, or review, then use the lower sections as your broader task history instead of one long mixed list.';
 	}
 
 	function actionHref(task: { id: string; status: string }, groupId: string) {
@@ -77,7 +73,7 @@
 	}
 
 	function activeGroups() {
-		return data.session.role === 'client' ? data.clientGroups : data.workerGroups;
+		return data.actionGroups;
 	}
 
 	function primaryGroupId() {
@@ -96,11 +92,7 @@
 	}
 
 	function priorityLabel() {
-		if (data.session.role === 'client') {
-			return 'Client workflow queue';
-		}
-
-		return 'Worker workflow queue';
+		return 'Your workflow queue';
 	}
 </script>
 
@@ -111,7 +103,7 @@
 <main class="min-h-screen bg-slate-950 px-6 py-12 text-slate-100">
 	<div class="mx-auto max-w-6xl space-y-10">
 		<header class="rounded-3xl border border-slate-800 bg-slate-900/70 p-8">
-			<p class="text-xs font-semibold uppercase tracking-[0.3em] text-cyan-400">Dashboard</p>
+			<p class="text-xs font-semibold tracking-[0.3em] text-cyan-400 uppercase">Dashboard</p>
 			<div class="mt-4 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
 				<div>
 					<h1 class="font-['Space_Grotesk'] text-4xl font-bold tracking-tight text-white">
@@ -121,10 +113,13 @@
 						{dashboardIntro()}
 					</p>
 				</div>
-				<div class="rounded-2xl border border-slate-800 bg-slate-950/70 px-5 py-4 text-sm text-slate-300">
-					<div>Role: <span class="font-semibold text-white">{data.session.role}</span></div>
+				<div
+					class="rounded-2xl border border-slate-800 bg-slate-950/70 px-5 py-4 text-sm text-slate-300"
+				>
+					<div class="font-semibold text-white">Connected wallet</div>
 					<div class="mt-1 break-all">
-						Wallet: <span class="font-mono text-xs text-cyan-300">{data.session.walletAddress}</span>
+						Wallet: <span class="font-mono text-xs text-cyan-300">{data.session.walletAddress}</span
+						>
 					</div>
 				</div>
 			</div>
@@ -141,24 +136,24 @@
 				</p>
 			</article>
 			<article class="rounded-3xl border border-slate-800 bg-slate-900/70 p-6">
-				<p class="text-sm text-slate-400">
-					{data.session.role === 'client' ? 'Created by you' : 'Worker history'}
-				</p>
+				<p class="text-sm text-slate-400">Created by you</p>
 				<p class="mt-3 font-['Space_Grotesk'] text-4xl font-bold text-white">
-					{data.session.role === 'client' ? data.ownedTasks.length : data.assignedTasks.length}
+					{data.ownedTasks.length}
 				</p>
 				<p class="mt-3 text-sm leading-6 text-slate-300">
-					{data.session.role === 'client'
-						? 'Your broader client-side task history stays below the action queues.'
-						: 'Your broader worker history stays below the action queues.'}
+					Your created-task history stays below the action queues.
 				</p>
 			</article>
 			<article class="rounded-3xl border border-slate-800 bg-slate-900/70 p-6">
-				<p class="text-sm text-slate-400">
-					{data.session.role === 'worker' ? 'Assigned to you' : 'Open marketplace tasks'}
-				</p>
+				<p class="text-sm text-slate-400">Assigned to you</p>
 				<p class="mt-3 font-['Space_Grotesk'] text-4xl font-bold text-white">
-					{data.session.role === 'worker' ? data.assignedTasks.length : data.openTasks.length}
+					{data.assignedTasks.length}
+				</p>
+			</article>
+			<article class="rounded-3xl border border-slate-800 bg-slate-900/70 p-6">
+				<p class="text-sm text-slate-400">Open marketplace tasks</p>
+				<p class="mt-3 font-['Space_Grotesk'] text-4xl font-bold text-white">
+					{data.openTasks.length}
 				</p>
 			</article>
 		</section>
@@ -166,27 +161,24 @@
 		<section class="space-y-6">
 			<div class="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
 				<div>
-					<p class="text-xs font-semibold uppercase tracking-[0.3em] text-cyan-400">Next actions</p>
+					<p class="text-xs font-semibold tracking-[0.3em] text-cyan-400 uppercase">Next actions</p>
 					<h2 class="mt-3 font-['Space_Grotesk'] text-3xl font-semibold text-white">
 						Move the workflow from the dashboard
 					</h2>
 				</div>
 				<div class="flex flex-wrap gap-3">
-					{#if data.session.role === 'client'}
-						<a
-							class="rounded-2xl bg-cyan-400 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-300"
-							href="/create-task"
-						>
-							Create task
-						</a>
-					{:else}
-						<a
-							class="rounded-2xl bg-cyan-400 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-300"
-							href="/marketplace"
-						>
-							Browse marketplace
-						</a>
-					{/if}
+					<a
+						class="rounded-2xl bg-cyan-400 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-300"
+						href="/create-task"
+					>
+						Create task
+					</a>
+					<a
+						class="rounded-2xl border border-slate-700 px-5 py-3 text-sm font-semibold text-slate-100 transition hover:border-cyan-400/30 hover:text-white"
+						href="/marketplace"
+					>
+						Browse marketplace
+					</a>
 				</div>
 			</div>
 
@@ -202,7 +194,7 @@
 						<div class="flex items-start justify-between gap-4">
 							<div>
 								{#if group.id === primaryGroupId()}
-									<p class="text-xs font-semibold uppercase tracking-[0.24em] text-cyan-300">
+									<p class="text-xs font-semibold tracking-[0.24em] text-cyan-300 uppercase">
 										Priority queue
 									</p>
 								{/if}
@@ -211,13 +203,17 @@
 								</h3>
 								<p class="mt-3 text-sm leading-6 text-slate-300">{group.description}</p>
 							</div>
-							<span class="rounded-full border border-slate-700 px-3 py-1 text-xs uppercase tracking-[0.24em] text-cyan-300">
+							<span
+								class="rounded-full border border-slate-700 px-3 py-1 text-xs tracking-[0.24em] text-cyan-300 uppercase"
+							>
 								{group.tasks.length}
 							</span>
 						</div>
 
 						{#if group.tasks.length === 0}
-							<p class="mt-6 rounded-2xl border border-slate-800 bg-slate-950/70 px-4 py-5 text-sm text-slate-300">
+							<p
+								class="mt-6 rounded-2xl border border-slate-800 bg-slate-950/70 px-4 py-5 text-sm text-slate-300"
+							>
 								{group.emptyState}
 							</p>
 						{:else}
@@ -233,12 +229,14 @@
 												<p class="mt-1 text-sm text-slate-400">{task.brief}</p>
 											</div>
 											<span
-												class={`rounded-full border px-3 py-1 text-xs uppercase tracking-wide ${statusTone[task.status]}`}
+												class={`rounded-full border px-3 py-1 text-xs tracking-wide uppercase ${statusTone[task.status]}`}
 											>
 												{task.status}
 											</span>
 										</div>
-										<div class="mt-4 flex flex-wrap items-center justify-between gap-3 text-xs text-slate-400">
+										<div
+											class="mt-4 flex flex-wrap items-center justify-between gap-3 text-xs text-slate-400"
+										>
 											<div class="flex flex-wrap gap-4">
 												<span>{task.payoutAmount} {task.currencyAsset}</span>
 												<span>{formatDate(task.updatedAt)}</span>
@@ -252,7 +250,7 @@
 							</div>
 
 							{#if group.tasks.length > 3}
-								<p class="mt-4 text-xs uppercase tracking-[0.24em] text-slate-500">
+								<p class="mt-4 text-xs tracking-[0.24em] text-slate-500 uppercase">
 									+ {group.tasks.length - 3} more in this queue
 								</p>
 							{/if}
@@ -264,7 +262,9 @@
 
 		<section class="space-y-6">
 			<div>
-				<p class="text-xs font-semibold uppercase tracking-[0.3em] text-slate-500">History and backlog</p>
+				<p class="text-xs font-semibold tracking-[0.3em] text-slate-500 uppercase">
+					History and backlog
+				</p>
 				<h2 class="mt-3 font-['Space_Grotesk'] text-3xl font-semibold text-white">
 					Broader task context
 				</h2>
@@ -277,16 +277,16 @@
 			<section class="grid gap-6 lg:grid-cols-2">
 				<div class="rounded-3xl border border-slate-800 bg-slate-900/70 p-6">
 					<div class="flex items-center justify-between gap-4">
-						<h2 class="font-['Space_Grotesk'] text-2xl font-semibold text-white">
-							{data.session.role === 'client' ? 'Client history' : 'Created tasks'}
-						</h2>
+						<h2 class="font-['Space_Grotesk'] text-2xl font-semibold text-white">Created tasks</h2>
 						<a class="text-sm font-medium text-cyan-300 hover:text-cyan-200" href="/create-task">
 							Create another
 						</a>
 					</div>
 
 					{#if data.ownedTasks.length === 0}
-						<p class="mt-6 rounded-2xl border border-slate-800 bg-slate-950/70 px-4 py-5 text-sm text-slate-300">
+						<p
+							class="mt-6 rounded-2xl border border-slate-800 bg-slate-950/70 px-4 py-5 text-sm text-slate-300"
+						>
 							You have not created any writing tasks yet. Start with the brief here, then continue
 							into funding from the task hub.
 						</p>
@@ -302,7 +302,9 @@
 											<h3 class="font-semibold text-white">{task.title}</h3>
 											<p class="mt-1 text-sm text-slate-400">{task.brief}</p>
 										</div>
-										<span class="rounded-full border border-slate-700 px-3 py-1 text-xs uppercase tracking-wide text-cyan-300">
+										<span
+											class="rounded-full border border-slate-700 px-3 py-1 text-xs tracking-wide text-cyan-300 uppercase"
+										>
 											{task.status}
 										</span>
 									</div>
@@ -318,14 +320,18 @@
 
 				<div class="rounded-3xl border border-slate-800 bg-slate-900/70 p-6">
 					<div class="flex items-center justify-between gap-4">
-						<h2 class="font-['Space_Grotesk'] text-2xl font-semibold text-white">Assigned history</h2>
+						<h2 class="font-['Space_Grotesk'] text-2xl font-semibold text-white">
+							Assigned history
+						</h2>
 						<a class="text-sm font-medium text-cyan-300 hover:text-cyan-200" href="/marketplace">
 							Browse marketplace
 						</a>
 					</div>
 
 					{#if data.assignedTasks.length === 0}
-						<p class="mt-6 rounded-2xl border border-slate-800 bg-slate-950/70 px-4 py-5 text-sm text-slate-300">
+						<p
+							class="mt-6 rounded-2xl border border-slate-800 bg-slate-950/70 px-4 py-5 text-sm text-slate-300"
+						>
 							No writing tasks are assigned to you yet. Funded work will start here after you claim
 							it from the marketplace.
 						</p>
@@ -341,7 +347,9 @@
 											<h3 class="font-semibold text-white">{task.title}</h3>
 											<p class="mt-1 text-sm text-slate-400">{task.brief}</p>
 										</div>
-										<span class="rounded-full border border-slate-700 px-3 py-1 text-xs uppercase tracking-wide text-cyan-300">
+										<span
+											class="rounded-full border border-slate-700 px-3 py-1 text-xs tracking-wide text-cyan-300 uppercase"
+										>
 											{task.status}
 										</span>
 									</div>
@@ -360,7 +368,9 @@
 		<section class="rounded-3xl border border-slate-800 bg-slate-900/70 p-6">
 			<div class="flex items-center justify-between gap-4">
 				<div>
-					<h2 class="font-['Space_Grotesk'] text-2xl font-semibold text-white">Marketplace shortcut</h2>
+					<h2 class="font-['Space_Grotesk'] text-2xl font-semibold text-white">
+						Marketplace shortcut
+					</h2>
 					<p class="mt-2 max-w-2xl text-sm leading-6 text-slate-300">
 						Use the marketplace when you want to pick up another funded writing task, then return
 						here to continue through submission, review, and receipt visibility.

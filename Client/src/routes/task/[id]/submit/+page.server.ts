@@ -12,15 +12,18 @@ export const load: PageServerLoad = async ({ params, fetch, locals, url }) => {
 		const api = createBackendClient({ fetch, session: locals.session });
 		const { task } = await api.getTask(params.id);
 
-		if (locals.session.user.role !== 'worker') {
-			throw kitError(403, 'Only workers can open the submission flow.');
-		}
-
 		if (task.workerId !== locals.session.user.id) {
 			throw kitError(403, 'Only the assigned worker can submit work for this task.');
 		}
 
-		if (task.status === 'SUBMITTED' || task.status === 'PENDING_REVIEW' || task.status === 'APPROVED' || task.status === 'AUTO_APPROVED' || task.status === 'REJECTED' || task.status === 'PAID') {
+		if (
+			task.status === 'SUBMITTED' ||
+			task.status === 'PENDING_REVIEW' ||
+			task.status === 'APPROVED' ||
+			task.status === 'AUTO_APPROVED' ||
+			task.status === 'REJECTED' ||
+			task.status === 'PAID'
+		) {
 			throw redirect(303, `/task/${params.id}/report`);
 		}
 

@@ -7,5 +7,4 @@ export const walletChallengeRequestSchema = z.object({
 export const walletVerifyRequestSchema = z.object({
   transactionXdr: z.string().trim().min(1),
   username: z.string().trim().min(3).max(32).optional(),
-  role: z.enum(['client', 'worker']).optional(),
 });

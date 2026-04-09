@@ -5,7 +5,7 @@ const componentsDir = path.join(process.cwd(), 'src', 'lib', 'components', 'stit
 const commonDir = path.join(process.cwd(), 'src', 'lib', 'components', 'common');
 
 if (!fs.existsSync(commonDir)) {
-  fs.mkdirSync(commonDir, { recursive: true });
+	fs.mkdirSync(commonDir, { recursive: true });
 }
 
 // Master NavBar content with SvelteKit links
@@ -43,31 +43,31 @@ const navBarContent = `<script lang="ts">
 
 fs.writeFileSync(path.join(commonDir, 'NavBar.svelte'), navBarContent, 'utf8');
 
-const files = fs.readdirSync(componentsDir).filter(f => f.endsWith('.svelte'));
+const files = fs.readdirSync(componentsDir).filter((f) => f.endsWith('.svelte'));
 
-files.forEach(file => {
-  const filePath = path.join(componentsDir, file);
-  let content = fs.readFileSync(filePath, 'utf8');
+files.forEach((file) => {
+	const filePath = path.join(componentsDir, file);
+	let content = fs.readFileSync(filePath, 'utf8');
 
-  // Detect and remove navbar block
-  // We'll look for <!-- TopNavBar --> if it exists, or just the first <nav> tag if it's the header.
-  // Many of these screens have <nav ...> as the first major tag after </script>.
-  
-  // First, find the first nav tag
-  const navRegex = /<nav[\s\S]*?<\/nav>/i;
-  if (navRegex.test(content)) {
-    content = content.replace(navRegex, '<NavBar />');
-    
-    // Add import
-    const importStatement = `import NavBar from '../common/NavBar.svelte';\n`;
-    if (content.includes('<script lang="ts">')) {
-       // Check if there's already an import footer line to place it nicely
-       if (!content.includes('import NavBar')) {
-          content = content.replace('<script lang="ts">', `<script lang="ts">\n${importStatement}`);
-       }
-    }
-  }
+	// Detect and remove navbar block
+	// We'll look for <!-- TopNavBar --> if it exists, or just the first <nav> tag if it's the header.
+	// Many of these screens have <nav ...> as the first major tag after </script>.
 
-  fs.writeFileSync(filePath, content, 'utf8');
-  console.log(`Replaced NavBar in ${file}`);
+	// First, find the first nav tag
+	const navRegex = /<nav[\s\S]*?<\/nav>/i;
+	if (navRegex.test(content)) {
+		content = content.replace(navRegex, '<NavBar />');
+
+		// Add import
+		const importStatement = `import NavBar from '../common/NavBar.svelte';\n`;
+		if (content.includes('<script lang="ts">')) {
+			// Check if there's already an import footer line to place it nicely
+			if (!content.includes('import NavBar')) {
+				content = content.replace('<script lang="ts">', `<script lang="ts">\n${importStatement}`);
+			}
+		}
+	}
+
+	fs.writeFileSync(filePath, content, 'utf8');
+	console.log(`Replaced NavBar in ${file}`);
 });

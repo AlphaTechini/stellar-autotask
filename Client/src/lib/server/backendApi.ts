@@ -102,21 +102,14 @@ export function createBackendClient(context: BackendClientContext) {
 				body: input
 			});
 		},
-		verifyWallet(input: {
-			transactionXdr: string;
-			username?: string;
-			role?: 'client' | 'worker';
-		}) {
+		verifyWallet(input: { transactionXdr: string; username?: string }) {
 			return apiRequest<AuthSuccess>(context, '/auth/wallet/verify', {
 				method: 'POST',
 				body: input
 			});
 		},
 		listTasks(filters: TaskFilters = {}) {
-			return apiRequest<{ tasks: TaskRecord[] }>(
-				context,
-				`/tasks${createQueryString(filters)}`
-			);
+			return apiRequest<{ tasks: TaskRecord[] }>(context, `/tasks${createQueryString(filters)}`);
 		},
 		getTask(id: string) {
 			return apiRequest<{ task: TaskRecord }>(context, `/tasks/${id}`);
@@ -134,10 +127,14 @@ export function createBackendClient(context: BackendClientContext) {
 			});
 		},
 		fundTask(id: string, input: FundTaskInput) {
-			return apiRequest<{ task: TaskRecord; funding: FundingRecord }>(context, `/tasks/${id}/fund`, {
-				method: 'POST',
-				body: input
-			});
+			return apiRequest<{ task: TaskRecord; funding: FundingRecord }>(
+				context,
+				`/tasks/${id}/fund`,
+				{
+					method: 'POST',
+					body: input
+				}
+			);
 		},
 		claimTask(id: string) {
 			return apiRequest<{ task: TaskRecord }>(context, `/tasks/${id}/claim`, {

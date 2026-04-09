@@ -38,11 +38,15 @@
 	<title>Submit Work | {data.task.title}</title>
 </svelte:head>
 
-<main class="min-h-screen bg-[radial-gradient(circle_at_top,rgba(34,211,238,0.12),transparent_24%),linear-gradient(180deg,#020617_0%,#08111f_40%,#020617_100%)] px-6 py-12 text-slate-100">
+<main
+	class="min-h-screen bg-[radial-gradient(circle_at_top,rgba(34,211,238,0.12),transparent_24%),linear-gradient(180deg,#020617_0%,#08111f_40%,#020617_100%)] px-6 py-12 text-slate-100"
+>
 	<div class="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[0.85fr_1.15fr]">
 		<aside class="space-y-6">
-			<section class="overflow-hidden rounded-[2rem] border border-cyan-400/20 bg-slate-950/75 p-8 shadow-[0_30px_90px_rgba(8,145,178,0.16)] backdrop-blur-xl">
-				<p class="text-xs font-semibold uppercase tracking-[0.28em] text-cyan-300">
+			<section
+				class="overflow-hidden rounded-[2rem] border border-cyan-400/20 bg-slate-950/75 p-8 shadow-[0_30px_90px_rgba(8,145,178,0.16)] backdrop-blur-xl"
+			>
+				<p class="text-xs font-semibold tracking-[0.28em] text-cyan-300 uppercase">
 					Task-scoped submission
 				</p>
 				<h1 class="mt-4 font-['Space_Grotesk'] text-4xl font-bold tracking-tight text-white">
@@ -52,35 +56,38 @@
 
 				<div class="mt-8 grid gap-4 sm:grid-cols-2">
 					<div class="rounded-2xl border border-slate-800 bg-slate-900/70 p-4">
-						<div class="text-xs uppercase tracking-[0.22em] text-slate-500">Status</div>
+						<div class="text-xs tracking-[0.22em] text-slate-500 uppercase">Status</div>
 						<div class="mt-2 text-sm font-semibold text-cyan-300">{data.task.status}</div>
 					</div>
 					<div class="rounded-2xl border border-slate-800 bg-slate-900/70 p-4">
-						<div class="text-xs uppercase tracking-[0.22em] text-slate-500">Payout</div>
+						<div class="text-xs tracking-[0.22em] text-slate-500 uppercase">Payout</div>
 						<div class="mt-2 text-sm font-semibold text-white">
-							{data.task.payoutAmount} {data.task.currencyAsset}
+							{data.task.payoutAmount}
+							{data.task.currencyAsset}
 						</div>
 					</div>
 					<div class="rounded-2xl border border-slate-800 bg-slate-900/70 p-4">
-						<div class="text-xs uppercase tracking-[0.22em] text-slate-500">Target audience</div>
+						<div class="text-xs tracking-[0.22em] text-slate-500 uppercase">Target audience</div>
 						<div class="mt-2 text-sm text-white">{data.task.targetAudience}</div>
 					</div>
 					<div class="rounded-2xl border border-slate-800 bg-slate-900/70 p-4">
-						<div class="text-xs uppercase tracking-[0.22em] text-slate-500">Tone</div>
+						<div class="text-xs tracking-[0.22em] text-slate-500 uppercase">Tone</div>
 						<div class="mt-2 text-sm text-white">{data.task.tone}</div>
 					</div>
 				</div>
 
-				<div class="mt-8 rounded-[1.5rem] border border-slate-800 bg-[linear-gradient(160deg,rgba(8,47,73,0.55),rgba(15,23,42,0.92))] p-5">
+				<div
+					class="mt-8 rounded-[1.5rem] border border-slate-800 bg-[linear-gradient(160deg,rgba(8,47,73,0.55),rgba(15,23,42,0.92))] p-5"
+				>
 					<div class="flex items-end justify-between gap-4">
 						<div>
-							<p class="text-xs uppercase tracking-[0.22em] text-slate-400">Word target</p>
+							<p class="text-xs tracking-[0.22em] text-slate-400 uppercase">Word target</p>
 							<p class="mt-2 font-['Space_Grotesk'] text-4xl font-bold text-white">
 								{currentWordCount}
 							</p>
 						</div>
 						<div class="text-right">
-							<p class="text-xs uppercase tracking-[0.22em] text-slate-400">Minimum</p>
+							<p class="text-xs tracking-[0.22em] text-slate-400 uppercase">Minimum</p>
 							<p class="mt-2 text-lg font-semibold text-cyan-200">{data.task.minWordCount}</p>
 						</div>
 					</div>
@@ -104,7 +111,9 @@
 				{:else}
 					<div class="mt-5 flex flex-wrap gap-2">
 						{#each data.task.requiredKeywords as keyword}
-							<span class="rounded-full border border-cyan-400/20 bg-cyan-400/10 px-3 py-1 text-xs font-medium text-cyan-200">
+							<span
+								class="rounded-full border border-cyan-400/20 bg-cyan-400/10 px-3 py-1 text-xs font-medium text-cyan-200"
+							>
 								{keyword}
 							</span>
 						{/each}
@@ -123,9 +132,11 @@
 		</aside>
 
 		<section class="rounded-[2rem] border border-slate-800 bg-slate-900/70 p-8 backdrop-blur">
-			<div class="flex flex-col gap-4 border-b border-slate-800 pb-6 md:flex-row md:items-end md:justify-between">
+			<div
+				class="flex flex-col gap-4 border-b border-slate-800 pb-6 md:flex-row md:items-end md:justify-between"
+			>
 				<div>
-					<p class="text-xs font-semibold uppercase tracking-[0.28em] text-cyan-300">
+					<p class="text-xs font-semibold tracking-[0.28em] text-cyan-300 uppercase">
 						Assigned worker flow
 					</p>
 					<h2 class="mt-3 font-['Space_Grotesk'] text-3xl font-bold tracking-tight text-white">
@@ -159,13 +170,13 @@
 						id="contentText"
 						name="contentText"
 						rows="18"
-						class="w-full rounded-[1.5rem] border border-slate-800 bg-slate-950/80 px-5 py-4 text-white outline-none transition focus:border-cyan-400"
+						class="w-full rounded-[1.5rem] border border-slate-800 bg-slate-950/80 px-5 py-4 text-white transition outline-none focus:border-cyan-400"
 						bind:value={contentText}
 						required
 					></textarea>
 					<p class="mt-3 text-sm leading-6 text-slate-400">
-						Paste the full writing submission here. The backend uses this content for
-						deterministic checks and verification.
+						Paste the full writing submission here. The backend uses this content for deterministic
+						checks and verification.
 					</p>
 				</div>
 
@@ -178,7 +189,7 @@
 							id="notes"
 							name="notes"
 							rows="6"
-							class="w-full rounded-[1.5rem] border border-slate-800 bg-slate-950/80 px-5 py-4 text-white outline-none transition focus:border-cyan-400"
+							class="w-full rounded-[1.5rem] border border-slate-800 bg-slate-950/80 px-5 py-4 text-white transition outline-none focus:border-cyan-400"
 							bind:value={notes}
 						></textarea>
 						<p class="mt-3 text-sm leading-6 text-slate-400">
@@ -194,7 +205,7 @@
 							id="documentUrl"
 							name="documentUrl"
 							type="url"
-							class="w-full rounded-[1.5rem] border border-slate-800 bg-slate-950/80 px-5 py-4 text-white outline-none transition focus:border-cyan-400"
+							class="w-full rounded-[1.5rem] border border-slate-800 bg-slate-950/80 px-5 py-4 text-white transition outline-none focus:border-cyan-400"
 							placeholder="https://..."
 							bind:value={documentUrl}
 						/>
@@ -205,15 +216,19 @@
 				</div>
 
 				{#if form?.error}
-					<p class="rounded-[1.5rem] border border-rose-500/40 bg-rose-500/10 px-4 py-3 text-sm text-rose-200">
+					<p
+						class="rounded-[1.5rem] border border-rose-500/40 bg-rose-500/10 px-4 py-3 text-sm text-rose-200"
+					>
 						{form.error}
 					</p>
 				{/if}
 
-				<div class="flex flex-col gap-4 border-t border-slate-800 pt-6 md:flex-row md:items-center md:justify-between">
+				<div
+					class="flex flex-col gap-4 border-t border-slate-800 pt-6 md:flex-row md:items-center md:justify-between"
+				>
 					<p class="max-w-2xl text-sm leading-6 text-slate-400">
-						Submitting moves the task into the verification and review flow. After success, you
-						will continue into the task report.
+						Submitting moves the task into the verification and review flow. After success, you will
+						continue into the task report.
 					</p>
 					<button
 						class="inline-flex items-center justify-center rounded-2xl bg-cyan-400 px-6 py-4 font-semibold text-slate-950 transition hover:bg-cyan-300 disabled:cursor-not-allowed disabled:opacity-60"

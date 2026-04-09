@@ -17,7 +17,7 @@ export async function upsertWalletHumanUser(
 ) {
   const normalizedWalletAddress = input.walletAddress.trim().toUpperCase();
   const normalizedUsername = input.username?.trim();
-  const normalizedRole = input.role;
+  const normalizedRole = input.role ?? 'client';
 
   const existingUser = await db.query.users.findFirst({
     where: eq(users.stellarWalletAddress, normalizedWalletAddress),
@@ -27,12 +27,6 @@ export async function upsertWalletHumanUser(
     if (!normalizedUsername) {
       return {
         kind: 'missing_username' as const,
-      };
-    }
-
-    if (!normalizedRole) {
-      return {
-        kind: 'missing_role' as const,
       };
     }
 
@@ -89,6 +83,5 @@ export async function upsertWalletHumanUser(
 
 export type WalletHumanUserWriteResult =
   | Awaited<ReturnType<typeof upsertWalletHumanUser>>
-  | { kind: 'missing_role' }
   | { kind: 'missing_username' }
   | { kind: 'auth_type_conflict'; user: UserRecord };

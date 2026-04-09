@@ -14,10 +14,6 @@ export const load: PageServerLoad = async ({ params, fetch, locals, url }) => {
 		const api = createBackendClient({ fetch, session: locals.session });
 		const report = await api.getTaskReport(params.id);
 
-		if (locals.session.user.role !== 'client') {
-			throw kitError(403, 'Only clients can open the review flow.');
-		}
-
 		if (report.task.clientId !== locals.session.user.id) {
 			throw kitError(403, 'Only the task creator can review this task.');
 		}

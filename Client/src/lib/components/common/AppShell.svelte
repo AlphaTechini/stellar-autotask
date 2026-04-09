@@ -43,9 +43,7 @@
 		}
 
 		if (pathname === '/dashboard') {
-			return session.role === 'client'
-				? 'Track your drafts, funded work, and review-ready submissions from one place.'
-				: 'Track assigned work, jump back into submissions, and keep payout visibility close.';
+			return 'Track the tasks you created, the work assigned to you, and the next action that moves each task forward.';
 		}
 
 		if (pathname === '/marketplace') {
@@ -64,9 +62,7 @@
 			return 'Connect a wallet and let the app restore the right route once the session is live.';
 		}
 
-		return session.role === 'worker'
-			? 'Claim work, submit faster, and keep payout state visible.'
-			: 'Create, fund, review, and track every task from a shared app shell.';
+		return 'Create, claim, review, and track every task from a shared app shell.';
 	}
 
 	function navItems(currentSession: SessionUser | null): NavItem[] {
@@ -75,6 +71,11 @@
 				href: '/marketplace',
 				label: 'Marketplace',
 				match: (pathname) => pathname === '/marketplace'
+			},
+			{
+				href: '/create-task',
+				label: 'Create Task',
+				match: (pathname) => pathname === '/create-task'
 			}
 		];
 
@@ -86,14 +87,6 @@
 			});
 		}
 
-		if (!currentSession || currentSession.role === 'client') {
-			items.push({
-				href: '/create-task',
-				label: 'Create Task',
-				match: (pathname) => pathname === '/create-task'
-			});
-		}
-
 		return items;
 	}
 
@@ -102,13 +95,6 @@
 			return {
 				href: '/auth',
 				label: 'Connect Wallet'
-			};
-		}
-
-		if (currentSession.role === 'worker') {
-			return {
-				href: '/marketplace',
-				label: 'Find Tasks'
 			};
 		}
 
@@ -129,7 +115,9 @@
 
 {#if showShell(page.url.pathname)}
 	<div class="min-h-screen bg-slate-950 text-slate-100">
-		<header class="fixed inset-x-0 top-0 z-40 border-b border-slate-800/80 bg-slate-950/80 backdrop-blur-xl">
+		<header
+			class="fixed inset-x-0 top-0 z-40 border-b border-slate-800/80 bg-slate-950/80 backdrop-blur-xl"
+		>
 			<div class="mx-auto flex h-20 max-w-7xl items-center justify-between gap-6 px-6">
 				<div class="flex min-w-0 items-center gap-10">
 					<a
@@ -162,11 +150,11 @@
 					</a>
 
 					{#if session}
-						<div class="hidden rounded-2xl border border-slate-800 bg-slate-900/80 px-4 py-2 md:block">
+						<div
+							class="hidden rounded-2xl border border-slate-800 bg-slate-900/80 px-4 py-2 md:block"
+						>
 							<div class="text-sm font-semibold text-white">{session.username}</div>
-							<div class="mt-1 flex items-center gap-2 text-xs text-slate-400">
-								<span class="uppercase tracking-[0.22em]">{session.role}</span>
-								<span class="text-slate-600">•</span>
+							<div class="mt-1 text-xs text-slate-400">
 								<span class="font-mono text-[11px] text-cyan-300">
 									{formatWallet(session.walletAddress)}
 								</span>
@@ -193,11 +181,11 @@
 			</div>
 		</header>
 
-		<div class="mx-auto max-w-7xl px-6 pb-6 pt-28">
+		<div class="mx-auto max-w-7xl px-6 pt-28 pb-6">
 			<section class="mb-6 rounded-[1.75rem] border border-slate-800 bg-slate-900/60 px-6 py-5">
 				<div class="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
 					<div>
-						<p class="text-xs font-semibold uppercase tracking-[0.28em] text-cyan-300">
+						<p class="text-xs font-semibold tracking-[0.28em] text-cyan-300 uppercase">
 							Shared app shell
 						</p>
 						<h1 class="mt-3 font-['Space_Grotesk'] text-3xl font-bold tracking-tight text-white">
@@ -215,14 +203,12 @@
 						>
 							Marketplace
 						</a>
-						{#if !session || session.role === 'client'}
-							<a
-								href="/create-task"
-								class="rounded-full border border-cyan-400/30 bg-cyan-400/10 px-4 py-2 text-sm font-semibold text-cyan-200 transition hover:border-cyan-300 hover:text-white"
-							>
-								Create Task
-							</a>
-						{/if}
+						<a
+							href="/create-task"
+							class="rounded-full border border-cyan-400/30 bg-cyan-400/10 px-4 py-2 text-sm font-semibold text-cyan-200 transition hover:border-cyan-300 hover:text-white"
+						>
+							Create Task
+						</a>
 						{#if session}
 							<a
 								href="/dashboard"
@@ -239,17 +225,19 @@
 		</div>
 
 		<footer class="border-t border-slate-800/60 bg-slate-950/90">
-			<div class="mx-auto flex max-w-7xl flex-col gap-4 px-6 py-8 text-sm text-slate-400 md:flex-row md:items-center md:justify-between">
+			<div
+				class="mx-auto flex max-w-7xl flex-col gap-4 px-6 py-8 text-sm text-slate-400 md:flex-row md:items-center md:justify-between"
+			>
 				<div>
 					<div class="font-['Space_Grotesk'] font-semibold text-white">Stellar Autotask</div>
-					<div class="mt-1">Task creation, funding, claims, review, and payout visibility in one shell.</div>
+					<div class="mt-1">
+						Task creation, funding, claims, review, and payout visibility in one shell.
+					</div>
 				</div>
 
 				<div class="flex flex-wrap gap-5">
 					<a class="transition hover:text-white" href="/marketplace">Marketplace</a>
-					{#if !session || session.role === 'client'}
-						<a class="transition hover:text-white" href="/create-task">Create Task</a>
-					{/if}
+					<a class="transition hover:text-white" href="/create-task">Create Task</a>
 					{#if session}
 						<a class="transition hover:text-white" href="/dashboard">Dashboard</a>
 					{:else}

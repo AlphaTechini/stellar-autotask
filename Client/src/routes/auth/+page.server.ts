@@ -30,16 +30,16 @@ export const actions: Actions = {
 
 		const formData = await request.formData();
 		const username = String(formData.get('username') ?? '').trim();
-		const role = String(formData.get('role') ?? '').trim();
 		const transactionXdr = String(formData.get('transactionXdr') ?? '').trim();
-		const redirectTo = resolveRedirectTarget(String(formData.get('redirectTo') ?? '').trim() || null);
+		const redirectTo = resolveRedirectTarget(
+			String(formData.get('redirectTo') ?? '').trim() || null
+		);
 
 		if (!transactionXdr) {
 			return fail(400, {
 				error: 'A signed wallet challenge is required before sign-in can continue.',
 				values: {
-					username,
-					role
+					username
 				}
 			});
 		}
@@ -48,8 +48,7 @@ export const actions: Actions = {
 			const api = createBackendClient({ fetch, session: null });
 			const result = await api.verifyWallet({
 				transactionXdr,
-				...(username ? { username } : {}),
-				...(role === 'client' || role === 'worker' ? { role } : {})
+				...(username ? { username } : {})
 			});
 
 			writeSession(cookies, {
@@ -69,8 +68,7 @@ export const actions: Actions = {
 				return fail(error.status, {
 					error: error.message,
 					values: {
-						username,
-						role
+						username
 					}
 				});
 			}
