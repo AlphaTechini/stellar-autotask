@@ -12,7 +12,7 @@ export type CreateTaskInput = {
   tone: string;
   minWordCount: number;
   payoutAmount: string;
-  currencyAsset: string;
+  currencyAsset: 'XLM';
   reviewWindowHours: number;
   allowedClaimantType: 'human' | 'agent' | 'both';
 };
@@ -25,6 +25,10 @@ export async function createTask(
   db: DatabaseClient['db'],
   input: CreateTaskInput,
 ) {
+  if (input.currencyAsset !== 'XLM') {
+    throw new Error('Task creation currently supports native XLM only.');
+  }
+
   return createTaskRecord(db, {
     clientId: input.clientId,
     title: input.title.trim(),
@@ -35,7 +39,7 @@ export async function createTask(
     tone: input.tone.trim(),
     minWordCount: input.minWordCount,
     payoutAmount: input.payoutAmount.trim(),
-    currencyAsset: input.currencyAsset.trim(),
+    currencyAsset: 'XLM',
     reviewWindowHours: input.reviewWindowHours,
     allowedClaimantType: input.allowedClaimantType,
     status: getInitialTaskStatus(),

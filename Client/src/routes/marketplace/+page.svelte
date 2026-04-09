@@ -21,15 +21,15 @@
 				Claim funded writing tasks
 			</h1>
 			<p class="mt-3 max-w-2xl text-sm leading-6 text-slate-300">
-				This marketplace is for writing-only work that is open to claim and ready to move
-				into the task workflow.
+				Browse funded writing work that is already ready to claim, then continue through the
+				task hub into submission and report handling.
 			</p>
 		</header>
 
 		{#if data.tasks.length === 0}
 			<section class="rounded-3xl border border-slate-800 bg-slate-900/70 p-8 text-sm text-slate-300">
-				No open tasks are available right now. Once a client funds a draft task, it will
-				appear here automatically.
+				No funded writing tasks are open right now. As soon as a client confirms funding from a
+				task hub, the task becomes claimable here automatically.
 			</section>
 		{:else}
 			<section class="grid gap-6 md:grid-cols-2">
@@ -92,7 +92,7 @@
 										type="submit"
 										disabled={claimingTaskId === task.id}
 									>
-										{claimingTaskId === task.id ? 'Claiming...' : 'Claim task'}
+										{claimingTaskId === task.id ? 'Claiming...' : 'Claim and continue'}
 									</button>
 								</form>
 							{/if}

@@ -10,7 +10,7 @@ export const fundTaskParamsSchema = z.object({
 
 export const fundTaskRequestSchema = z.object({
   amount: z.string().trim().regex(payoutAmountPattern),
-  assetCode: z.string().trim().min(1),
+  assetCode: z.literal('XLM'),
   txHash: z.string().trim().regex(txHashPattern),
   fromWalletAddress: z.string().trim().regex(walletAddressPattern),
   toWalletAddress: z.string().trim().regex(walletAddressPattern),

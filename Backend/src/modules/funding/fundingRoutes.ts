@@ -19,7 +19,7 @@ const fundingRoutes: FastifyPluginAsync = async (fastify) => {
         request.authUser.walletAddress,
         {
           amount: input.amount.trim(),
-          assetCode: input.assetCode.trim(),
+          assetCode: input.assetCode,
           txHash: input.txHash.trim(),
           fromWalletAddress: input.fromWalletAddress.trim().toUpperCase(),
           toWalletAddress: input.toWalletAddress.trim().toUpperCase(),
@@ -57,6 +57,12 @@ const fundingRoutes: FastifyPluginAsync = async (fastify) => {
       if (result.kind === 'asset_mismatch') {
         throw fastify.httpErrors.badRequest(
           'Funding asset must match the task currency asset.',
+        );
+      }
+
+      if (result.kind === 'unsupported_asset') {
+        throw fastify.httpErrors.badRequest(
+          'This task is outside the current native XLM funding path.',
         );
       }
 

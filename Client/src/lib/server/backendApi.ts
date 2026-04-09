@@ -2,6 +2,8 @@ import { getBackendBaseUrl } from './backendConfig';
 import type {
 	AuthSuccess,
 	CreateTaskInput,
+	FundTaskInput,
+	FundingRecord,
 	SubmitTaskInput,
 	TaskPayoutStatus,
 	TaskFilters,
@@ -127,6 +129,12 @@ export function createBackendClient(context: BackendClientContext) {
 		},
 		createTask(input: CreateTaskInput) {
 			return apiRequest<{ task: TaskRecord }>(context, '/tasks', {
+				method: 'POST',
+				body: input
+			});
+		},
+		fundTask(id: string, input: FundTaskInput) {
+			return apiRequest<{ task: TaskRecord; funding: FundingRecord }>(context, `/tasks/${id}/fund`, {
 				method: 'POST',
 				body: input
 			});

@@ -113,6 +113,20 @@ export type PayoutRecord = {
 	createdAt: string;
 };
 
+export type FundingRecord = {
+	id: string;
+	taskId: string;
+	funderUserId: string | null;
+	fromWalletAddress: string;
+	toWalletAddress: string;
+	amount: string;
+	assetCode: string;
+	txHash: string;
+	status: 'pending' | 'confirmed' | 'failed';
+	fundedAt: string | null;
+	createdAt: string;
+};
+
 export type TaskPayoutStatus = {
 	taskId: string;
 	taskStatus: TaskStatus;
@@ -139,7 +153,7 @@ export type CreateTaskInput = {
 	tone: string;
 	minWordCount: number;
 	payoutAmount: string;
-	currencyAsset: string;
+	currencyAsset: 'XLM';
 	reviewWindowHours: number;
 	allowedClaimantType: 'human' | 'agent' | 'both';
 };
@@ -148,6 +162,14 @@ export type SubmitTaskInput = {
 	contentText: string;
 	notes?: string;
 	documentUrl?: string;
+};
+
+export type FundTaskInput = {
+	amount: string;
+	assetCode: 'XLM';
+	txHash: string;
+	fromWalletAddress: string;
+	toWalletAddress: string;
 };
 
 export type TaskFilters = {

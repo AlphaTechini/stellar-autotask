@@ -3,6 +3,7 @@
 
 	let { form } = $props();
 	let submitting = $state(false);
+	const nativeAssetCode = 'XLM';
 </script>
 
 <svelte:head>
@@ -17,8 +18,8 @@
 				Create a writing task
 			</h1>
 			<p class="mt-3 max-w-2xl text-sm leading-6 text-slate-300">
-				Define the writing brief here, then move into funding on Stellar Testnet after the
-				task record is created.
+				Set the brief, native XLM payout, and review window here. After creation, the workflow
+				continues into Stellar Testnet funding from the task hub.
 			</p>
 		</header>
 
@@ -139,16 +140,15 @@
 				</div>
 
 				<div>
-					<label class="mb-2 block text-sm font-medium text-slate-200" for="currencyAsset">
-						Currency asset
-					</label>
-					<input
-						id="currencyAsset"
-						name="currencyAsset"
-						class="w-full rounded-2xl border border-slate-700 bg-slate-950 px-4 py-3 text-white outline-none transition focus:border-cyan-400"
-						value={form?.values?.currencyAsset ?? 'XLM'}
-						required
-					/>
+					<div class="mb-2 block text-sm font-medium text-slate-200">Funding asset</div>
+					<div class="rounded-2xl border border-cyan-400/20 bg-cyan-400/10 px-4 py-3">
+						<div class="text-sm font-semibold text-white">{nativeAssetCode}</div>
+						<p class="mt-1 text-sm leading-6 text-cyan-100">
+							Native Stellar Lumens on Testnet is the only supported funding path in this launch
+							flow.
+						</p>
+					</div>
+					<input type="hidden" id="currencyAsset" name="currencyAsset" value={nativeAssetCode} />
 				</div>
 
 				<div>
@@ -196,7 +196,8 @@
 
 			<div class="flex items-center justify-between gap-4">
 				<p class="text-sm text-slate-400">
-					Funding remains a separate step. This page creates the task record only.
+					Creation saves the task record with a native XLM payout. Funding is the next step
+					before workers can claim it.
 				</p>
 				<button
 					class="rounded-2xl bg-cyan-400 px-5 py-3 font-semibold text-slate-950 transition hover:bg-cyan-300 disabled:cursor-not-allowed disabled:opacity-60"

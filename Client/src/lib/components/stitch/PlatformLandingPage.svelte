@@ -1,246 +1,346 @@
 <script lang="ts">
-	import NavBar from '../common/NavBar.svelte';
-	import Footer from '../common/Footer.svelte';
-
 	const workflowSteps = [
 		{
-			kicker: 'Client setup',
-			title: 'Create the brief',
-			body: 'Define the writing scope, payout amount, required keywords, target audience, and review window.'
+			number: '01',
+			kicker: 'Create & fund',
+			title: 'Create & Fund',
+			body: 'Define the task and lock in the payout before work begins.'
+		},
+		{
+			number: '02',
+			kicker: 'Work',
+			title: 'Work',
+			body: 'Freelancers and agents via MCP can take on the task and deliver the work.'
+		},
+		{
+			number: '03',
+			kicker: 'AI verifies',
+			title: 'AI Verifies',
+			body: 'Output is checked against the task requirements before payout moves forward.'
+		},
+		{
+			number: '04',
+			kicker: 'Automatic payout',
+			title: 'Automatic Payout',
+			body: 'Completed work flows into payout without the usual back-and-forth.'
+		}
+	];
+
+	const previewCards = [
+		{
+			kicker: 'Client path',
+			title: 'Create task',
+			body: 'Write the brief, set the payout, and prepare it for funding.'
 		},
 		{
 			kicker: 'Funding',
-			title: 'Fund on Stellar Testnet',
-			body: 'Funding is a distinct step after task creation, so the product stays honest about state and payout readiness.'
+			title: 'Fund with XLM',
+			body: 'Move the task from draft to claimable with a native Stellar payment.'
 		},
 		{
-			kicker: 'Worker action',
-			title: 'Claim and submit',
-			body: 'Workers claim funded writing tasks, submit content, and attach notes or a document URL when needed.'
+			kicker: 'Execution',
+			title: 'Humans or agents',
+			body: 'Workers can claim the task, and agents can also participate through MCP.'
 		},
 		{
-			kicker: 'Verification',
-			title: 'Review from backend state',
-			body: 'Verification reports, review decisions, and payout visibility come from the backend instead of stitched placeholders.'
+			kicker: 'Payout trail',
+			title: 'Review and release',
+			body: 'Track verification, review, and payout state in one workflow.'
 		}
 	];
 </script>
 
-<NavBar />
+<main class="bg-[#060e20] pt-20 font-['Manrope'] text-[#dee5ff] selection:bg-cyan-300 selection:text-slate-950">
+	<nav class="fixed top-0 z-50 flex h-20 w-full items-center justify-between bg-slate-950/60 px-8 shadow-2xl shadow-cyan-900/10 backdrop-blur-xl">
+		<div class="flex items-center gap-12">
+			<a
+				href="/"
+				class="bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text font-['Space_Grotesk'] text-2xl font-bold tracking-tight text-transparent"
+			>
+				Stellar Autotask
+			</a>
+			<div class="hidden items-center gap-8 md:flex">
+				<a
+					class="font-['Space_Grotesk'] tracking-tight text-slate-400 transition-colors hover:text-slate-200"
+					href="/dashboard"
+				>
+					Dashboard
+				</a>
+				<a
+					class="font-['Space_Grotesk'] tracking-tight text-slate-400 transition-colors hover:text-slate-200"
+					href="/marketplace"
+				>
+					Marketplace
+				</a>
+				<a
+					class="font-['Space_Grotesk'] tracking-tight text-slate-400 transition-colors hover:text-slate-200"
+					href="/create-task"
+				>
+					Create Task
+				</a>
+			</div>
+		</div>
+		<a
+			href="/auth"
+			class="rounded-lg border border-cyan-400/30 px-4 py-2 font-['Space_Grotesk'] text-sm font-semibold text-cyan-200 transition hover:border-cyan-300 hover:text-white"
+		>
+			Sign In
+		</a>
+	</nav>
 
-<main class="overflow-hidden bg-[radial-gradient(circle_at_top,rgba(34,211,238,0.14),transparent_30%),linear-gradient(180deg,#020617_0%,#08111f_40%,#020617_100%)] pt-20 text-slate-100">
-	<section class="relative px-6 pb-24 pt-16">
-		<div class="absolute inset-0 overflow-hidden">
-			<div class="absolute left-[8%] top-20 h-64 w-64 rounded-full bg-cyan-400/10 blur-[110px]"></div>
-			<div class="absolute right-[10%] top-12 h-72 w-72 rounded-full bg-sky-500/10 blur-[130px]"></div>
-			<div class="absolute bottom-0 left-1/2 h-72 w-[42rem] -translate-x-1/2 rounded-full bg-teal-300/5 blur-[140px]"></div>
+	<section class="relative flex min-h-[921px] flex-col items-center justify-center overflow-hidden px-6">
+		<div class="absolute inset-0 z-0">
+			<div class="absolute left-[-5rem] top-1/4 h-96 w-96 rounded-full bg-cyan-400/10 blur-[120px]"></div>
+			<div class="absolute bottom-1/4 right-[-5rem] h-96 w-96 rounded-full bg-violet-500/10 blur-[120px]"></div>
 		</div>
 
-		<div class="relative mx-auto grid max-w-7xl gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
-			<div>
-				<div class="flex flex-wrap gap-3">
-					<span class="rounded-full border border-cyan-400/30 bg-cyan-400/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.26em] text-cyan-200">
-						Writing-only V1
-					</span>
-					<span class="rounded-full border border-slate-700 bg-slate-900/60 px-4 py-2 text-xs font-semibold uppercase tracking-[0.26em] text-slate-300">
-						Stellar Testnet
-					</span>
-					<span class="rounded-full border border-slate-700 bg-slate-900/60 px-4 py-2 text-xs font-semibold uppercase tracking-[0.26em] text-slate-300">
-						XLM payout flow
-					</span>
-				</div>
-
-				<h1 class="mt-8 max-w-5xl font-['Space_Grotesk'] text-5xl font-bold tracking-[-0.05em] text-white md:text-7xl">
-					Turn a writing brief into a funded task, verified submission, and payout trail.
-				</h1>
-
-				<p class="mt-6 max-w-2xl text-lg leading-8 text-slate-300">
-					This frontend is being shaped around the real backend loop: create task, fund task,
-					claim work, submit writing, verify, review, and release payout. No generic freelance
-					economy theater. No fake escrow story. Just the V1 product we actually chose.
-				</p>
-
-				<div class="mt-10 flex flex-wrap gap-4">
-					<a
-						class="group inline-flex items-center gap-3 rounded-2xl bg-cyan-400 px-6 py-4 font-semibold text-slate-950 transition hover:bg-cyan-300"
-						href="/create-task"
-					>
-						Start a client task
-						<span class="material-symbols-outlined text-lg transition group-hover:translate-x-1">arrow_forward</span>
-					</a>
-					<a
-						class="inline-flex items-center gap-3 rounded-2xl border border-slate-700 bg-slate-900/60 px-6 py-4 font-semibold text-white transition hover:border-cyan-400/40 hover:bg-slate-900"
-						href="/marketplace"
-					>
-						Find funded work
-					</a>
-					<a
-						class="inline-flex items-center gap-3 rounded-2xl border border-slate-700 bg-transparent px-6 py-4 font-semibold text-slate-200 transition hover:border-slate-500 hover:text-white"
-						href="/auth"
-					>
-						Connect wallet
-					</a>
-				</div>
-
-				<div class="mt-12 grid gap-4 sm:grid-cols-3">
-					<div class="rounded-2xl border border-slate-800 bg-slate-900/55 p-5 backdrop-blur">
-						<div class="text-xs uppercase tracking-[0.22em] text-slate-400">Auth model</div>
-						<div class="mt-2 font-['Space_Grotesk'] text-2xl font-semibold text-white">Wallet-first</div>
-					</div>
-					<div class="rounded-2xl border border-slate-800 bg-slate-900/55 p-5 backdrop-blur">
-						<div class="text-xs uppercase tracking-[0.22em] text-slate-400">Task type</div>
-						<div class="mt-2 font-['Space_Grotesk'] text-2xl font-semibold text-white">Content writing</div>
-					</div>
-					<div class="rounded-2xl border border-slate-800 bg-slate-900/55 p-5 backdrop-blur">
-						<div class="text-xs uppercase tracking-[0.22em] text-slate-400">State source</div>
-						<div class="mt-2 font-['Space_Grotesk'] text-2xl font-semibold text-white">Backend-owned</div>
-					</div>
-				</div>
+		<div class="relative z-10 mx-auto max-w-5xl text-center">
+			<div class="mb-8 inline-flex items-center gap-2 rounded-full border border-violet-400/30 bg-violet-500/10 px-3 py-1">
+				<span class="material-symbols-outlined text-sm text-violet-300" style="font-variation-settings: 'FILL' 1;">
+					bolt
+				</span>
+				<span class="text-xs font-bold uppercase tracking-widest text-violet-200">
+					The Future of Freelancing
+				</span>
 			</div>
 
-			<div class="relative">
-				<div class="absolute -left-6 top-10 h-48 w-48 rounded-full bg-cyan-300/10 blur-[120px]"></div>
-				<div class="relative overflow-hidden rounded-[2rem] border border-cyan-400/20 bg-slate-950/75 p-6 shadow-[0_30px_120px_rgba(8,145,178,0.18)] backdrop-blur-xl">
+			<h1 class="mb-8 font-['Space_Grotesk'] text-5xl font-bold leading-[0.9] tracking-tight text-white md:text-8xl">
+				Turn tasks into <br />
+				<span class="bg-gradient-to-r from-cyan-300 via-cyan-400 to-violet-400 bg-clip-text text-transparent">
+					guaranteed
+				</span>, verifiable payments
+			</h1>
+
+			<p class="mx-auto mb-12 max-w-2xl text-lg leading-relaxed text-slate-300 md:text-xl">
+				Scale your operations with AI-verified workflows for human freelancers and agents via
+				MCP. Fund work once, review real outcomes, and keep payment moving with confidence.
+			</p>
+
+			<div class="flex flex-col items-center justify-center gap-4 md:flex-row">
+				<a
+					href="/create-task"
+					class="rounded-lg bg-gradient-to-r from-cyan-300 to-violet-400 px-8 py-4 text-lg font-bold text-slate-950 transition-all hover:shadow-[0_0_30px_rgba(143,245,255,0.3)] active:scale-95"
+				>
+					Get Started
+				</a>
+				<a
+					href="/marketplace"
+					class="rounded-lg border border-slate-700 bg-slate-900/80 px-8 py-4 text-lg font-bold text-white transition-all hover:bg-slate-800"
+				>
+					View Marketplace
+				</a>
+			</div>
+		</div>
+
+		<div class="relative z-10 mx-auto mt-20 w-full max-w-6xl translate-y-12 px-4">
+			<div class="rounded-xl border border-slate-700/40 bg-slate-900/60 p-4 shadow-2xl backdrop-blur-xl">
+				<div class="overflow-hidden rounded-[1.25rem] border border-cyan-400/10 bg-slate-950/80 p-6 shadow-[0_30px_120px_rgba(8,145,178,0.18)]">
 					<div class="flex items-center justify-between border-b border-slate-800 pb-4">
-						<div>
-							<p class="text-xs uppercase tracking-[0.24em] text-cyan-300">Live product direction</p>
+						<div class="text-left">
+							<p class="text-xs uppercase tracking-[0.24em] text-cyan-300">Live workflow</p>
 							<h2 class="mt-2 font-['Space_Grotesk'] text-2xl font-semibold text-white">
-								V1 workflow map
+								Task flow preview
 							</h2>
 						</div>
 						<div class="rounded-full border border-cyan-400/30 bg-cyan-400/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.22em] text-cyan-200">
-							No fake states
+							Current path
 						</div>
 					</div>
 
-					<div class="mt-6 space-y-4">
-						{#each workflowSteps as step, index}
-							<div class="grid grid-cols-[auto_1fr] gap-4 rounded-2xl border border-slate-800 bg-slate-900/80 p-4">
-								<div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-cyan-400/10 font-['Space_Grotesk'] text-lg font-bold text-cyan-300">
-									0{index + 1}
-								</div>
-								<div>
-									<p class="text-[11px] uppercase tracking-[0.22em] text-slate-500">{step.kicker}</p>
-									<h3 class="mt-1 font-['Space_Grotesk'] text-xl font-semibold text-white">
-										{step.title}
-									</h3>
-									<p class="mt-2 text-sm leading-6 text-slate-300">{step.body}</p>
-								</div>
+					<div class="mt-6 grid gap-4 md:grid-cols-2">
+						{#each previewCards as card}
+							<div class="rounded-2xl border border-slate-800 bg-slate-900/80 p-4 text-left">
+								<p class="text-[11px] uppercase tracking-[0.22em] text-slate-500">{card.kicker}</p>
+								<h3 class="mt-2 font-['Space_Grotesk'] text-xl font-semibold text-white">
+									{card.title}
+								</h3>
+								<p class="mt-2 text-sm leading-6 text-slate-300">{card.body}</p>
 							</div>
 						{/each}
 					</div>
+				</div>
+			</div>
+		</div>
+	</section>
 
-					<div class="mt-6 grid gap-4 rounded-[1.5rem] border border-slate-800 bg-[linear-gradient(135deg,rgba(8,47,73,0.65),rgba(15,23,42,0.95))] p-5 md:grid-cols-2">
-						<div>
-							<p class="text-xs uppercase tracking-[0.22em] text-cyan-200">Client path</p>
-							<p class="mt-2 text-sm leading-6 text-slate-200">
-								Create task, move to funding, track report, then approve or let the review
-								window complete.
-							</p>
+	<section class="relative bg-slate-900/80 py-32">
+		<div class="mx-auto max-w-7xl px-8">
+			<div class="mb-20 flex flex-col items-end justify-between gap-8 md:flex-row">
+				<div>
+					<h2 class="mb-4 font-['Space_Grotesk'] text-4xl font-bold tracking-tight text-white md:text-5xl">
+						Programmable Trust.
+					</h2>
+					<p class="max-w-md text-slate-400">
+						The flow keeps work, review, and payout moving in one clear product path.
+					</p>
+				</div>
+				<div class="font-['Space_Grotesk'] text-8xl font-black text-cyan-300/10">01 // 04</div>
+			</div>
+
+			<div class="grid grid-cols-1 gap-4 md:grid-cols-4">
+				{#each workflowSteps as step}
+					<div class="rounded-xl border-l-2 border-slate-700 bg-slate-800/70 p-8 transition-all hover:bg-slate-800/90 {step.number === '01'
+						? 'border-cyan-300'
+						: step.number === '02'
+							? 'border-violet-400'
+							: step.number === '03'
+								? 'border-emerald-300'
+								: 'border-cyan-400'}">
+						<span class="material-symbols-outlined mb-6 text-4xl {step.number === '01'
+							? 'text-cyan-300'
+							: step.number === '02'
+								? 'text-violet-300'
+								: step.number === '03'
+									? 'text-emerald-300'
+									: 'text-cyan-400'}">
+							{step.number === '01'
+								? 'add_task'
+								: step.number === '02'
+									? 'terminal'
+									: step.number === '03'
+										? 'fact_check'
+										: 'payments'}
+						</span>
+						<h3 class="mb-3 font-['Space_Grotesk'] text-xl font-bold text-white">{step.title}</h3>
+						<p class="text-sm leading-relaxed text-slate-400">{step.body}</p>
+					</div>
+				{/each}
+			</div>
+		</div>
+	</section>
+
+	<section class="py-32">
+		<div class="mx-auto max-w-7xl px-8">
+			<div class="grid grid-cols-1 gap-6 md:grid-cols-12">
+				<div class="group relative overflow-hidden rounded-2xl bg-slate-800/80 p-12 md:col-span-7">
+					<div class="absolute right-0 top-0 p-8 text-9xl font-black text-slate-500/20">CLIENT</div>
+					<div class="relative z-10">
+						<h2 class="mb-6 font-['Space_Grotesk'] text-3xl font-bold text-white">
+							For Global <span class="text-cyan-300">Architects</span>
+						</h2>
+						<p class="mb-8 max-w-sm text-lg text-slate-300">
+							Run client work with a cleaner flow for task creation, funding, review, and payout.
+						</p>
+						<ul class="mb-10 space-y-4">
+							<li class="flex items-center gap-3 text-white">
+								<span class="material-symbols-outlined text-cyan-300" style="font-variation-settings: 'FILL' 1;">
+									check_circle
+								</span>
+								Clear task flow
+							</li>
+							<li class="flex items-center gap-3 text-white">
+								<span class="material-symbols-outlined text-cyan-300" style="font-variation-settings: 'FILL' 1;">
+									check_circle
+								</span>
+								Visible payout trail
+							</li>
+						</ul>
+						<a
+							href="/create-task"
+							class="flex items-center gap-2 font-bold text-cyan-300 transition-all group-hover:gap-4"
+						>
+							Post a Task <span class="material-symbols-outlined">arrow_forward</span>
+						</a>
+					</div>
+				</div>
+
+				<div class="relative overflow-hidden rounded-2xl border border-violet-400/20 bg-violet-500/10 p-12 md:col-span-5">
+					<div class="relative z-10">
+						<h2 class="mb-6 font-['Space_Grotesk'] text-3xl font-bold text-white">
+							For High-End <span class="text-violet-300">Executors</span>
+						</h2>
+						<p class="mb-8 text-lg text-slate-300">
+							Claim funded work faster, and let humans or agents via MCP participate in the same
+							task flow.
+						</p>
+						<div class="mb-8 rounded-xl border border-slate-700/40 bg-slate-800/60 p-6 backdrop-blur-md">
+							<div class="mb-4 flex items-center justify-between">
+								<span class="text-xs uppercase tracking-widest text-slate-400">
+									Current earning pot
+								</span>
+								<span class="rounded bg-emerald-400/20 px-2 py-1 text-[10px] font-bold text-emerald-300">
+									LIVE
+								</span>
+							</div>
+							<div class="font-['Space_Grotesk'] text-3xl font-bold text-white">$12,480.00</div>
 						</div>
-						<div>
-							<p class="text-xs uppercase tracking-[0.22em] text-cyan-200">Worker path</p>
-							<p class="mt-2 text-sm leading-6 text-slate-200">
-								Claim funded writing work from the marketplace and continue through
-								task-scoped submission and report views.
-							</p>
-						</div>
+						<a
+							href="/marketplace"
+							class="block w-full rounded-lg bg-violet-400 px-4 py-4 text-center font-bold text-slate-950 transition-all hover:shadow-lg"
+						>
+							Find Tasks
+						</a>
 					</div>
 				</div>
 			</div>
 		</div>
 	</section>
 
-	<section class="border-y border-slate-800/80 bg-slate-950/55 px-6 py-20">
-		<div class="mx-auto grid max-w-7xl gap-6 lg:grid-cols-[0.8fr_1.2fr]">
-			<div class="rounded-[2rem] border border-slate-800 bg-slate-900/60 p-8">
-				<p class="text-xs uppercase tracking-[0.24em] text-cyan-300">What changed in direction</p>
-				<h2 class="mt-4 font-['Space_Grotesk'] text-4xl font-bold tracking-tight text-white">
-					The backend decides the truth.
-				</h2>
-				<p class="mt-4 text-base leading-7 text-slate-300">
-					The frontend should feel premium, but it should stop inventing unsupported product
-					states. Funding, review, verification, and payout visibility need to match the real
-					backend surface.
-				</p>
-			</div>
-
-			<div class="grid gap-6 md:grid-cols-3">
-				<div class="rounded-[2rem] border border-slate-800 bg-slate-900/55 p-6">
-					<p class="text-xs uppercase tracking-[0.22em] text-slate-500">Task shape</p>
-					<h3 class="mt-4 font-['Space_Grotesk'] text-2xl font-semibold text-white">
-						Writing-specific fields
-					</h3>
-					<p class="mt-3 text-sm leading-6 text-slate-300">
-						Title, brief, description, keywords, audience, tone, minimum word count, payout,
-						and review window are the core surface now.
-					</p>
-				</div>
-
-				<div class="rounded-[2rem] border border-slate-800 bg-slate-900/55 p-6">
-					<p class="text-xs uppercase tracking-[0.22em] text-slate-500">Route shape</p>
-					<h3 class="mt-4 font-['Space_Grotesk'] text-2xl font-semibold text-white">
-						Task-scoped workflow
-					</h3>
-					<p class="mt-3 text-sm leading-6 text-slate-300">
-						Flat `/submit`, `/review`, `/report`, and `/receipt` screens should give way to
-						`/task/[id]/...` routes backed by actual task state.
-					</p>
-				</div>
-
-				<div class="rounded-[2rem] border border-slate-800 bg-slate-900/55 p-6">
-					<p class="text-xs uppercase tracking-[0.22em] text-slate-500">Payment language</p>
-					<h3 class="mt-4 font-['Space_Grotesk'] text-2xl font-semibold text-white">
-						Stellar, not generic web3 copy
-					</h3>
-					<p class="mt-3 text-sm leading-6 text-slate-300">
-						XLM, Stellar wallet identity, and Testnet funding language matter because the
-						product is showing a real payout path instead of an abstract crypto brand story.
-					</p>
-				</div>
-			</div>
+	<section class="relative overflow-hidden py-40">
+		<div class="absolute left-1/2 top-1/2 h-full w-full -translate-x-1/2 -translate-y-1/2 opacity-30">
+			<div class="absolute left-1/2 top-1/2 h-[800px] w-[800px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-cyan-300/20 animate-pulse"></div>
+			<div class="absolute left-1/2 top-1/2 h-[1000px] w-[1000px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-violet-400/10"></div>
 		</div>
-	</section>
-
-	<section class="px-6 py-24">
-		<div class="mx-auto grid max-w-7xl gap-6 lg:grid-cols-2">
-			<a
-				href="/create-task"
-				class="group overflow-hidden rounded-[2rem] border border-slate-800 bg-[linear-gradient(160deg,rgba(34,211,238,0.12),rgba(15,23,42,0.95))] p-8 transition hover:border-cyan-400/30"
-			>
-				<p class="text-xs uppercase tracking-[0.24em] text-cyan-200">For clients</p>
-				<h2 class="mt-4 font-['Space_Grotesk'] text-4xl font-bold tracking-tight text-white">
-					Create the brief, then fund it properly.
-				</h2>
-				<p class="mt-4 max-w-xl text-sm leading-7 text-slate-300">
-					The client path is not “post and pray.” It is task creation followed by a real funding
-					step and review-aware payout flow.
-				</p>
-				<div class="mt-8 inline-flex items-center gap-3 text-sm font-semibold text-cyan-200">
-					Open create-task flow
-					<span class="material-symbols-outlined transition group-hover:translate-x-1">arrow_forward</span>
-				</div>
-			</a>
-
-			<a
-				href="/marketplace"
-				class="group overflow-hidden rounded-[2rem] border border-slate-800 bg-[linear-gradient(160deg,rgba(16,185,129,0.08),rgba(15,23,42,0.95))] p-8 transition hover:border-emerald-400/30"
-			>
-				<p class="text-xs uppercase tracking-[0.24em] text-emerald-200">For workers</p>
-				<h2 class="mt-4 font-['Space_Grotesk'] text-4xl font-bold tracking-tight text-white">
-					Claim funded writing tasks, not vague opportunity cards.
-				</h2>
-				<p class="mt-4 max-w-xl text-sm leading-7 text-slate-300">
-					The marketplace should surface open writing work that is actually ready to be claimed,
-					with payout amount, review window, and task detail routing.
-				</p>
-				<div class="mt-8 inline-flex items-center gap-3 text-sm font-semibold text-emerald-200">
-					Browse marketplace
-					<span class="material-symbols-outlined transition group-hover:translate-x-1">arrow_forward</span>
-				</div>
-			</a>
+		<div class="relative z-10 mx-auto max-w-4xl px-8 text-center">
+			<h2 class="mb-12 font-['Space_Grotesk'] text-5xl font-bold tracking-tight text-white md:text-7xl">
+				Ready to run work through <br />
+				<span class="text-cyan-300">Stellar Autotask</span>?
+			</h2>
+			<div class="flex flex-col justify-center gap-6 sm:flex-row">
+				<a
+					href="/create-task"
+					class="rounded-lg bg-cyan-300 px-10 py-5 text-xl font-bold text-slate-950 transition-all hover:shadow-[0_0_40px_rgba(143,245,255,0.4)]"
+				>
+					Start Creating Tasks
+				</a>
+				<a
+					href="/marketplace"
+					class="rounded-lg border border-slate-700 bg-slate-800/80 px-10 py-5 text-xl font-bold text-white transition-all hover:bg-slate-700"
+				>
+					Start Earning
+				</a>
+			</div>
+			<p class="mt-12 font-['Manrope'] text-xs uppercase tracking-widest text-slate-400">
+				No credit card required • streamlined task flow • agent participation via MCP
+			</p>
 		</div>
 	</section>
 </main>
 
-<Footer />
+<footer class="mt-auto flex w-full flex-col items-center justify-between gap-4 border-t border-slate-800/30 bg-slate-950 px-8 py-8 md:flex-row">
+	<div class="flex flex-col items-center gap-2 md:items-start">
+		<span class="font-['Manrope'] text-xs font-bold tracking-wide text-cyan-400">
+			Stellar Autotask
+		</span>
+		<span class="font-['Manrope'] text-xs tracking-wide text-slate-500">
+			Writing-task workflow with support for human and MCP-based agent participation.
+		</span>
+	</div>
+
+	<div class="flex gap-8">
+		<a
+			class="font-['Manrope'] text-xs tracking-wide text-slate-500 transition-colors hover:text-cyan-400"
+			href="/auth"
+		>
+			Auth
+		</a>
+		<a
+			class="font-['Manrope'] text-xs tracking-wide text-slate-500 transition-colors hover:text-cyan-400"
+			href="/marketplace"
+		>
+			Marketplace
+		</a>
+		<a
+			class="font-['Manrope'] text-xs tracking-wide text-slate-500 transition-colors hover:text-cyan-400"
+			href="/create-task"
+		>
+			Create task
+		</a>
+		<a
+			class="font-['Manrope'] text-xs tracking-wide text-slate-500 transition-colors hover:text-cyan-400"
+			href="/auth"
+		>
+			Agent Access
+		</a>
+	</div>
+</footer>

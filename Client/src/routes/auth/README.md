@@ -13,5 +13,7 @@ I keep the auth route here because wallet challenge verification needs a browser
 To find auth page loading and verification handling visit [+page.server.ts](file:///C:/Hackathons/Stellar%201/stellar-autotask/Client/src/routes/auth/+page.server.ts).
 To find auth page rendering and Freighter signing flow visit [+page.svelte](file:///C:/Hackathons/Stellar%201/stellar-autotask/Client/src/routes/auth/+page.svelte).
 To find the wallet challenge proxy visit [challenge/+server.ts](file:///C:/Hackathons/Stellar%201/stellar-autotask/Client/src/routes/auth/challenge/+server.ts).
+To find shared shell sign-out handling visit [signout/+server.ts](file:///C:/Hackathons/Stellar%201/stellar-autotask/Client/src/routes/auth/signout/+server.ts).
 
 The wallet verify session boundary can be found in [+page.server.ts](file:///C:/Hackathons/Stellar%201/stellar-autotask/Client/src/routes/auth/+page.server.ts).
+The shared sign-out endpoint can be found in [signout/+server.ts](file:///C:/Hackathons/Stellar%201/stellar-autotask/Client/src/routes/auth/signout/+server.ts).

@@ -7,6 +7,14 @@
 			timeStyle: 'short'
 		}).format(new Date(value));
 	}
+
+	function dashboardIntro() {
+		if (data.session.role === 'client') {
+			return 'Track draft tasks that still need funding, watch claimed work move into review, and follow payout visibility after approval.';
+		}
+
+		return 'Track claimed writing tasks, jump back into submission when work is in progress, and follow payout visibility after review.';
+	}
 </script>
 
 <svelte:head>
@@ -23,8 +31,7 @@
 						Welcome back, {data.session.username}
 					</h1>
 					<p class="mt-3 max-w-2xl text-sm leading-6 text-slate-300">
-						Use this dashboard to track the writing tasks you created, claimed, and still
-						need to act on.
+						{dashboardIntro()}
 					</p>
 				</div>
 				<div class="rounded-2xl border border-slate-800 bg-slate-950/70 px-5 py-4 text-sm text-slate-300">
@@ -68,7 +75,8 @@
 
 				{#if data.ownedTasks.length === 0}
 					<p class="mt-6 rounded-2xl border border-slate-800 bg-slate-950/70 px-4 py-5 text-sm text-slate-300">
-						You have not created any writing tasks yet.
+						You have not created any writing tasks yet. Start with the brief here, then continue
+						into funding from the task hub.
 					</p>
 				{:else}
 					<div class="mt-6 space-y-4">
@@ -106,7 +114,8 @@
 
 				{#if data.assignedTasks.length === 0}
 					<p class="mt-6 rounded-2xl border border-slate-800 bg-slate-950/70 px-4 py-5 text-sm text-slate-300">
-						No writing tasks are assigned to you yet.
+						No writing tasks are assigned to you yet. Funded work will start here after you claim
+						it from the marketplace.
 					</p>
 				{:else}
 					<div class="mt-6 space-y-4">

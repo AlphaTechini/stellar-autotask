@@ -11,6 +11,8 @@ I use this folder for shared frontend primitives. The goal is to keep route file
 
 To find the typed API contracts visit [contracts/api.ts](file:///C:/Hackathons/Stellar%201/stellar-autotask/Client/src/lib/contracts/api.ts).
 To find backend and session server utilities visit [server/backendApi.ts](file:///C:/Hackathons/Stellar%201/stellar-autotask/Client/src/lib/server/backendApi.ts).
+To find shared shell components visit [components/common/README.md](file:///C:/Hackathons/Stellar%201/stellar-autotask/Client/src/lib/components/common/README.md).
 
 The shared contract layer can be found in [contracts/api.ts](file:///C:/Hackathons/Stellar%201/stellar-autotask/Client/src/lib/contracts/api.ts).
 The backend server integration layer can be found in [server/backendApi.ts](file:///C:/Hackathons/Stellar%201/stellar-autotask/Client/src/lib/server/backendApi.ts).
+The shared shell component layer can be found in [components/common/README.md](file:///C:/Hackathons/Stellar%201/stellar-autotask/Client/src/lib/components/common/README.md).

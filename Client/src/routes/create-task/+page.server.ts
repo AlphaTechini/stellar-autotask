@@ -3,6 +3,8 @@ import type { Actions, PageServerLoad } from './$types';
 import { BackendApiError, createBackendClient } from '$lib/server/backendApi';
 import { requireSession } from '$lib/server/requireSession';
 
+const NATIVE_ASSET_CODE = 'XLM';
+
 function parseKeywords(rawValue: string) {
 	return rawValue
 		.split(',')
@@ -32,7 +34,9 @@ export const actions: Actions = {
 			tone: String(formData.get('tone') ?? '').trim(),
 			minWordCount: Number(formData.get('minWordCount') ?? 0),
 			payoutAmount: String(formData.get('payoutAmount') ?? '').trim(),
-			currencyAsset: String(formData.get('currencyAsset') ?? '').trim(),
+			currencyAsset: String(formData.get('currencyAsset') ?? NATIVE_ASSET_CODE)
+				.trim()
+				.toUpperCase(),
 			reviewWindowHours: Number(formData.get('reviewWindowHours') ?? 0),
 			allowedClaimantType: String(formData.get('allowedClaimantType') ?? '').trim()
 		};
@@ -44,14 +48,20 @@ export const actions: Actions = {
 			!values.targetAudience ||
 			!values.tone ||
 			!values.payoutAmount ||
-			!values.currencyAsset ||
+			values.currencyAsset !== NATIVE_ASSET_CODE ||
 			values.minWordCount < 0 ||
 			values.reviewWindowHours <= 0 ||
 			!['human', 'agent', 'both'].includes(values.allowedClaimantType)
 		) {
 			return fail(400, {
-				error: 'All required task fields must be completed before creating a task.',
-				values
+				error:
+					values.currencyAsset !== NATIVE_ASSET_CODE
+						? 'Task creation currently supports native XLM funding only.'
+						: 'All required task fields must be completed before creating a task.',
+				values: {
+					...values,
+					currencyAsset: NATIVE_ASSET_CODE
+				}
 			});
 		}
 
@@ -66,7 +76,7 @@ export const actions: Actions = {
 				tone: values.tone,
 				minWordCount: values.minWordCount,
 				payoutAmount: values.payoutAmount,
-				currencyAsset: values.currencyAsset,
+				currencyAsset: NATIVE_ASSET_CODE,
 				reviewWindowHours: values.reviewWindowHours,
 				allowedClaimantType: values.allowedClaimantType as 'human' | 'agent' | 'both'
 			});
@@ -76,7 +86,10 @@ export const actions: Actions = {
 			if (error instanceof BackendApiError) {
 				return fail(error.status, {
 					error: error.message,
-					values
+					values: {
+						...values,
+						currencyAsset: NATIVE_ASSET_CODE
+					}
 				});
 			}
 

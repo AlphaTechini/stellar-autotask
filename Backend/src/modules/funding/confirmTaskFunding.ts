@@ -5,7 +5,7 @@ import { confirmFundingForTask } from './fundingWriteRepository.js';
 
 type FundingInput = {
   amount: string;
-  assetCode: string;
+  assetCode: 'XLM';
   txHash: string;
   fromWalletAddress: string;
   toWalletAddress: string;
@@ -37,6 +37,7 @@ type FundingFailure =
   | { kind: 'wallet_mismatch' }
   | { kind: 'amount_mismatch' }
   | { kind: 'asset_mismatch' }
+  | { kind: 'unsupported_asset' }
   | { kind: 'funding_conflict' };
 
 export type ConfirmTaskFundingResult = FundingSuccess | FundingFailure;
@@ -72,6 +73,10 @@ export async function confirmTaskFunding(
 
   if (input.amount !== existingTask.payoutAmount) {
     return { kind: 'amount_mismatch' };
+  }
+
+  if (existingTask.currencyAsset !== 'XLM') {
+    return { kind: 'unsupported_asset' };
   }
 
   if (input.assetCode !== existingTask.currencyAsset) {

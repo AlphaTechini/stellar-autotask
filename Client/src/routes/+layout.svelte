@@ -1,9 +1,10 @@
 <script lang="ts">
 	import './layout.css';
 	import favicon from '$lib/assets/favicon.svg';
+	import AppShell from '$lib/components/common/AppShell.svelte';
 	import { navigating } from '$app/state';
 
-	let { children } = $props();
+	let { children, data } = $props();
 </script>
 
 <svelte:head><link rel="icon" href={favicon} /></svelte:head>
@@ -14,4 +15,6 @@
 	</div>
 {/if}
 
-{@render children()}
+<AppShell session={data.session}>
+	{@render children()}
+</AppShell>

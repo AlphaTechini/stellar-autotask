@@ -11,7 +11,7 @@ export const createTaskRequestSchema = z.object({
   tone: z.string().trim().min(1),
   minWordCount: z.number().int().min(0),
   payoutAmount: z.string().trim().regex(payoutAmountPattern),
-  currencyAsset: z.string().trim().min(1),
+  currencyAsset: z.literal('XLM'),
   reviewWindowHours: z.number().int().positive(),
   allowedClaimantType: z.enum(['human', 'agent', 'both']).default('both'),
 });
