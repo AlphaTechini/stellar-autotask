@@ -26,7 +26,7 @@ export function verifyWalletChallenge(transactionXdr: string, env: AppEnv) {
     throw new Error('Challenge source account does not match the auth signer.');
   }
 
-  if (transaction.sequence !== '-1') {
+  if (transaction.sequence !== '0') {
     throw new Error('Challenge sequence number is invalid.');
   }
 

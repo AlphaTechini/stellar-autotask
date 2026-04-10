@@ -41,7 +41,11 @@ const schedulerPlugin: FastifyPluginAsync<{ env: AppEnv }> = async (fastify, opt
       'Auto-payout scheduler started.',
     );
 
-    await runSweep();
+    // Let the server finish booting before the first sweep so slow payout retries
+    // cannot trip Fastify's onReady timeout.
+    queueMicrotask(() => {
+      void runSweep();
+    });
   });
 
   fastify.addHook('onClose', async () => {

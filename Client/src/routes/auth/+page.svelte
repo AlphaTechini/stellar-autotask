@@ -1,6 +1,12 @@
 <script lang="ts">
+	import { tick } from 'svelte';
 	import { enhance } from '$app/forms';
 	import type { WalletChallenge } from '$lib/contracts/api';
+	import {
+		connectFreighterWallet,
+		freighterErrorMessage,
+		signWithFreighter
+	} from '$lib/freighter';
 
 	let { data, form } = $props();
 
@@ -26,27 +32,6 @@
 			dateStyle: 'medium',
 			timeStyle: 'short'
 		}).format(new Date(value));
-	}
-
-	function freighterErrorMessage(error: unknown) {
-		if (typeof error === 'string') {
-			return error;
-		}
-
-		if (
-			error &&
-			typeof error === 'object' &&
-			'message' in error &&
-			typeof error.message === 'string'
-		) {
-			return error.message;
-		}
-
-		return 'The wallet request could not be completed.';
-	}
-
-	async function loadFreighterApi() {
-		return import('@stellar/freighter-api');
 	}
 
 	async function requestChallenge(address: string) {
@@ -86,19 +71,8 @@
 		transactionXdr = '';
 
 		try {
-			const { requestAccess, signTransaction } = await loadFreighterApi();
 			walletStage = 'connecting';
-			const accessResult = await requestAccess();
-
-			if (accessResult.error || !accessResult.address) {
-				throw new Error(
-					accessResult.error
-						? freighterErrorMessage(accessResult.error)
-						: 'Freighter did not return a wallet address.'
-				);
-			}
-
-			walletAddress = accessResult.address.trim().toUpperCase();
+			walletAddress = await connectFreighterWallet();
 			walletNotice = 'Wallet connected. Requesting a short-lived Stellar challenge.';
 
 			walletStage = 'requesting';
@@ -108,22 +82,15 @@
 			walletNotice = 'Challenge ready. Waiting for your Freighter signature.';
 			walletStage = 'signing';
 
-			const signedResult = await signTransaction(challenge.transactionXdr, {
+			const signedResult = await signWithFreighter(challenge.transactionXdr, {
 				networkPassphrase: challenge.networkPassphrase,
 				address: walletAddress
 			});
 
-			if (signedResult.error || !signedResult.signedTxXdr) {
-				throw new Error(
-					signedResult.error
-						? freighterErrorMessage(signedResult.error)
-						: 'Freighter did not return a signed transaction.'
-				);
-			}
-
 			transactionXdr = signedResult.signedTxXdr;
 			walletNotice = 'Signature captured. Finalizing sign-in through the server session boundary.';
 			walletStage = 'verifying';
+			await tick();
 			walletForm?.requestSubmit();
 		} catch (error) {
 			walletError = freighterErrorMessage(error);

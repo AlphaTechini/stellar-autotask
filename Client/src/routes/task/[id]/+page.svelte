@@ -1,5 +1,12 @@
 <script lang="ts">
+	import { tick } from 'svelte';
 	import { enhance } from '$app/forms';
+	import {
+		connectFreighterWallet,
+		freighterErrorMessage,
+		getFreighterNetworkDetails,
+		signWithFreighter
+	} from '$lib/freighter';
 
 	let { data, form } = $props();
 	let fundingForm: HTMLFormElement | null = $state(null);
@@ -37,69 +44,16 @@
 		return `${value.slice(0, 6)}...${value.slice(-6)}`;
 	}
 
-	function freighterErrorMessage(error: unknown) {
-		if (typeof error === 'string') {
-			return error;
-		}
-
-		if (error && typeof error === 'object') {
-			if ('message' in error && typeof error.message === 'string') {
-				return error.message;
-			}
-
-			if (
-				'response' in error &&
-				error.response &&
-				typeof error.response === 'object' &&
-				'data' in error.response &&
-				error.response.data &&
-				typeof error.response.data === 'object'
-			) {
-				const extras = 'extras' in error.response.data ? error.response.data.extras : null;
-
-				if (
-					extras &&
-					typeof extras === 'object' &&
-					'result_codes' in extras &&
-					extras.result_codes &&
-					typeof extras.result_codes === 'object'
-				) {
-					const transactionCode =
-						'transaction' in extras.result_codes &&
-						typeof extras.result_codes.transaction === 'string'
-							? extras.result_codes.transaction
-							: null;
-					const operationCodes =
-						'operations' in extras.result_codes && Array.isArray(extras.result_codes.operations)
-							? extras.result_codes.operations.filter(
-									(value): value is string => typeof value === 'string'
-								)
-							: [];
-
-					if (transactionCode || operationCodes.length > 0) {
-						return [transactionCode, ...operationCodes].filter(Boolean).join(', ');
-					}
-				}
-			}
-		}
-
-		return 'The wallet funding request could not be completed.';
-	}
-
-	async function loadFreighterApi() {
-		return import('@stellar/freighter-api');
-	}
-
 	async function loadStellarSdk() {
 		return import('@stellar/stellar-sdk');
 	}
 
 	function isOwnerClient() {
-		return Boolean(data.session) && data.session.id === data.task.clientId;
+		return data.session?.id === data.task.clientId;
 	}
 
 	function isAssignedWorker() {
-		return Boolean(data.session) && data.session.id === data.task.workerId;
+		return data.session?.id === data.task.workerId;
 	}
 
 	function canFundTask() {
@@ -127,9 +81,7 @@
 	}
 
 	function canClaimTask() {
-		return (
-			Boolean(data.session) && data.task.status === 'OPEN' && data.session.id !== data.task.clientId
-		);
+		return Boolean(data.session) && data.task.status === 'OPEN' && data.session?.id !== data.task.clientId;
 	}
 
 	function canSubmitTask() {
@@ -151,7 +103,7 @@
 		return (
 			Boolean(data.session) &&
 			data.task.status === 'PENDING_REVIEW' &&
-			data.session.id === data.task.clientId
+			data.session?.id === data.task.clientId
 		);
 	}
 
@@ -163,13 +115,11 @@
 	}
 
 	function isOwnerClientViewer() {
-		return Boolean(data.session) && data.session.id === data.task.clientId;
+		return data.session?.id === data.task.clientId;
 	}
 
 	function isOtherWorkerViewer() {
-		return (
-			Boolean(data.session) && Boolean(data.task.workerId) && data.session.id !== data.task.workerId
-		);
+		return Boolean(data.session) && Boolean(data.task.workerId) && data.session?.id !== data.task.workerId;
 	}
 
 	function waitingState() {
@@ -500,20 +450,9 @@
 		fundingTxHash = '';
 
 		try {
-			const { getNetworkDetails, requestAccess, signTransaction } = await loadFreighterApi();
 			const { Asset, BASE_FEE, Horizon, Operation, TransactionBuilder } = await loadStellarSdk();
 			fundingStage = 'connecting';
-			const accessResult = await requestAccess();
-
-			if (accessResult.error || !accessResult.address) {
-				throw new Error(
-					accessResult.error
-						? freighterErrorMessage(accessResult.error)
-						: 'Freighter did not return a wallet address.'
-				);
-			}
-
-			const connectedWallet = accessResult.address.trim().toUpperCase();
+			const connectedWallet = await connectFreighterWallet();
 			fundingWalletAddress = connectedWallet;
 
 			if (connectedWallet !== data.session.walletAddress.trim().toUpperCase()) {
@@ -525,11 +464,7 @@
 			fundingNotice = 'Wallet connected. Checking the Stellar network before building the payment.';
 			fundingStage = 'building';
 
-			const networkDetails = await getNetworkDetails();
-
-			if (networkDetails.error) {
-				throw new Error(freighterErrorMessage(networkDetails.error));
-			}
+			const networkDetails = await getFreighterNetworkDetails();
 
 			if (networkDetails.networkPassphrase !== data.stellarNetworkPassphrase) {
 				throw new Error(
@@ -556,18 +491,10 @@
 			fundingNotice = 'Transaction ready. Waiting for your Freighter signature.';
 			fundingStage = 'signing';
 
-			const signedResult = await signTransaction(transaction.toXDR(), {
+			const signedResult = await signWithFreighter(transaction.toXDR(), {
 				networkPassphrase: data.stellarNetworkPassphrase,
 				address: connectedWallet
 			});
-
-			if (signedResult.error || !signedResult.signedTxXdr) {
-				throw new Error(
-					signedResult.error
-						? freighterErrorMessage(signedResult.error)
-						: 'Freighter did not return a signed payment transaction.'
-				);
-			}
 
 			fundingNotice = 'Signature captured. Submitting the XLM payment to Stellar Testnet.';
 			fundingStage = 'submitting';
@@ -582,6 +509,7 @@
 			fundingNotice =
 				'Transaction submitted. Recording the funding hash through the backend task state.';
 			fundingStage = 'confirming';
+			await tick();
 			fundingForm?.requestSubmit();
 		} catch (error) {
 			fundingError = freighterErrorMessage(error);

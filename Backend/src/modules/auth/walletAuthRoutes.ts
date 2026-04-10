@@ -31,7 +31,6 @@ const walletAuthRoutes: FastifyPluginAsync = async (fastify) => {
       const userWriteResult = await upsertWalletHumanUser(fastify.db, {
         walletAddress: verifiedChallenge.walletAddress,
         username: input.username,
-        role: input.role,
       });
 
       if (userWriteResult.kind === 'missing_username') {
