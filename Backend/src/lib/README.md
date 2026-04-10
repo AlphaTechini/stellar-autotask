@@ -9,6 +9,8 @@ I use this folder for small shared domain helpers that multiple backend modules 
 
 ## File Navigation
 
+To find claimant-type matching logic visit [claimantType.ts](file:///C:/Hackathons/Stellar%201/stellar-autotask/Backend/src/lib/claimantType.ts).
 To find task state-machine logic visit [taskStateMachine.ts](file:///C:/Hackathons/Stellar%201/stellar-autotask/Backend/src/lib/taskStateMachine.ts).
 
+The claimant-type helper can be found in [claimantType.ts](file:///C:/Hackathons/Stellar%201/stellar-autotask/Backend/src/lib/claimantType.ts).
 The task state machine can be found in [taskStateMachine.ts](file:///C:/Hackathons/Stellar%201/stellar-autotask/Backend/src/lib/taskStateMachine.ts).

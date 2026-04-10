@@ -2,6 +2,7 @@ import type { FastifyInstance } from 'fastify';
 import claimRoutes from '../modules/claims/claimRoutes.js';
 import devAuthRoutes from '../modules/dev/devAuthRoutes.js';
 import fundingRoutes from '../modules/funding/fundingRoutes.js';
+import agentRoutes from '../modules/agents/agentRoutes.js';
 import reviewRoutes from '../modules/review/reviewRoutes.js';
 import submissionRoutes from '../modules/submissions/submissionRoutes.js';
 import taskRoutes from '../modules/tasks/taskRoutes.js';
@@ -19,4 +20,5 @@ export async function registerRoutes(fastify: FastifyInstance) {
   await fastify.register(claimRoutes, { prefix: '/tasks' });
   await fastify.register(submissionRoutes, { prefix: '/tasks' });
   await fastify.register(reviewRoutes, { prefix: '/tasks' });
+  await fastify.register(agentRoutes, { prefix: '/agent' });
 }

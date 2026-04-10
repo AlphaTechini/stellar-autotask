@@ -1,3 +1,4 @@
+import type { AppEnv } from '../../config/env.js';
 import type { DatabaseClient } from '../../db/client.js';
 import { isTaskFundable } from '../../lib/taskStateMachine.js';
 import { findTaskRecordById } from '../tasks/taskReadRepository.js';
@@ -38,12 +39,14 @@ type FundingFailure =
   | { kind: 'amount_mismatch' }
   | { kind: 'asset_mismatch' }
   | { kind: 'unsupported_asset' }
+  | { kind: 'destination_mismatch' }
   | { kind: 'funding_conflict' };
 
 export type ConfirmTaskFundingResult = FundingSuccess | FundingFailure;
 
 export async function confirmTaskFunding(
   db: DatabaseClient['db'],
+  env: AppEnv,
   taskId: string,
   actorUserId: string,
   actorWalletAddress: string,
@@ -81,6 +84,10 @@ export async function confirmTaskFunding(
 
   if (input.assetCode !== existingTask.currencyAsset) {
     return { kind: 'asset_mismatch' };
+  }
+
+  if (input.toWalletAddress !== env.PLATFORM_FUNDING_WALLET) {
+    return { kind: 'destination_mismatch' };
   }
 
   const fundedTask = await confirmFundingForTask(db, {

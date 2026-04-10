@@ -14,6 +14,7 @@ const fundingRoutes: FastifyPluginAsync = async (fastify) => {
       const input = fundTaskRequestSchema.parse(request.body);
       const result = await confirmTaskFunding(
         fastify.db,
+        fastify.env,
         params.id,
         request.authUser.userId,
         request.authUser.walletAddress,
@@ -63,6 +64,12 @@ const fundingRoutes: FastifyPluginAsync = async (fastify) => {
       if (result.kind === 'unsupported_asset') {
         throw fastify.httpErrors.badRequest(
           'This task is outside the current native XLM funding path.',
+        );
+      }
+
+      if (result.kind === 'destination_mismatch') {
+        throw fastify.httpErrors.badRequest(
+          'Funding destination must match the configured platform funding wallet.',
         );
       }
 

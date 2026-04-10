@@ -16,6 +16,7 @@ To find backend architecture logic visit [Architecture.md](file:///C:/Hackathons
 The backend system design can be found in [Architecture.md](file:///C:/Hackathons/Stellar%201/stellar-autotask/Backend/Architecture.md).
 To find backend package scripts visit [package.json](file:///C:/Hackathons/Stellar%201/stellar-autotask/Backend/package.json).
 The authentication module can be found in [src/modules/auth/README.md](file:///C:/Hackathons/Stellar%201/stellar-autotask/Backend/src/modules/auth/README.md).
+The agent access module can be found in [src/modules/agents/README.md](file:///C:/Hackathons/Stellar%201/stellar-autotask/Backend/src/modules/agents/README.md).
 The claim module can be found in [src/modules/claims/README.md](file:///C:/Hackathons/Stellar%201/stellar-autotask/Backend/src/modules/claims/README.md).
 The development helper module can be found in [src/modules/dev/README.md](file:///C:/Hackathons/Stellar%201/stellar-autotask/Backend/src/modules/dev/README.md).
 The funding module can be found in [src/modules/funding/README.md](file:///C:/Hackathons/Stellar%201/stellar-autotask/Backend/src/modules/funding/README.md).

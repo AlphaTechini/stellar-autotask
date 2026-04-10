@@ -1,4 +1,4 @@
-import { and, desc, eq } from 'drizzle-orm';
+import { and, desc, eq, inArray } from 'drizzle-orm';
 import type { DatabaseClient } from '../../db/client.js';
 import { tasks } from '../../db/schema/tasks.js';
 
@@ -6,6 +6,7 @@ export type ListTasksFilters = {
   status?: typeof tasks.$inferSelect.status;
   clientId?: string;
   workerId?: string;
+  allowedClaimantTypes?: ReadonlyArray<typeof tasks.$inferSelect.allowedClaimantType>;
 };
 
 export async function listTaskRecords(
@@ -26,6 +27,10 @@ export async function listTaskRecords(
 
       if (filters.workerId) {
         conditions.push(eq(task.workerId, filters.workerId));
+      }
+
+      if (filters.allowedClaimantTypes?.length) {
+        conditions.push(inArray(task.allowedClaimantType, filters.allowedClaimantTypes));
       }
 
       if (conditions.length === 0) {

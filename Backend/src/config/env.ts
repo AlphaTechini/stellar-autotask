@@ -15,7 +15,7 @@ const optionalBooleanStringSchema = z
 const envSchema = z.object({
   NODE_ENV: z.enum(['development', 'test', 'production']).default('development'),
   HOST: z.string().min(1).default('0.0.0.0'),
-  PORT: z.coerce.number().int().positive().default(3000),
+  PORT: z.coerce.number().int().positive().default(7400),
   DATABASE_URL: z.string().min(1).optional(),
   DATABASE_HOST: z.string().min(1).optional(),
   DATABASE_PORT: z.coerce.number().int().positive().optional(),
@@ -34,10 +34,12 @@ const envSchema = z.object({
   AUTH_JWT_ISSUER: z.string().min(1).default('stellar-1-backend'),
   AUTH_CHALLENGE_TTL_SECONDS: z.coerce.number().int().positive().default(300),
   AUTH_SESSION_TTL_SECONDS: z.coerce.number().int().positive().default(86400),
+  STELLAR_HORIZON_URL: z.string().url().default('https://horizon-testnet.stellar.org'),
   STELLAR_RPC_URL: z.string().url().default('https://soroban-testnet.stellar.org:443'),
   STELLAR_PAYOUT_CONTRACT_ID: z.string().min(1),
   STELLAR_PAYOUT_ADMIN_SECRET_KEY: z.string().min(1),
   STELLAR_PAYOUT_ADMIN_PUBLIC_KEY: z.string().min(1),
+  PLATFORM_FUNDING_WALLET: z.string().min(1).optional(),
   STELLAR_TRANSACTION_TIMEOUT_SECONDS: z.coerce.number().int().positive().default(30),
   STELLAR_TRANSACTION_POLL_INTERVAL_MS: z.coerce.number().int().positive().default(1000),
   STELLAR_TRANSACTION_POLL_TIMEOUT_MS: z.coerce.number().int().positive().default(45000),
@@ -64,6 +66,7 @@ export type AppEnv = Omit<
 > & {
   DATABASE_URL: string;
   DATABASE_ENABLE_PREPARED_STATEMENTS: boolean;
+  PLATFORM_FUNDING_WALLET: string;
 };
 
 export function loadEnv(rawEnv: NodeJS.ProcessEnv = process.env): AppEnv {
@@ -84,5 +87,7 @@ export function loadEnv(rawEnv: NodeJS.ProcessEnv = process.env): AppEnv {
     ...parsedEnv,
     DATABASE_URL: databaseConfig.databaseUrl,
     DATABASE_ENABLE_PREPARED_STATEMENTS: databaseConfig.databaseEnablePreparedStatements,
+    PLATFORM_FUNDING_WALLET:
+      parsedEnv.PLATFORM_FUNDING_WALLET ?? parsedEnv.STELLAR_PAYOUT_ADMIN_PUBLIC_KEY,
   };
 }

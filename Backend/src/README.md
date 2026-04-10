@@ -18,6 +18,7 @@ To find plugin logic visit [plugins/README.md](file:///C:/Hackathons/Stellar%201
 To find root route logic visit [routes/README.md](file:///C:/Hackathons/Stellar%201/stellar-autotask/Backend/src/routes/README.md).
 To find database schema logic visit [db/schema/index.ts](file:///C:/Hackathons/Stellar%201/stellar-autotask/Backend/src/db/schema/index.ts).
 To find wallet authentication logic visit [modules/auth/README.md](file:///C:/Hackathons/Stellar%201/stellar-autotask/Backend/src/modules/auth/README.md).
+To find machine-facing agent access logic visit [modules/agents/README.md](file:///C:/Hackathons/Stellar%201/stellar-autotask/Backend/src/modules/agents/README.md).
 To find claim module logic visit [modules/claims/README.md](file:///C:/Hackathons/Stellar%201/stellar-autotask/Backend/src/modules/claims/README.md).
 To find funding module logic visit [modules/funding/README.md](file:///C:/Hackathons/Stellar%201/stellar-autotask/Backend/src/modules/funding/README.md).
 To find payout module logic visit [modules/payouts/README.md](file:///C:/Hackathons/Stellar%201/stellar-autotask/Backend/src/modules/payouts/README.md).

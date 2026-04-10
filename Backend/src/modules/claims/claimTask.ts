@@ -1,3 +1,4 @@
+import { matchesAllowedClaimantType } from '../../lib/claimantType.js';
 import type { DatabaseClient } from '../../db/client.js';
 import { isTaskClaimable } from '../../lib/taskStateMachine.js';
 import { findTaskRecordById } from '../tasks/taskReadRepository.js';
@@ -11,6 +12,7 @@ type ClaimTaskSuccess = {
 type ClaimTaskFailure =
   | { kind: 'not_found' }
   | { kind: 'self_claim_forbidden' }
+  | { kind: 'claimant_type_forbidden'; allowedClaimantType: string }
   | { kind: 'not_claimable'; reason: 'status' | 'claimed' }
   | { kind: 'claim_conflict' };
 
@@ -20,6 +22,7 @@ export async function claimTask(
   db: DatabaseClient['db'],
   taskId: string,
   claimantUserId: string,
+  claimantAuthType: string,
 ): Promise<ClaimTaskResult> {
   const existingTask = await findTaskRecordById(db, taskId);
 
@@ -39,6 +42,13 @@ export async function claimTask(
     return {
       kind: 'already_claimed_by_requester',
       task: existingTask,
+    };
+  }
+
+  if (!matchesAllowedClaimantType(existingTask.allowedClaimantType, claimantAuthType)) {
+    return {
+      kind: 'claimant_type_forbidden',
+      allowedClaimantType: existingTask.allowedClaimantType,
     };
   }
 

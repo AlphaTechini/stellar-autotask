@@ -11,7 +11,12 @@ const claimRoutes: FastifyPluginAsync = async (fastify) => {
 
     try {
       const params = claimTaskParamsSchema.parse(request.params);
-      const result = await claimTask(fastify.db, params.id, request.authUser.userId);
+      const result = await claimTask(
+        fastify.db,
+        params.id,
+        request.authUser.userId,
+        request.authUser.authType,
+      );
 
       if (result.kind === 'not_found') {
         throw fastify.httpErrors.notFound('Task not found.');
@@ -19,6 +24,12 @@ const claimRoutes: FastifyPluginAsync = async (fastify) => {
 
       if (result.kind === 'self_claim_forbidden') {
         throw fastify.httpErrors.forbidden('You cannot claim a task you created.');
+      }
+
+      if (result.kind === 'claimant_type_forbidden') {
+        throw fastify.httpErrors.forbidden(
+          'This task is not open to the current claimant type.',
+        );
       }
 
       if (result.kind === 'not_claimable') {

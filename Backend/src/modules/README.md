@@ -9,6 +9,7 @@ I use this folder for feature modules so route wiring, validation, and domain se
 
 ## File Navigation
 
+To find machine-facing agent access logic visit [agents/README.md](file:///C:/Hackathons/Stellar%201/stellar-autotask/Backend/src/modules/agents/README.md).
 To find wallet authentication logic visit [auth/README.md](file:///C:/Hackathons/Stellar%201/stellar-autotask/Backend/src/modules/auth/README.md).
 To find task claim logic visit [claims/README.md](file:///C:/Hackathons/Stellar%201/stellar-autotask/Backend/src/modules/claims/README.md).
 To find development helper logic visit [dev/README.md](file:///C:/Hackathons/Stellar%201/stellar-autotask/Backend/src/modules/dev/README.md).
@@ -20,6 +21,7 @@ To find task creation and task read logic visit [tasks/README.md](file:///C:/Hac
 To find user write-path logic visit [users/README.md](file:///C:/Hackathons/Stellar%201/stellar-autotask/Backend/src/modules/users/README.md).
 To find provider-backed verification logic visit [verification/README.md](file:///C:/Hackathons/Stellar%201/stellar-autotask/Backend/src/modules/verification/README.md).
 
+The agent access module can be found in [agents/README.md](file:///C:/Hackathons/Stellar%201/stellar-autotask/Backend/src/modules/agents/README.md).
 The wallet authentication module can be found in [auth/README.md](file:///C:/Hackathons/Stellar%201/stellar-autotask/Backend/src/modules/auth/README.md).
 The claim module can be found in [claims/README.md](file:///C:/Hackathons/Stellar%201/stellar-autotask/Backend/src/modules/claims/README.md).
 The development helper module can be found in [dev/README.md](file:///C:/Hackathons/Stellar%201/stellar-autotask/Backend/src/modules/dev/README.md).

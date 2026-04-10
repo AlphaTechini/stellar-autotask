@@ -2,6 +2,7 @@ import fp from 'fastify-plugin';
 import type { FastifyPluginAsync } from 'fastify';
 import jwt, { type JwtPayload } from 'jsonwebtoken';
 import type { AppEnv } from '../config/env.js';
+import { authenticateAgentCredential } from '../modules/agents/authenticateAgentCredential.js';
 
 type AuthUser = {
   userId: string;
@@ -55,8 +56,24 @@ const authContextPlugin: FastifyPluginAsync<{ env: AppEnv }> = async (fastify, o
         role: payload.role,
         authType: payload.authType,
       };
+      return;
     } catch {
-      request.authUser = null;
+      const authenticatedAgent = await authenticateAgentCredential(fastify.db, token).catch(
+        () => null,
+      );
+
+      if (!authenticatedAgent) {
+        request.authUser = null;
+        return;
+      }
+
+      request.authUser = {
+        userId: authenticatedAgent.user.id,
+        username: authenticatedAgent.user.username,
+        walletAddress: authenticatedAgent.user.stellarWalletAddress,
+        role: authenticatedAgent.user.role,
+        authType: authenticatedAgent.user.authType,
+      };
     }
   });
 };
