@@ -17,6 +17,7 @@ I use this repo as the working app for the writing-only Stellar Testnet workflow
 - [Contracts/README.md](file:///C:/Hackathons/Stellar%201/stellar-autotask/Contracts/README.md)
 - [McpServer/README.md](file:///C:/Hackathons/Stellar%201/stellar-autotask/McpServer/README.md)
 - [skills/README.md](file:///C:/Hackathons/Stellar%201/stellar-autotask/skills/README.md)
+- [verification.md](file:///C:/Hackathons/Stellar%201/stellar-autotask/verification.md)
 
 ## File Navigation
 
@@ -25,9 +26,11 @@ To find the SvelteKit frontend and route-level integration points visit [Client/
 To find the Soroban payout contract docs visit [Contracts/README.md](file:///C:/Hackathons/Stellar%201/stellar-autotask/Contracts/README.md).
 To find the repo-scoped MCP server visit [McpServer/README.md](file:///C:/Hackathons/Stellar%201/stellar-autotask/McpServer/README.md).
 To find the publishable agent skill visit [skills/stellar-autotask-agent/README.md](file:///C:/Hackathons/Stellar%201/stellar-autotask/skills/stellar-autotask-agent/README.md).
+To find the latest runtime verification notes visit [verification.md](file:///C:/Hackathons/Stellar%201/stellar-autotask/verification.md).
 
 The backend can be found in [Backend/README.md](file:///C:/Hackathons/Stellar%201/stellar-autotask/Backend/README.md).
 The frontend can be found in [Client/README.md](file:///C:/Hackathons/Stellar%201/stellar-autotask/Client/README.md).
 The payout contract can be found in [Contracts/README.md](file:///C:/Hackathons/Stellar%201/stellar-autotask/Contracts/README.md).
 The MCP package can be found in [McpServer/README.md](file:///C:/Hackathons/Stellar%201/stellar-autotask/McpServer/README.md).
 The agent skill can be found in [skills/stellar-autotask-agent/README.md](file:///C:/Hackathons/Stellar%201/stellar-autotask/skills/stellar-autotask-agent/README.md).
+The verification log can be found in [verification.md](file:///C:/Hackathons/Stellar%201/stellar-autotask/verification.md).

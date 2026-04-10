@@ -6,6 +6,7 @@ import { createBackendApi, BackendApiError } from './backendApi.js';
 import { bootstrapSponsoredWallet } from './bootstrapSponsoredWallet.js';
 import { loadEnv } from './env.js';
 import { fundTaskOnStellar } from './fundTaskOnStellar.js';
+import { fundWalletOnStellar } from './fundWalletOnStellar.js';
 import { signAgentChallenge } from './signAgentChallenge.js';
 
 function jsonContent(payload: unknown) {
@@ -74,6 +75,10 @@ async function main() {
         session: session.summary(),
         backendBaseUrl: env.BACKEND_BASE_URL,
         sponsoredAgentAccountUrl: env.SPONSORED_AGENT_ACCOUNT_URL ?? null,
+        walletFunding: {
+          available: Boolean(env.WALLET_FUNDING_SECRET_KEY),
+          defaultAmount: env.WALLET_FUNDING_DEFAULT_AMOUNT,
+        },
         platform,
       });
     },
@@ -102,6 +107,53 @@ async function main() {
         wallet,
         warning:
           'Persist the returned secret key securely after this session. The MCP server only caches it in memory.',
+      });
+    },
+  );
+
+  server.tool(
+    'stellar_autotask_fund_wallet',
+    'Send native XLM from the configured MCP wallet funder to the loaded agent wallet so the agent can pay for task funding on-chain.',
+    {
+      amount: z
+        .string()
+        .trim()
+        .regex(/^\d+(\.\d{1,7})?$/)
+        .optional()
+        .describe('Native XLM amount to top up into the loaded agent wallet.'),
+    },
+    async ({ amount }) => {
+      const walletSecretKey = requireWalletSecret(session);
+      const walletAddress = session.getWalletAddress();
+
+      if (!walletAddress) {
+        throw new Error('Unable to derive a wallet address from the loaded secret key.');
+      }
+
+      if (!env.WALLET_FUNDING_SECRET_KEY) {
+        throw new Error(
+          'WALLET_FUNDING_SECRET_KEY is not configured for this MCP server.',
+        );
+      }
+
+      const platformInfo = await backendApi.getInfo();
+      const resolvedAmount = amount?.trim() || env.WALLET_FUNDING_DEFAULT_AMOUNT;
+      const payment = await fundWalletOnStellar({
+        fundingWalletSecretKey: env.WALLET_FUNDING_SECRET_KEY,
+        destinationWallet: walletAddress,
+        amount: resolvedAmount,
+        horizonUrl: platformInfo.platform.stellarHorizonUrl,
+        networkPassphrase: platformInfo.platform.stellarNetworkPassphrase,
+      });
+
+      return jsonContent({
+        ok: true,
+        walletAddress,
+        payment,
+        warning:
+          walletSecretKey === env.WALLET_FUNDING_SECRET_KEY
+            ? 'The wallet funder matches the loaded agent wallet, so this transfer was self-funded.'
+            : null,
       });
     },
   );

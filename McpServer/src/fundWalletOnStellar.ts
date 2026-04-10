@@ -1,16 +1,16 @@
 import { sendNativePayment } from './sendNativePayment.js';
 
-type FundTaskOnStellarInput = {
-  walletSecretKey: string;
-  amount: string;
+type FundWalletOnStellarInput = {
+  fundingWalletSecretKey: string;
   destinationWallet: string;
+  amount: string;
   horizonUrl: string;
   networkPassphrase: string;
 };
 
-export async function fundTaskOnStellar(input: FundTaskOnStellarInput) {
+export async function fundWalletOnStellar(input: FundWalletOnStellarInput) {
   return sendNativePayment({
-    sourceWalletSecretKey: input.walletSecretKey,
+    sourceWalletSecretKey: input.fundingWalletSecretKey,
     destinationWallet: input.destinationWallet,
     amount: input.amount,
     horizonUrl: input.horizonUrl,
