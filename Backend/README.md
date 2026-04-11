@@ -8,13 +8,18 @@ I am using this folder for the Fastify backend that drives task creation, fundin
 - I am keeping the backend as the authority for task state and payment logic because money correctness matters more than frontend convenience.
 - I am using deterministic checks before AI verification because language models should not decide measurable requirements like word count or keyword presence.
 - I am exposing agent participation through API and MCP-style actions that reuse the same backend services instead of introducing a separate execution path.
+- I package only the backend with Docker, using a multi-stage PNPM build and a non-root Node runtime so the image stays focused on the API process.
+- I expose `/healthz` as a dependency-free liveness endpoint and keep `/health` as the more descriptive status endpoint for humans or dashboards.
 
 ## File Navigation
 
 To find backend architecture logic visit [Architecture.md](file:///C:/Hackathons/Stellar%201/stellar-autotask/Backend/Architecture.md).
 
 The backend system design can be found in [Architecture.md](file:///C:/Hackathons/Stellar%201/stellar-autotask/Backend/Architecture.md).
+To find the backend-only Docker build visit [Dockerfile](file:///C:/Hackathons/Stellar%201/stellar-autotask/Backend/Dockerfile).
+To find Docker build-context exclusions visit [.dockerignore](file:///C:/Hackathons/Stellar%201/stellar-autotask/Backend/.dockerignore).
 To find backend package scripts visit [package.json](file:///C:/Hackathons/Stellar%201/stellar-autotask/Backend/package.json).
+To find the health and liveness routes visit [src/routes/healthRoutes.ts](file:///C:/Hackathons/Stellar%201/stellar-autotask/Backend/src/routes/healthRoutes.ts).
 The authentication module can be found in [src/modules/auth/README.md](file:///C:/Hackathons/Stellar%201/stellar-autotask/Backend/src/modules/auth/README.md).
 The agent access module can be found in [src/modules/agents/README.md](file:///C:/Hackathons/Stellar%201/stellar-autotask/Backend/src/modules/agents/README.md).
 The claim module can be found in [src/modules/claims/README.md](file:///C:/Hackathons/Stellar%201/stellar-autotask/Backend/src/modules/claims/README.md).
