@@ -41,7 +41,7 @@ function requireAgentToken(session: AgentSession) {
 
   if (!agentToken) {
     throw new Error(
-      'No agent token is loaded. Use stellar_autotask_issue_token or configure AGENT_TOKEN.',
+      'No backend agent credential is loaded. Use stellar_autotask_issue_token or configure AGENT_TOKEN.',
     );
   }
 
@@ -60,7 +60,7 @@ function createStellarAutotaskMcpServer(env = loadEnv()) {
 
   server.tool(
     'stellar_autotask_wallet_info',
-    'Show the active agent wallet, token state, and backend funding configuration.',
+    'Show the active agent wallet, backend credential state, and backend funding configuration.',
     {},
     async () => {
       let platform: unknown = null;
@@ -436,7 +436,7 @@ async function startHttpServer() {
   const httpServer = createServer(async (req, res) => {
     const requestUrl = new URL(req.url ?? '/', `http://${req.headers.host ?? 'localhost'}`);
 
-    if (req.method === 'GET' && requestUrl.pathname === '/healthz') {
+    if (req.method === 'GET' && requestUrl.pathname === '/health') {
       writeJSON(res, 200, { status: 'ok' });
       return;
     }
