@@ -1,5 +1,3 @@
-# syntax=docker/dockerfile:1.7
-
 ARG NODE_VERSION=24.12.0
 ARG PNPM_VERSION=10.0.0
 
@@ -15,13 +13,12 @@ RUN corepack enable && corepack prepare pnpm@${PNPM_VERSION} --activate
 FROM base AS dependencies
 
 COPY package.json pnpm-lock.yaml ./
-RUN --mount=type=cache,id=stellar-autotask-backend-pnpm,target=/pnpm/store \
-    pnpm install --frozen-lockfile
+RUN pnpm install --frozen-lockfile
 
 FROM dependencies AS build
 
-COPY --link tsconfig.json ./
-COPY --link src ./src
+COPY tsconfig.json ./
+COPY src ./src
 RUN pnpm build
 
 FROM dependencies AS production-dependencies
@@ -36,9 +33,9 @@ ENV PORT=7400
 
 WORKDIR /app
 
-COPY --link --from=production-dependencies --chown=1000:1000 /app/node_modules ./node_modules
-COPY --link --from=build --chown=1000:1000 /app/dist ./dist
-COPY --link --from=build --chown=1000:1000 /app/package.json ./package.json
+COPY --from=production-dependencies --chown=1000:1000 /app/node_modules ./node_modules
+COPY --from=build --chown=1000:1000 /app/dist ./dist
+COPY --from=build --chown=1000:1000 /app/package.json ./package.json
 
 USER 1000:1000
 

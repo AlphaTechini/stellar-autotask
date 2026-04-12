@@ -6,8 +6,9 @@
   "packageManager": "pnpm@10.0.0",
   "scripts": {
     "dev": "tsx src/index.ts",
-    "build": "tsc --noEmit",
-    "start": "node --enable-source-maps --import tsx src/index.ts"
+    "typecheck": "tsc --noEmit",
+    "build": "tsc --outDir dist --rootDir src",
+    "start": "node --enable-source-maps dist/index.js"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "1.27.1",

@@ -7,10 +7,11 @@ I use this folder for the MCP server runtime, session state, backend client wrap
 - I keep the backend API wrapper separate from Stellar signing helpers so HTTP concerns and transaction concerns do not collapse into one file.
 - I keep mutable session state in memory for the current MCP process because that is enough for interactive agent work without silently writing secrets to disk.
 - I keep native XLM payment submission in a shared helper so wallet top-up and task funding stay consistent on-chain.
+- I let `index.ts` choose between stdio and Streamable HTTP so the same tool registrations work for local OpenClaw and deployed Cloud Run access.
 
 ## File Navigation
 
-To find MCP server startup and tool registration visit [index.ts](file:///C:/Hackathons/Stellar%201/stellar-autotask/McpServer/src/index.ts).
+To find MCP server startup, HTTP transport, stdio transport, and tool registration visit [index.ts](file:///C:/Hackathons/Stellar%201/stellar-autotask/McpServer/src/index.ts).
 To find environment parsing visit [env.ts](file:///C:/Hackathons/Stellar%201/stellar-autotask/McpServer/src/env.ts).
 To find in-memory wallet and token session state visit [agentSession.ts](file:///C:/Hackathons/Stellar%201/stellar-autotask/McpServer/src/agentSession.ts).
 To find backend machine-route calls visit [backendApi.ts](file:///C:/Hackathons/Stellar%201/stellar-autotask/McpServer/src/backendApi.ts).

@@ -1,5 +1,9 @@
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
+import { StreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/streamableHttp.js';
+import { isInitializeRequest } from '@modelcontextprotocol/sdk/types.js';
+import { createServer, type IncomingMessage, type ServerResponse } from 'node:http';
+import { randomUUID } from 'node:crypto';
 import { z } from 'zod';
 import { createAgentSession } from './agentSession.js';
 import { createBackendApi, BackendApiError } from './backendApi.js';
@@ -46,8 +50,7 @@ function requireAgentToken(session: AgentSession) {
 
 type AgentSession = ReturnType<typeof createAgentSession>;
 
-async function main() {
-  const env = loadEnv();
+function createStellarAutotaskMcpServer(env = loadEnv()) {
   const session = createAgentSession(env);
   const backendApi = createBackendApi(env.BACKEND_BASE_URL);
   const server = new McpServer({
@@ -373,11 +376,178 @@ async function main() {
     },
   );
 
+  return { server, env };
+}
+
+async function startStdioServer() {
+  const { server, env } = createStellarAutotaskMcpServer();
   const transport = new StdioServerTransport();
   await server.connect(transport);
 
   console.error(`${env.MCP_SERVER_NAME} running over stdio`);
   console.error(`backend: ${env.BACKEND_BASE_URL}`);
+}
+
+async function readJsonBody(req: IncomingMessage) {
+  const chunks: Buffer[] = [];
+
+  for await (const chunk of req) {
+    chunks.push(Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk));
+  }
+
+  const rawBody = Buffer.concat(chunks).toString('utf8').trim();
+
+  if (!rawBody) {
+    return undefined;
+  }
+
+  return JSON.parse(rawBody);
+}
+
+function writeJSON(res: ServerResponse, statusCode: number, payload: unknown) {
+  res.writeHead(statusCode, {
+    'Content-Type': 'application/json',
+    'Cache-Control': 'no-store',
+  });
+  res.end(JSON.stringify(payload));
+}
+
+function writeMcpError(res: ServerResponse, statusCode: number, message: string) {
+  writeJSON(res, statusCode, {
+    jsonrpc: '2.0',
+    error: {
+      code: -32000,
+      message,
+    },
+    id: null,
+  });
+}
+
+async function startHttpServer() {
+  const env = loadEnv();
+  const sessions = new Map<
+    string,
+    {
+      server: McpServer;
+      transport: StreamableHTTPServerTransport;
+    }
+  >();
+
+  const httpServer = createServer(async (req, res) => {
+    const requestUrl = new URL(req.url ?? '/', `http://${req.headers.host ?? 'localhost'}`);
+
+    if (req.method === 'GET' && requestUrl.pathname === '/healthz') {
+      writeJSON(res, 200, { status: 'ok' });
+      return;
+    }
+
+    if (req.method === 'GET' && requestUrl.pathname === '/') {
+      writeJSON(res, 200, {
+        service: env.MCP_SERVER_NAME,
+        status: 'ok',
+        transport: 'streamable-http',
+        mcpEndpoint: env.MCP_HTTP_PATH,
+        backendBaseUrl: env.BACKEND_BASE_URL,
+      });
+      return;
+    }
+
+    if (requestUrl.pathname !== env.MCP_HTTP_PATH) {
+      writeJSON(res, 404, { error: 'not_found' });
+      return;
+    }
+
+    try {
+      const sessionHeader = req.headers['mcp-session-id'];
+      const sessionId = Array.isArray(sessionHeader) ? sessionHeader[0] : sessionHeader;
+
+      if (req.method === 'POST') {
+        const body = await readJsonBody(req);
+
+        if (sessionId && sessions.has(sessionId)) {
+          const session = sessions.get(sessionId)!;
+          await session.transport.handleRequest(req, res, body);
+          return;
+        }
+
+        if (!sessionId && isInitializeRequest(body)) {
+          const { server } = createStellarAutotaskMcpServer(env);
+          let transport!: StreamableHTTPServerTransport;
+          transport = new StreamableHTTPServerTransport({
+            sessionIdGenerator: () => randomUUID(),
+            onsessioninitialized: (initializedSessionId) => {
+              sessions.set(initializedSessionId, { server, transport });
+            },
+          });
+
+          transport.onclose = () => {
+            const initializedSessionId = transport.sessionId;
+            if (initializedSessionId) {
+              sessions.delete(initializedSessionId);
+            }
+          };
+
+          await server.connect(transport);
+          await transport.handleRequest(req, res, body);
+          return;
+        }
+
+        writeMcpError(res, 400, 'Bad Request: No valid MCP session was provided.');
+        return;
+      }
+
+      if (req.method === 'GET' || req.method === 'DELETE') {
+        if (!sessionId || !sessions.has(sessionId)) {
+          writeMcpError(res, 400, 'Bad Request: Missing or invalid MCP session ID.');
+          return;
+        }
+
+        const session = sessions.get(sessionId)!;
+        await session.transport.handleRequest(req, res);
+        return;
+      }
+
+      writeMcpError(res, 405, 'Method not allowed.');
+    } catch (error) {
+      console.error('MCP HTTP request failed:', error);
+      if (!res.headersSent) {
+        writeMcpError(res, 500, 'Internal server error.');
+      }
+    }
+  });
+
+  httpServer.listen(env.PORT, env.HOST, () => {
+    console.error(`${env.MCP_SERVER_NAME} running over streamable HTTP`);
+    console.error(`backend: ${env.BACKEND_BASE_URL}`);
+    console.error(`mcp endpoint: http://${env.HOST}:${env.PORT}${env.MCP_HTTP_PATH}`);
+  });
+
+  const close = async () => {
+    for (const { server, transport } of sessions.values()) {
+      await transport.close();
+      await server.close();
+    }
+
+    httpServer.close(() => process.exit(0));
+  };
+
+  process.on('SIGINT', () => {
+    void close();
+  });
+  process.on('SIGTERM', () => {
+    void close();
+  });
+}
+
+async function main() {
+  const env = loadEnv();
+
+  if (env.MCP_TRANSPORT === 'http') {
+    await startHttpServer();
+    return;
+  }
+
+  await startStdioServer();
 }
 
 main().catch((error) => {

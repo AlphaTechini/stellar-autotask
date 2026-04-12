@@ -45,6 +45,10 @@ const envSchema = z.object({
   ),
   MCP_SERVER_NAME: z.string().trim().min(1).default('stellar-autotask-mcp'),
   MCP_SERVER_VERSION: z.string().trim().min(1).default('0.1.0'),
+  MCP_TRANSPORT: z.enum(['stdio', 'http']).default('stdio'),
+  MCP_HTTP_PATH: z.string().trim().min(1).default('/mcp'),
+  HOST: z.string().trim().min(1).default('0.0.0.0'),
+  PORT: z.coerce.number().int().positive().default(8080),
 });
 
 export type McpEnv = z.infer<typeof envSchema>;
