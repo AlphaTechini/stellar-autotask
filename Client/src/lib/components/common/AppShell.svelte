@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/state';
 	import type { SessionUser } from '$lib/contracts/api';
+	import logo from '$lib/assets/favicon.svg';
 	import ThemeToggle from './ThemeToggle.svelte';
 
 	type NavItem = {
@@ -123,9 +124,11 @@
 				<div class="flex min-w-0 items-center gap-10">
 					<a
 						href="/"
-						class="shrink-0 bg-gradient-to-r from-yellow-400 to-yellow-500 bg-clip-text font-['Space_Grotesk'] text-2xl font-bold tracking-tight text-transparent"
+						aria-label="AutoTask home"
+						class="shrink-0 flex items-center"
 					>
-						Stellar Autotask
+						<img src={logo} alt="AutoTask" class="h-12 w-12" />
+						<span class="sr-only">AutoTask</span>
 					</a>
 
 					<nav class="hidden items-center gap-7 lg:flex">

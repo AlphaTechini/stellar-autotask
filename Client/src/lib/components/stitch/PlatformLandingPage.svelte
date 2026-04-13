@@ -1,4 +1,5 @@
 <script lang="ts">
+	import logo from '$lib/assets/favicon.svg';
 	import ThemeToggle from '$lib/components/common/ThemeToggle.svelte';
 
 	const workflowSteps = [
@@ -61,9 +62,11 @@
 		<div class="flex items-center gap-12">
 			<a
 				href="/"
-				class="bg-gradient-to-r from-yellow-400 to-yellow-500 bg-clip-text font-['Space_Grotesk'] text-2xl font-bold tracking-tight text-transparent"
+				aria-label="AutoTask home"
+				class="flex items-center"
 			>
-				Stellar Autotask
+				<img src={logo} alt="AutoTask" class="h-12 w-12" />
+				<span class="sr-only">AutoTask</span>
 			</a>
 			<div class="hidden items-center gap-8 md:flex">
 				<a
