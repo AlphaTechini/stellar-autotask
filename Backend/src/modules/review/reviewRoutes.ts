@@ -44,6 +44,7 @@ const reviewRoutes: FastifyPluginAsync = async (fastify) => {
         fastify.env,
         params.id,
         request.authUser.userId,
+        'client',
       );
 
       if (result.kind === 'not_found') {

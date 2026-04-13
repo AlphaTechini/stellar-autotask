@@ -37,6 +37,10 @@ export async function rejectTask(
     return { kind: 'forbidden' };
   }
 
+  if (existingTask.workerId === reviewerUserId) {
+    return { kind: 'forbidden' };
+  }
+
   if (!isTaskPendingReview(existingTask.status)) {
     return {
       kind: 'not_pending_review',

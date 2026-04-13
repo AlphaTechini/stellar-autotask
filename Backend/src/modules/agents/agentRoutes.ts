@@ -5,6 +5,9 @@ import { verifyWalletChallenge } from '../auth/verifyWalletChallenge.js';
 import { claimTask } from '../claims/claimTask.js';
 import { confirmTaskFunding } from '../funding/confirmTaskFunding.js';
 import { getTaskReviewSnapshot } from '../review/getTaskReviewSnapshot.js';
+import { approveTask } from '../review/approveTask.js';
+import { rejectTask } from '../review/rejectTask.js';
+import { rejectTaskRequestSchema, reviewTaskParamsSchema } from '../review/reviewSchemas.js';
 import { submitTask } from '../submissions/submitTask.js';
 import { createTask } from '../tasks/createTask.js';
 import { createAgentCredential } from './createAgentCredential.js';
@@ -564,6 +567,176 @@ const agentRoutes: FastifyPluginAsync = async (fastify) => {
         500,
         'TASK_SUBMIT_FAILED',
         error instanceof Error ? error.message : 'Unable to submit task.',
+      );
+    }
+  });
+
+  fastify.post('/tasks/:id/approve', async (request, reply) => {
+    const authUser = requireAgentAuth(request, reply);
+
+    if (!authUser) {
+      return reply;
+    }
+
+    try {
+      const params = reviewTaskParamsSchema.parse(request.params);
+      const result = await approveTask(
+        fastify.db,
+        fastify.env,
+        params.id,
+        authUser.userId,
+        'agent',
+      );
+
+      if (result.kind === 'not_found') {
+        return sendAgentError(reply, 404, 'TASK_NOT_FOUND', 'Task not found.');
+      }
+
+      if (result.kind === 'forbidden') {
+        return sendAgentError(
+          reply,
+          403,
+          'TASK_APPROVE_FORBIDDEN',
+          'Only the task creator can approve this task.',
+        );
+      }
+
+      if (result.kind === 'not_pending_review') {
+        return sendAgentError(
+          reply,
+          409,
+          'TASK_NOT_REVIEWABLE',
+          'Task is not awaiting review approval.',
+        );
+      }
+
+      if (result.kind === 'review_conflict') {
+        return sendAgentError(
+          reply,
+          409,
+          'REVIEW_CONFLICT',
+          'Task review state changed while this approval was being processed.',
+        );
+      }
+
+      if (result.kind === 'missing_funding') {
+        return sendAgentError(
+          reply,
+          409,
+          'MISSING_FUNDING',
+          'Approved task cannot be paid because no confirmed funding record exists.',
+        );
+      }
+
+      if (result.kind === 'missing_worker_wallet') {
+        return sendAgentError(
+          reply,
+          409,
+          'MISSING_WORKER_WALLET',
+          'Approved task cannot be paid because the assigned worker has no valid Stellar wallet address.',
+        );
+      }
+
+      if (result.kind === 'on_chain_mismatch') {
+        return sendAgentError(reply, 409, 'ON_CHAIN_MISMATCH', result.message);
+      }
+
+      if (result.kind === 'payout_failed') {
+        return sendAgentError(reply, 502, 'PAYOUT_FAILED', result.message);
+      }
+
+      return reply.send({
+        ok: true,
+        task: result.task,
+        payout: result.payout,
+      });
+    } catch (error) {
+      if (error instanceof ZodError) {
+        return sendAgentError(
+          reply,
+          400,
+          'INVALID_REQUEST',
+          error.issues[0]?.message ?? 'Invalid route params.',
+        );
+      }
+
+      return sendAgentError(
+        reply,
+        500,
+        'TASK_APPROVE_FAILED',
+        error instanceof Error ? error.message : 'Unable to approve task.',
+      );
+    }
+  });
+
+  fastify.post('/tasks/:id/reject', async (request, reply) => {
+    const authUser = requireAgentAuth(request, reply);
+
+    if (!authUser) {
+      return reply;
+    }
+
+    try {
+      const params = reviewTaskParamsSchema.parse(request.params);
+      const input = rejectTaskRequestSchema.parse(request.body);
+      const result = await rejectTask(
+        fastify.db,
+        params.id,
+        authUser.userId,
+        input.reason,
+      );
+
+      if (result.kind === 'not_found') {
+        return sendAgentError(reply, 404, 'TASK_NOT_FOUND', 'Task not found.');
+      }
+
+      if (result.kind === 'forbidden') {
+        return sendAgentError(
+          reply,
+          403,
+          'TASK_REJECT_FORBIDDEN',
+          'Only the task creator can reject this task.',
+        );
+      }
+
+      if (result.kind === 'not_pending_review') {
+        return sendAgentError(
+          reply,
+          409,
+          'TASK_NOT_REVIEWABLE',
+          'Task is not awaiting review rejection.',
+        );
+      }
+
+      if (result.kind === 'review_conflict') {
+        return sendAgentError(
+          reply,
+          409,
+          'REVIEW_CONFLICT',
+          'Task review state changed while this rejection was being processed.',
+        );
+      }
+
+      return reply.send({
+        ok: true,
+        task: result.task,
+        reviewDecision: result.reviewDecision,
+      });
+    } catch (error) {
+      if (error instanceof ZodError) {
+        return sendAgentError(
+          reply,
+          400,
+          'INVALID_REQUEST',
+          error.issues[0]?.message ?? 'Invalid request.',
+        );
+      }
+
+      return sendAgentError(
+        reply,
+        500,
+        'TASK_REJECT_FAILED',
+        error instanceof Error ? error.message : 'Unable to reject task.',
       );
     }
   });

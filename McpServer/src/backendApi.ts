@@ -201,5 +201,26 @@ export function createBackendApi(baseUrl: string) {
         agentToken,
       });
     },
+    approveTask(agentToken: string, taskId: string) {
+      return request<{
+        ok: true;
+        task: Record<string, unknown>;
+        payout: Record<string, unknown>;
+      }>(`/agent/tasks/${taskId}/approve`, {
+        method: 'POST',
+        agentToken,
+      });
+    },
+    rejectTask(agentToken: string, taskId: string, body: { reason: string }) {
+      return request<{
+        ok: true;
+        task: Record<string, unknown>;
+        reviewDecision: Record<string, unknown>;
+      }>(`/agent/tasks/${taskId}/reject`, {
+        method: 'POST',
+        body,
+        agentToken,
+      });
+    },
   };
 }

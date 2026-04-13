@@ -7,6 +7,7 @@ I use this folder for review-state transitions and the frontend-facing review sn
 - I keep approval and rejection separate from payout execution so review policy stays explicit while the money movement still flows through one shared payout engine.
 - I write the task status transition and the review decision row together so audit history cannot drift from the current review state.
 - I expose a unified review snapshot for the frontend so one fetch can return the active submission, verification report, latest review decision, and payout visibility without bloating the base task detail route.
+- I only allow the task creator to approve or reject, and I block approvals if the creator is also the assigned worker.
 
 ## File Navigation
 

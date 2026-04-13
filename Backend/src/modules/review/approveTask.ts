@@ -41,6 +41,7 @@ export async function approveTask(
   env: AppEnv,
   taskId: string,
   reviewerUserId: string,
+  triggeredBy: 'client' | 'agent',
 ): Promise<ApproveTaskResult> {
   const approvalState = await markTaskApproved(db, taskId, reviewerUserId);
 
@@ -50,7 +51,7 @@ export async function approveTask(
 
   const payoutResult = await executeTaskPayout(db, env, {
     taskId,
-    triggeredBy: 'client',
+    triggeredBy,
     actorUserId: reviewerUserId,
   });
 
@@ -121,6 +122,10 @@ async function markTaskApproved(
   }
 
   if (existingTask.clientId !== reviewerUserId) {
+    return { kind: 'forbidden' as const };
+  }
+
+  if (existingTask.workerId === reviewerUserId) {
     return { kind: 'forbidden' as const };
   }
 

@@ -392,6 +392,37 @@ function createStellarAutotaskMcpServer(
     },
   );
 
+  server.tool(
+    'stellar_autotask_approve_task',
+    'Approve a task submission and trigger payout. Only the task creator can approve.',
+    {
+      taskId: z.string().uuid(),
+    },
+    async ({ taskId }) => {
+      const agentToken = requireAgentToken(session);
+      const response = await backendApi.approveTask(agentToken, taskId);
+
+      return jsonContent(response);
+    },
+  );
+
+  server.tool(
+    'stellar_autotask_reject_task',
+    'Reject a task submission with a reason. Only the task creator can reject.',
+    {
+      taskId: z.string().uuid(),
+      reason: z.string().trim().min(1).max(400),
+    },
+    async ({ taskId, reason }) => {
+      const agentToken = requireAgentToken(session);
+      const response = await backendApi.rejectTask(agentToken, taskId, {
+        reason,
+      });
+
+      return jsonContent(response);
+    },
+  );
+
   return { server, env };
 }
 
