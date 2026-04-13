@@ -62,23 +62,31 @@
 	let copiedKey: string | null = null;
 	let copyResetTimer: ReturnType<typeof setTimeout> | null = null;
 
-	function copyWithFeedback(key: string, text: string) {
-		void navigator.clipboard.writeText(text);
-		copiedKey = key;
+	async function copyWithFeedback(key: string, text: string) {
+		try {
+			await navigator.clipboard.writeText(text);
+			copiedKey = key;
 
-		if (copyResetTimer) {
-			clearTimeout(copyResetTimer);
-		}
-
-		copyResetTimer = setTimeout(() => {
-			if (copiedKey === key) {
-				copiedKey = null;
+			if (copyResetTimer) {
+				clearTimeout(copyResetTimer);
 			}
-		}, COPY_RESET_MS);
+
+			copyResetTimer = setTimeout(() => {
+				if (copiedKey === key) {
+					copiedKey = null;
+				}
+			}, COPY_RESET_MS);
+		} catch {
+			copiedKey = null;
+		}
 	}
 
 	function copyLabel(key: string, label: string) {
 		return copiedKey === key ? 'Copied' : label;
+	}
+
+	function copyIcon(key: string) {
+		return copiedKey === key ? 'check' : 'content_copy';
 	}
 
 	function promptCopyKey(label: string) {
@@ -182,7 +190,9 @@
 							class="absolute top-4 right-4 flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-neutral-500 hover:text-yellow-700 transition-colors"
 							onclick={() => copyWithFeedback('connection-json', steps[0].code)}
 						>
-							<span class="material-symbols-outlined text-sm">content_copy</span>
+							<span class="material-symbols-outlined text-sm">
+								{copyIcon('connection-json')}
+							</span>
 							{copyLabel('connection-json', 'Copy JSON')}
 						</button>
 					</div>
@@ -197,7 +207,9 @@
 									class="absolute top-3 right-4 flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-neutral-500 hover:text-yellow-700 transition-colors"
 									onclick={() => copyWithFeedback('connection-cli', claudeCliCommand)}
 								>
-									<span class="material-symbols-outlined text-sm">content_copy</span>
+									<span class="material-symbols-outlined text-sm">
+										{copyIcon('connection-cli')}
+									</span>
 									{copyLabel('connection-cli', 'Copy Command')}
 								</button>
 							</div>
@@ -212,7 +224,9 @@
 									class="absolute top-3 right-4 flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-neutral-500 hover:text-yellow-700 transition-colors"
 									onclick={() => copyWithFeedback('connection-opencode', openCodeConfig)}
 								>
-									<span class="material-symbols-outlined text-sm">content_copy</span>
+									<span class="material-symbols-outlined text-sm">
+										{copyIcon('connection-opencode')}
+									</span>
 									{copyLabel('connection-opencode', 'Copy OpenCode')}
 								</button>
 							</div>
@@ -231,7 +245,9 @@
 								onclick={() => copyWithFeedback('prompt-init-wallet', steps[1].prompt)}
 								title={copyLabel('prompt-init-wallet', 'Copy prompt')}
 							>
-								<span class="material-symbols-outlined text-sm">content_copy</span>
+								<span class="material-symbols-outlined text-sm">
+									{copyIcon('prompt-init-wallet')}
+								</span>
 								<span class="text-[10px] font-bold uppercase tracking-widest">
 									{copyLabel('prompt-init-wallet', 'Copy')}
 								</span>
@@ -254,7 +270,9 @@
 								onclick={() => copyWithFeedback('prompt-issue-token', steps[2].prompt)}
 								title={copyLabel('prompt-issue-token', 'Copy prompt')}
 							>
-								<span class="material-symbols-outlined text-sm">content_copy</span>
+								<span class="material-symbols-outlined text-sm">
+									{copyIcon('prompt-issue-token')}
+								</span>
 								<span class="text-[10px] font-bold uppercase tracking-widest">
 									{copyLabel('prompt-issue-token', 'Copy')}
 								</span>
@@ -278,7 +296,9 @@
 							class="flex items-center gap-2 rounded-full bg-yellow-400 px-4 py-2 text-xs font-bold text-black hover:bg-yellow-300 transition-colors shadow-lg shadow-yellow-500/20"
 							onclick={() => copyWithFeedback('prompt-universal', universalPrompt)}
 						>
-							<span class="material-symbols-outlined text-sm">content_copy</span>
+							<span class="material-symbols-outlined text-sm">
+								{copyIcon('prompt-universal')}
+							</span>
 							{copyLabel('prompt-universal', 'Copy Universal Prompt')}
 						</button>
 					</div>
@@ -316,7 +336,9 @@
 									onclick={() => copyWithFeedback(promptCopyKey(prompt.label), prompt.text)}
 									title={copyLabel(promptCopyKey(prompt.label), 'Copy')}
 								>
-									<span class="material-symbols-outlined text-sm">content_copy</span>
+									<span class="material-symbols-outlined text-sm">
+										{copyIcon(promptCopyKey(prompt.label))}
+									</span>
 									<span class="text-[10px] font-bold uppercase tracking-widest">
 										{copyLabel(promptCopyKey(prompt.label), 'Copy')}
 									</span>
