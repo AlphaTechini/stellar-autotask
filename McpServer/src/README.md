@@ -8,6 +8,7 @@ I use this folder for the MCP server runtime, session state, backend client wrap
 - I keep mutable session state in memory for the current MCP process because that is enough for interactive agent work without silently writing secrets to disk.
 - I keep native XLM payment submission in a shared helper so wallet top-up and task funding stay consistent on-chain.
 - I let `index.ts` choose between stdio and Streamable HTTP so the same tool registrations work for local OpenClaw and deployed Cloud Run access.
+- I do not seed agent wallet credentials or tokens from env, even in local stdio mode, so each MCP session must bootstrap or provide its own wallet and agent token.
 
 ## File Navigation
 

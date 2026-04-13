@@ -1,11 +1,16 @@
 import { Keypair } from '@stellar/stellar-sdk';
 import type { McpEnv } from './env.js';
 
-export function createAgentSession(env: McpEnv) {
-  let walletSecretKey = env.AGENT_WALLET_SECRET_KEY ?? null;
-  let agentToken = env.AGENT_TOKEN ?? null;
-  let agentUsername = env.AGENT_USERNAME ?? null;
-  let agentCredentialLabel = env.AGENT_CREDENTIAL_LABEL;
+type AgentSessionOptions = {
+  seedFromEnv?: boolean;
+};
+
+export function createAgentSession(env: McpEnv, options: AgentSessionOptions = {}) {
+  const seedFromEnv = options.seedFromEnv ?? true;
+  let walletSecretKey = seedFromEnv ? (env.AGENT_WALLET_SECRET_KEY ?? null) : null;
+  let agentToken = seedFromEnv ? (env.AGENT_TOKEN ?? null) : null;
+  let agentUsername = seedFromEnv ? (env.AGENT_USERNAME ?? null) : null;
+  let agentCredentialLabel = seedFromEnv ? env.AGENT_CREDENTIAL_LABEL : 'default';
 
   function getWalletAddress() {
     if (!walletSecretKey) {

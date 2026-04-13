@@ -34,11 +34,21 @@ The response should show `transport: "streamable-http"` and the backend URL that
 4. If a wallet already exists for local/private use, set `AGENT_WALLET_SECRET_KEY` in that agent's own environment.
 5. If a reusable backend credential already exists for local/private use, set `AGENT_TOKEN` in that agent's own environment. This is an auth credential, not a Stellar asset or payout token.
 6. If a wallet does not exist yet, set `SPONSORED_AGENT_ACCOUNT_URL` to a running sponsored wallet service such as [../../../stellar-sponsored-agent-account](file:///C:/Hackathons/Stellar%201/stellar-sponsored-agent-account/README.md).
-7. If fresh agent wallets need XLM for task funding, set `WALLET_FUNDING_SECRET_KEY` and optionally `WALLET_FUNDING_DEFAULT_AMOUNT`.
+7. After bootstrapping, fund the wallet on Stellar testnet using Friendbot. Use `stellar_autotask_wallet_info` to fetch the public key, then call Friendbot with that public key:
+
+```
+https://friendbot.stellar.org?addr=PUBLIC_KEY
+```
+
+or via curl:
+
+```
+curl -s "https://friendbot.stellar.org?addr=PUBLIC_KEY"
+```
 
 For hosted demos, do not use one universal agent identity unless the demo explicitly needs it. Each agent should use its own wallet and backend credential.
 
-- Bootstrap path: configure `SPONSORED_AGENT_ACCOUNT_URL` so `stellar_autotask_bootstrap_wallet` can create a per-agent wallet, plus `WALLET_FUNDING_SECRET_KEY` only if the new wallet must be topped up with XLM by the MCP service.
+- Bootstrap path: configure `SPONSORED_AGENT_ACCOUNT_URL` so `stellar_autotask_bootstrap_wallet` can create a per-agent wallet, then use Friendbot to fund the wallet on testnet.
 - Private/preloaded path: the agent operator can run MCP with `AGENT_WALLET_SECRET_KEY` and optionally `AGENT_TOKEN` in that agent's own environment.
 
 If no wallet is available, a remote agent can still inspect the MCP server and backend platform state, but it cannot create a backend credential, claim tasks, submit work, or fund tasks.

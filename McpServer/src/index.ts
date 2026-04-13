@@ -50,8 +50,15 @@ function requireAgentToken(session: AgentSession) {
 
 type AgentSession = ReturnType<typeof createAgentSession>;
 
-function createStellarAutotaskMcpServer(env = loadEnv()) {
-  const session = createAgentSession(env);
+type McpServerOptions = {
+  seedFromEnv?: boolean;
+};
+
+function createStellarAutotaskMcpServer(
+  env = loadEnv(),
+  options: McpServerOptions = {},
+) {
+  const session = createAgentSession(env, { seedFromEnv: options.seedFromEnv });
   const backendApi = createBackendApi(env.BACKEND_BASE_URL);
   const server = new McpServer({
     name: env.MCP_SERVER_NAME,
@@ -60,7 +67,7 @@ function createStellarAutotaskMcpServer(env = loadEnv()) {
 
   server.tool(
     'stellar_autotask_wallet_info',
-    'Show the active agent wallet, backend credential state, and backend funding configuration.',
+    'Show the active agent wallet, backend credential state, and backend funding configuration. Use the returned walletAddress with Friendbot to fund testnet wallets: https://friendbot.stellar.org?addr=PUBLIC_KEY',
     {},
     async () => {
       let platform: unknown = null;
@@ -74,6 +81,8 @@ function createStellarAutotaskMcpServer(env = loadEnv()) {
         };
       }
 
+      const walletAddress = session.getWalletAddress();
+
       return jsonContent({
         session: session.summary(),
         backendBaseUrl: env.BACKEND_BASE_URL,
@@ -81,6 +90,13 @@ function createStellarAutotaskMcpServer(env = loadEnv()) {
         walletFunding: {
           available: Boolean(env.WALLET_FUNDING_SECRET_KEY),
           defaultAmount: env.WALLET_FUNDING_DEFAULT_AMOUNT,
+        },
+        friendbot: {
+          walletAddress,
+          urlTemplate: 'https://friendbot.stellar.org?addr=PUBLIC_KEY',
+          curlTemplate: 'curl -s "https://friendbot.stellar.org?addr=PUBLIC_KEY"',
+          note:
+            'Replace PUBLIC_KEY with walletAddress. Friendbot is testnet-only and mints demo XLM.',
         },
         platform,
       });
@@ -116,7 +132,7 @@ function createStellarAutotaskMcpServer(env = loadEnv()) {
 
   server.tool(
     'stellar_autotask_fund_wallet',
-    'Send native XLM from the configured MCP wallet funder to the loaded agent wallet so the agent can pay for task funding on-chain.',
+    'Send native XLM from the configured MCP wallet funder to the loaded agent wallet so the agent can pay for task funding on-chain. If WALLET_FUNDING_SECRET_KEY is missing, use Friendbot instead with the public key from stellar_autotask_wallet_info.',
     {
       amount: z
         .string()
@@ -135,7 +151,7 @@ function createStellarAutotaskMcpServer(env = loadEnv()) {
 
       if (!env.WALLET_FUNDING_SECRET_KEY) {
         throw new Error(
-          'WALLET_FUNDING_SECRET_KEY is not configured for this MCP server.',
+          'WALLET_FUNDING_SECRET_KEY is not configured for this MCP server. Use Friendbot to fund the wallet: https://friendbot.stellar.org?addr=PUBLIC_KEY',
         );
       }
 
@@ -380,7 +396,9 @@ function createStellarAutotaskMcpServer(env = loadEnv()) {
 }
 
 async function startStdioServer() {
-  const { server, env } = createStellarAutotaskMcpServer();
+  const { server, env } = createStellarAutotaskMcpServer(undefined, {
+    seedFromEnv: false,
+  });
   const transport = new StdioServerTransport();
   await server.connect(transport);
 
@@ -471,7 +489,9 @@ async function startHttpServer() {
         }
 
         if (!sessionId && isInitializeRequest(body)) {
-          const { server } = createStellarAutotaskMcpServer(env);
+          const { server } = createStellarAutotaskMcpServer(env, {
+            seedFromEnv: false,
+          });
           let transport!: StreamableHTTPServerTransport;
           transport = new StreamableHTTPServerTransport({
             sessionIdGenerator: () => randomUUID(),

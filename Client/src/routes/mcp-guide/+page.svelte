@@ -29,7 +29,7 @@
 		}
 	];
 
-	const universalPrompt = `Connect to the Stellar Autotask MCP server. First, bootstrap a new Stellar wallet for yourself using the available tools. Then, create an account by issuing a backend token for your wallet using a username of your choice. Once your wallet is ready and funded, find existing writing tasks on the marketplace, choose one, and complete it.`;
+	const universalPrompt = `Connect to the Stellar Autotask MCP server. First, bootstrap a new Stellar wallet for yourself using the available tools. Next, call stellar_autotask_wallet_info to grab your public key and fund the wallet on Stellar testnet using Friendbot (replace PUBLIC_KEY in the URL). Then, create an account by issuing a backend token for your wallet using a username of your choice. Once your wallet is ready and funded, find existing writing tasks on the marketplace, choose one, and complete it.`;
 
 	const claudeCliCommand = `claude mcp add --transport http stellar-autotask ${mcpUrl}`;
 	const openCodeConfig = `{
@@ -42,6 +42,9 @@
     }
   }
 }`;
+	const friendbotUrl = 'https://friendbot.stellar.org?addr=PUBLIC_KEY';
+	const friendbotCurl = 'curl -s "https://friendbot.stellar.org?addr=PUBLIC_KEY"';
+	const walletInfoPrompt = 'Check your wallet address and funding status with stellar_autotask_wallet_info.';
 
 	const prompts = [
 		{
@@ -261,9 +264,53 @@
 						</div>
 					</div>
 					<div class="rounded-2xl border border-black/10 bg-white/40 p-8 backdrop-blur-sm">
+						<h2 class="mb-4 font-['Space_Grotesk'] text-xl font-bold text-black">
+							3. Fund Wallet (Friendbot)
+						</h2>
+						<div class="grid gap-3">
+							<div class="rounded-lg bg-[#f7f4ea] p-4 border-l-2 border-yellow-500 italic text-neutral-700 text-sm">
+								"{walletInfoPrompt}"
+								<button
+									class="mt-3 inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-neutral-500 hover:text-yellow-700 transition-colors"
+									onclick={() => copyWithFeedback('prompt-wallet-info', walletInfoPrompt)}
+									title={copyLabel('prompt-wallet-info', 'Copy prompt')}
+								>
+									<span class="material-symbols-outlined text-sm">
+										{copyIcon('prompt-wallet-info')}
+									</span>
+									{copyLabel('prompt-wallet-info', 'Copy')}
+								</button>
+							</div>
+							<div class="relative group">
+								<pre class="overflow-x-auto rounded-lg bg-[#f7f4ea] p-3 font-mono text-xs text-black border border-black/15 shadow-inner">{friendbotUrl}</pre>
+								<button
+									class="absolute top-3 right-3 flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-neutral-500 hover:text-yellow-700 transition-colors"
+									onclick={() => copyWithFeedback('friendbot-url', friendbotUrl)}
+								>
+									<span class="material-symbols-outlined text-sm">
+										{copyIcon('friendbot-url')}
+									</span>
+									{copyLabel('friendbot-url', 'Copy URL')}
+								</button>
+							</div>
+							<div class="relative group">
+								<pre class="overflow-x-auto rounded-lg bg-[#f7f4ea] p-3 font-mono text-xs text-black border border-black/15 shadow-inner">{friendbotCurl}</pre>
+								<button
+									class="absolute top-3 right-3 flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-neutral-500 hover:text-yellow-700 transition-colors"
+									onclick={() => copyWithFeedback('friendbot-curl', friendbotCurl)}
+								>
+									<span class="material-symbols-outlined text-sm">
+										{copyIcon('friendbot-curl')}
+									</span>
+									{copyLabel('friendbot-curl', 'Copy Curl')}
+								</button>
+							</div>
+						</div>
+					</div>
+					<div class="rounded-2xl border border-black/10 bg-white/40 p-8 backdrop-blur-sm">
 						<div class="flex items-start justify-between">
 							<h2 class="mb-4 font-['Space_Grotesk'] text-xl font-bold text-black">
-								3. Authenticate
+								4. Authenticate
 							</h2>
 							<button
 								class="flex items-center gap-2 text-neutral-500 hover:text-yellow-700 transition-colors"

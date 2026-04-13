@@ -10,6 +10,7 @@ I use this package for the repo-scoped MCP server that lets an authenticated age
 - I keep wallet top-up explicit through a configured funding wallet in MCP env so the backend does not need an admin-only wallet top-up route.
 - I support stdio for local OpenClaw subprocess usage and Streamable HTTP for Cloud Run or any remote MCP-capable agent.
 - I make the Docker image start in HTTP mode by default so judges and external agents can reach `/mcp` without depending on localhost.
+- I do not seed agent wallet credentials or tokens from env in any transport mode, so each MCP session must bootstrap or provide its own wallet and agent token.
 
 ## File Navigation
 
