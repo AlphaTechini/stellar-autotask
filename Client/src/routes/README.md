@@ -19,6 +19,8 @@ To find dashboard data loading visit [dashboard/+page.server.ts](file:///C:/Hack
 To find dashboard route documentation visit [dashboard/README.md](file:///C:/Hackathons/Stellar%201/stellar-autotask/Client/src/routes/dashboard/README.md).
 To find marketplace data loading visit [marketplace/+page.server.ts](file:///C:/Hackathons/Stellar%201/stellar-autotask/Client/src/routes/marketplace/+page.server.ts).
 To find marketplace route documentation visit [marketplace/README.md](file:///C:/Hackathons/Stellar%201/stellar-autotask/Client/src/routes/marketplace/README.md).
+To find claimed task queue loading visit [claimed/+page.server.ts](file:///C:/Hackathons/Stellar%201/stellar-autotask/Client/src/routes/claimed/+page.server.ts).
+To find claimed task route documentation visit [claimed/README.md](file:///C:/Hackathons/Stellar%201/stellar-autotask/Client/src/routes/claimed/README.md).
 To find task creation handling visit [create-task/+page.server.ts](file:///C:/Hackathons/Stellar%201/stellar-autotask/Client/src/routes/create-task/+page.server.ts).
 To find task creation route documentation visit [create-task/README.md](file:///C:/Hackathons/Stellar%201/stellar-autotask/Client/src/routes/create-task/README.md).
 To find shared layout session handling visit [+layout.server.ts](file:///C:/Hackathons/Stellar%201/stellar-autotask/Client/src/routes/+layout.server.ts).
@@ -33,6 +35,7 @@ The layout session surface can be found in [+layout.server.ts](file:///C:/Hackat
 The shared sign-out endpoint can be found in [auth/signout/+server.ts](file:///C:/Hackathons/Stellar%201/stellar-autotask/Client/src/routes/auth/signout/+server.ts).
 The dashboard route notes can be found in [dashboard/README.md](file:///C:/Hackathons/Stellar%201/stellar-autotask/Client/src/routes/dashboard/README.md).
 The marketplace route notes can be found in [marketplace/README.md](file:///C:/Hackathons/Stellar%201/stellar-autotask/Client/src/routes/marketplace/README.md).
+The claimed task queue notes can be found in [claimed/README.md](file:///C:/Hackathons/Stellar%201/stellar-autotask/Client/src/routes/claimed/README.md).
 The authenticated task creation flow can be found in [create-task/+page.server.ts](file:///C:/Hackathons/Stellar%201/stellar-autotask/Client/src/routes/create-task/+page.server.ts).
 The task creation route notes can be found in [create-task/README.md](file:///C:/Hackathons/Stellar%201/stellar-autotask/Client/src/routes/create-task/README.md).
 The task workflow hub can be found in [task/[id]/+page.server.ts](file:///C:/Hackathons/Stellar%201/stellar-autotask/Client/src/routes/task/%5Bid%5D/+page.server.ts).

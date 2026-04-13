@@ -2,11 +2,13 @@ import type { FastifyPluginAsync } from 'fastify';
 import { ZodError } from 'zod';
 import { createTask } from './createTask.js';
 import { getTaskById } from './getTaskById.js';
+import { CLAIMED_TASK_STATUSES, listClaimedTaskSnapshots } from './listClaimedTaskSnapshots.js';
 import { listTasks } from './listTasks.js';
 import {
-  createTaskRequestSchema,
-  listTasksQuerySchema,
-  taskParamsSchema,
+	claimedTasksQuerySchema,
+	createTaskRequestSchema,
+	listTasksQuerySchema,
+	taskParamsSchema,
 } from './taskSchemas.js';
 
 const taskRoutes: FastifyPluginAsync = async (fastify) => {
@@ -47,6 +49,32 @@ const taskRoutes: FastifyPluginAsync = async (fastify) => {
     } catch (error) {
       if (error instanceof ZodError) {
         throw fastify.httpErrors.badRequest(error.issues[0]?.message ?? 'Invalid query string.');
+      }
+
+      throw error;
+    }
+  });
+
+  fastify.get('/claimed', async (request) => {
+    if (!request.authUser) {
+      throw fastify.httpErrors.unauthorized(
+        'Authentication is required to view claimed tasks.',
+      );
+    }
+
+    try {
+      const query = claimedTasksQuerySchema.parse(request.query);
+      const statuses = query.status ? [query.status] : [...CLAIMED_TASK_STATUSES];
+      const tasks = await listClaimedTaskSnapshots(fastify.db, statuses);
+
+      return {
+        tasks,
+      };
+    } catch (error) {
+      if (error instanceof ZodError) {
+        throw fastify.httpErrors.badRequest(
+          error.issues[0]?.message ?? 'Invalid query string.',
+        );
       }
 
       throw error;

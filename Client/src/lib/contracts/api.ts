@@ -11,6 +11,8 @@ export type TaskStatus =
 	| 'REJECTED'
 	| 'PAID';
 
+export type ClaimedTaskStatus = 'CLAIMED' | 'SUBMITTED' | 'PENDING_REVIEW' | 'APPROVED';
+
 export type UserProfile = {
 	id: string;
 	username: string;
@@ -144,6 +146,10 @@ export type TaskReportSnapshot = {
 	payoutStatus: TaskPayoutStatus;
 };
 
+export type TaskClaimedSnapshot = TaskReportSnapshot & {
+	funding: FundingRecord | null;
+};
+
 export type CreateTaskInput = {
 	title: string;
 	description: string;
@@ -176,4 +182,8 @@ export type TaskFilters = {
 	status?: TaskStatus;
 	clientId?: string;
 	workerId?: string;
+};
+
+export type ClaimedTaskFilters = {
+	status?: ClaimedTaskStatus;
 };

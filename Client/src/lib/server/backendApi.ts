@@ -5,6 +5,8 @@ import type {
 	FundTaskInput,
 	FundingRecord,
 	SubmitTaskInput,
+	TaskClaimedSnapshot,
+	ClaimedTaskFilters,
 	TaskPayoutStatus,
 	TaskFilters,
 	TaskRecord,
@@ -110,6 +112,12 @@ export function createBackendClient(context: BackendClientContext) {
 		},
 		listTasks(filters: TaskFilters = {}) {
 			return apiRequest<{ tasks: TaskRecord[] }>(context, `/tasks${createQueryString(filters)}`);
+		},
+		listClaimedTasks(filters: ClaimedTaskFilters = {}) {
+			return apiRequest<{ tasks: TaskClaimedSnapshot[] }>(
+				context,
+				`/tasks/claimed${createQueryString(filters)}`
+			);
 		},
 		getTask(id: string) {
 			return apiRequest<{ task: TaskRecord }>(context, `/tasks/${id}`);

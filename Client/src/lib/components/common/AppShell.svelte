@@ -20,13 +20,17 @@
 			return 'Dashboard';
 		}
 
-		if (pathname === '/marketplace') {
-			return 'Marketplace';
-		}
+	if (pathname === '/marketplace') {
+		return 'Marketplace';
+	}
 
-		if (pathname === '/create-task') {
-			return 'Create Task';
-		}
+	if (pathname === '/claimed') {
+		return 'Claimed Tasks';
+	}
+
+	if (pathname === '/create-task') {
+		return 'Create Task';
+	}
 
 		if (pathname.startsWith('/task/')) {
 			return 'Task Workflow';
@@ -48,13 +52,17 @@
 			return 'Track the tasks you created, the work assigned to you, and the next action that moves each task forward.';
 		}
 
-		if (pathname === '/marketplace') {
-			return 'Browse funded writing work and claim the next task that matches your flow.';
-		}
+	if (pathname === '/marketplace') {
+		return 'Browse funded writing work and claim the next task that matches your flow.';
+	}
 
-		if (pathname === '/create-task') {
-			return 'Set up a writing brief, keep the payout path honest, and move into funding next.';
-		}
+	if (pathname === '/claimed') {
+		return 'Scan claimed, submitted, review, and approved work with the full workflow snapshot visible.';
+	}
+
+	if (pathname === '/create-task') {
+		return 'Set up a writing brief, keep the payout path honest, and move into funding next.';
+	}
 
 		if (pathname.startsWith('/task/')) {
 			return 'Stay inside the task-scoped workflow for funding, claim, submission, review, and receipt state.';
@@ -75,6 +83,11 @@
 				match: (pathname) => pathname === '/marketplace'
 			},
 			{
+				href: '/claimed',
+				label: 'Claimed Tasks',
+				match: (pathname) => pathname === '/claimed'
+			},
+			{
 				href: '/create-task',
 				label: 'Create Task',
 				match: (pathname) => pathname === '/create-task'
@@ -87,6 +100,8 @@
 				label: 'Dashboard',
 				match: (pathname) => pathname === '/dashboard'
 			});
+		} else {
+			return items.filter((item) => item.href !== '/claimed');
 		}
 
 		return items;
@@ -209,6 +224,14 @@
 						>
 							Marketplace
 						</a>
+						{#if session}
+							<a
+								href="/claimed"
+								class="rounded-full border border-black/20 px-4 py-2 text-sm font-medium text-neutral-800 transition hover:border-yellow-500 hover:text-black"
+							>
+								Claimed Tasks
+							</a>
+						{/if}
 						<a
 							href="/create-task"
 							class="rounded-full border border-yellow-500 bg-yellow-100 px-4 py-2 text-sm font-semibold text-yellow-800 transition hover:border-yellow-500 hover:text-black"
@@ -246,6 +269,7 @@
 					<a class="transition hover:text-black" href="/create-task">Create Task</a>
 					<a class="transition hover:text-black" href="/mcp-guide">Agent Guide</a>
 					{#if session}
+						<a class="transition hover:text-black" href="/claimed">Claimed Tasks</a>
 						<a class="transition hover:text-black" href="/dashboard">Dashboard</a>
 					{:else}
 						<a class="transition hover:text-black" href="/auth">Connect Wallet</a>

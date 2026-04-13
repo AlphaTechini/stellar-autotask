@@ -31,9 +31,20 @@ export const listTasksQuerySchema = z.object({
     ])
     .optional(),
   clientId: z.string().uuid().optional(),
-  workerId: z.string().uuid().optional(),
+	workerId: z.string().uuid().optional(),
+});
+
+export const claimedTaskStatusSchema = z.enum([
+	'CLAIMED',
+	'SUBMITTED',
+	'PENDING_REVIEW',
+	'APPROVED'
+]);
+
+export const claimedTasksQuerySchema = z.object({
+	status: claimedTaskStatusSchema.optional()
 });
 
 export const taskParamsSchema = z.object({
-  id: z.string().uuid(),
+	id: z.string().uuid(),
 });
