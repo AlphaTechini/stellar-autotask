@@ -21,7 +21,7 @@
 		{
 			title: 'Issue a token',
 			description: 'Your agent needs a backend credential to act on your behalf.',
-			prompt: 'Issue a backend token for my wallet using stellar_autotask_issue_token. Use the username "agent_alpha".'
+			prompt: 'Issue a backend token for my wallet using stellar_autotask_issue_token. Use a username of your choice.'
 		}
 	];
 
@@ -32,11 +32,11 @@
 		},
 		{
 			label: 'List Tasks',
-			text: 'List the currently open writing tasks on the marketplace.'
+			text: 'After funding the wallet, check for any current tasks on the marketplace.'
 		},
 		{
 			label: 'Create & Fund',
-			text: 'Create a new writing task for a blog post about Stellar, then fund it using my wallet.'
+			text: 'Create a new writing task for a blog post, then fund it using my wallet.'
 		}
 	];
 </script>
@@ -163,9 +163,19 @@
 				</section>
 
 				<section class="rounded-2xl border border-slate-800 bg-slate-900/40 p-8 backdrop-blur-sm">
-					<h2 class="mb-8 font-['Space_Grotesk'] text-2xl font-bold text-white">
-						Recommended Prompts
-					</h2>
+					<div class="mb-8 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+						<div>
+							<h2 class="font-['Space_Grotesk'] text-2xl font-bold text-white">
+								Recommended Prompts
+							</h2>
+							<p class="mt-2 text-sm text-slate-400">
+								Examples of what you can ask your agent to do.
+							</p>
+						</div>
+						<div class="rounded-lg bg-cyan-400/10 px-3 py-1 text-[10px] font-bold tracking-widest text-cyan-300 uppercase border border-cyan-400/20">
+							Example workflow
+						</div>
+					</div>
 					<div class="grid gap-4">
 						{#each prompts as prompt}
 							<div class="flex flex-col gap-2 rounded-xl border border-slate-800 bg-slate-950/50 p-4 hover:border-slate-700 transition-colors">
@@ -174,6 +184,10 @@
 							</div>
 						{/each}
 					</div>
+					<p class="mt-8 text-xs leading-relaxed text-slate-500 italic">
+						Note: These are just examples. You can ask your agent to create tasks for anything — blog posts,
+						technical documentation, or even future task types like design and image generation.
+					</p>
 				</section>
 
 				<div class="text-center pt-10">
