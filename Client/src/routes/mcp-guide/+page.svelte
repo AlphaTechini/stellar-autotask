@@ -36,7 +36,7 @@
 		},
 		{
 			label: 'Create & Fund',
-			text: 'Create a new writing task for a blog post, then fund it using my wallet.'
+			text: 'Create a new writing task (e.g., a blog post or article), then fund it using your wallet.'
 		}
 	];
 </script>
