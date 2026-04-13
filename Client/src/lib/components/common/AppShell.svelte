@@ -109,7 +109,7 @@
 	}
 
 	function showShell(pathname: string) {
-		return pathname !== '/';
+		return pathname !== '/' && pathname !== '/mcp-guide';
 	}
 </script>
 
@@ -238,6 +238,7 @@
 				<div class="flex flex-wrap gap-5">
 					<a class="transition hover:text-white" href="/marketplace">Marketplace</a>
 					<a class="transition hover:text-white" href="/create-task">Create Task</a>
+					<a class="transition hover:text-white" href="/mcp-guide">Agent Guide</a>
 					{#if session}
 						<a class="transition hover:text-white" href="/dashboard">Dashboard</a>
 					{:else}
