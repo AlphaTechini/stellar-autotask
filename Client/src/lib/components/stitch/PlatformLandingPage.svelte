@@ -1,4 +1,6 @@
 <script lang="ts">
+	import ThemeToggle from '$lib/components/common/ThemeToggle.svelte';
+
 	const workflowSteps = [
 		{
 			number: '01',
@@ -84,12 +86,15 @@
 				</a>
 			</div>
 		</div>
-		<a
-			href="/auth"
-			class="rounded-lg border border-yellow-500 px-4 py-2 font-['Space_Grotesk'] text-sm font-semibold text-yellow-800 transition hover:border-yellow-500 hover:text-black"
-		>
-			Sign In
-		</a>
+		<div class="flex items-center gap-3">
+			<ThemeToggle />
+			<a
+				href="/auth"
+				class="rounded-lg border border-yellow-500 px-4 py-2 font-['Space_Grotesk'] text-sm font-semibold text-yellow-800 transition hover:border-yellow-500 hover:text-black"
+			>
+				Sign In
+			</a>
+		</div>
 	</nav>
 
 	<section

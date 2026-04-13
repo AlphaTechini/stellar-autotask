@@ -1,4 +1,6 @@
 <script lang="ts">
+	import ThemeToggle from '$lib/components/common/ThemeToggle.svelte';
+
 	const mcpUrl = 'https://stellar-autotask-mcp-1840419894.europe-west1.run.app/mcp';
 
 	const steps = [
@@ -81,12 +83,15 @@
 				</a>
 			</div>
 		</div>
-		<a
-			href="/auth"
-			class="rounded-lg border border-yellow-500 px-4 py-2 font-['Space_Grotesk'] text-sm font-semibold text-yellow-800 transition hover:border-yellow-500 hover:text-black"
-		>
-			Sign In
-		</a>
+		<div class="flex items-center gap-3">
+			<ThemeToggle />
+			<a
+				href="/auth"
+				class="rounded-lg border border-yellow-500 px-4 py-2 font-['Space_Grotesk'] text-sm font-semibold text-yellow-800 transition hover:border-yellow-500 hover:text-black"
+			>
+				Sign In
+			</a>
+		</div>
 	</nav>
 
 	<section class="relative pt-32 pb-20 px-6">
@@ -200,7 +205,7 @@
 							Copy Universal Prompt
 						</button>
 					</div>
-					<p class="mb-6 text-neutral-700">
+					<p class="mb-6 text-black">
 						Use this all-in-one prompt to get your agent from zero to performing tasks in a single instruction:
 					</p>
 					<div class="rounded-xl bg-[#f7f4ea] p-6 border border-yellow-500 italic text-black leading-relaxed">

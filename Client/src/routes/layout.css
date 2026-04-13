@@ -1,6 +1,7 @@
 @import 'tailwindcss';
 @plugin '@tailwindcss/forms';
 @plugin '@tailwindcss/typography';
+@custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
 	--color-inverse-primary: #111111;
@@ -61,6 +62,18 @@
 }
 
 @layer base {
+	:root {
+		color-scheme: light;
+	}
+
+	:root.dark {
+		color-scheme: dark;
+		--color-background: #0d0d0a;
+		--color-surface: #151511;
+		--color-on-background: #fff8dc;
+		--color-on-surface: #fff8dc;
+	}
+
 	body {
 		background-color: var(--color-background);
 		color: var(--color-on-background);
@@ -99,5 +112,138 @@
 	.custom-scrollbar::-webkit-scrollbar-thumb {
 		background: var(--color-outline-variant);
 		border-radius: 10px;
+	}
+}
+
+@layer utilities {
+	.dark .bg-\[\#f7f4ea\],
+	.dark .bg-\[\#f7f4ea\]\/75,
+	.dark .bg-white,
+	.dark .bg-white\/40,
+	.dark .bg-white\/90,
+	.dark .bg-white\/95 {
+		background-color: #12120f !important;
+	}
+
+	.dark .bg-yellow-50,
+	.dark .bg-yellow-100,
+	.dark .bg-yellow-200 {
+		background-color: #2a2306 !important;
+	}
+
+	.dark .bg-yellow-300,
+	.dark .bg-yellow-400 {
+		background-color: #facc15 !important;
+	}
+
+	.dark .text-black,
+	.dark .text-neutral-800,
+	.dark .text-neutral-700,
+	.dark .text-neutral-600,
+	.dark .text-neutral-500 {
+		color: #fff8dc !important;
+	}
+
+	.dark .text-yellow-700,
+	.dark .text-yellow-800 {
+		color: #fde047 !important;
+	}
+
+	.dark
+		:where(
+			.from-white,
+			.to-white,
+			.from-yellow-50,
+			.to-yellow-50,
+			.from-yellow-100,
+			.to-yellow-100,
+			.from-yellow-200,
+			.to-yellow-200
+		)
+		:is(
+			.text-black,
+			.text-neutral-800,
+			.text-neutral-700,
+			.text-neutral-600,
+			.text-neutral-500,
+			.text-yellow-700,
+			.text-yellow-800
+		) {
+		color: #111111 !important;
+	}
+
+	.dark
+		:where(
+			.from-white,
+			.to-white,
+			.from-yellow-50,
+			.to-yellow-50,
+			.from-yellow-100,
+			.to-yellow-100,
+			.from-yellow-200,
+			.to-yellow-200
+		)
+		:is(.bg-\[\#f7f4ea\], .bg-\[\#f7f4ea\]\/75) {
+		background-color: #f7f4ea !important;
+	}
+
+	.dark .bg-yellow-300.text-black,
+	.dark .bg-yellow-400.text-black,
+	.dark .bg-yellow-300 .text-black,
+	.dark .bg-yellow-400 .text-black,
+	.dark button.bg-yellow-400,
+	.dark a.bg-yellow-400,
+	.dark a.bg-yellow-300 {
+		color: #111111 !important;
+	}
+
+	.dark .border-black\/10,
+	.dark .border-black\/15,
+	.dark .border-black\/20,
+	.dark .border-black\/25,
+	.dark .border-black\/30,
+	.dark .border-black\/40 {
+		border-color: rgba(255, 248, 220, 0.18) !important;
+	}
+
+	.dark .border-yellow-500,
+	.dark .border-yellow-500\/60,
+	.dark .border-yellow-500\/70,
+	.dark .border-yellow-500\/80 {
+		border-color: rgba(250, 204, 21, 0.72) !important;
+	}
+
+	.dark .shadow-yellow-900\/10 {
+		--tw-shadow-color: rgba(250, 204, 21, 0.16) !important;
+	}
+
+	.dark .hover\:bg-yellow-100:hover {
+		background-color: #332a05 !important;
+	}
+
+	.dark .hover\:bg-white:hover {
+		background-color: #191914 !important;
+	}
+
+	.dark .hover\:text-black:hover,
+	.dark .hover\:text-neutral-800:hover {
+		color: #ffffff !important;
+	}
+
+	.dark input,
+	.dark textarea,
+	.dark select {
+		background-color: #0d0d0a !important;
+		color: #fff8dc !important;
+	}
+
+	.dark input::placeholder,
+	.dark textarea::placeholder {
+		color: rgba(255, 248, 220, 0.55) !important;
+	}
+
+	.dark pre,
+	.dark code {
+		color: #fff8dc;
 	}
 }

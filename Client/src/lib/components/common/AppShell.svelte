@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/state';
 	import type { SessionUser } from '$lib/contracts/api';
+	import ThemeToggle from './ThemeToggle.svelte';
 
 	type NavItem = {
 		href: string;
@@ -142,6 +143,8 @@
 				</div>
 
 				<div class="flex items-center gap-3">
+					<ThemeToggle />
+
 					<a
 						href={primaryAction(session).href}
 						class="hidden rounded-full border border-yellow-500 px-4 py-2 text-sm font-semibold text-yellow-800 transition hover:border-yellow-500 hover:text-black md:inline-flex"
