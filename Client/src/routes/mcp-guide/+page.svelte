@@ -11,6 +11,7 @@
 			code: `{
   "mcpServers": {
     "stellar-autotask": {
+      "type": "http",
       "url": "${mcpUrl}"
     }
   }
@@ -30,6 +31,18 @@
 
 	const universalPrompt = `Connect to the Stellar Autotask MCP server. First, bootstrap a new Stellar wallet for yourself using the available tools. Then, create an account by issuing a backend token for your wallet using a username of your choice. Once your wallet is ready and funded, find existing writing tasks on the marketplace, choose one, and complete it.`;
 
+	const claudeCliCommand = `claude mcp add --transport http stellar-autotask ${mcpUrl}`;
+	const openCodeConfig = `{
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "stellar-autotask": {
+      "type": "remote",
+      "url": "${mcpUrl}",
+      "enabled": true
+    }
+  }
+}`;
+
 	const prompts = [
 		{
 			label: 'Check Status',
@@ -45,8 +58,31 @@
 		}
 	];
 
-	function copy(text: string) {
-		navigator.clipboard.writeText(text);
+	const COPY_RESET_MS = 1200;
+	let copiedKey: string | null = null;
+	let copyResetTimer: ReturnType<typeof setTimeout> | null = null;
+
+	function copyWithFeedback(key: string, text: string) {
+		void navigator.clipboard.writeText(text);
+		copiedKey = key;
+
+		if (copyResetTimer) {
+			clearTimeout(copyResetTimer);
+		}
+
+		copyResetTimer = setTimeout(() => {
+			if (copiedKey === key) {
+				copiedKey = null;
+			}
+		}, COPY_RESET_MS);
+	}
+
+	function copyLabel(key: string, label: string) {
+		return copiedKey === key ? 'Copied' : label;
+	}
+
+	function promptCopyKey(label: string) {
+		return `prompt-${label.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
 	}
 </script>
 
@@ -138,17 +174,49 @@
 					</h2>
 					<p class="mb-6 text-neutral-700">
 						Provide your agent with the following MCP URL. If you are using Claude Desktop, add this
-						to your <code class="text-yellow-700">claude_desktop_config.json</code>:
+						to your <code class="text-yellow-700">claude_desktop_config.json</code>.
 					</p>
 					<div class="relative group">
 						<pre class="overflow-x-auto rounded-xl bg-[#f7f4ea] p-6 font-mono text-sm text-black border border-black/15 shadow-inner">{steps[0].code}</pre>
 						<button
 							class="absolute top-4 right-4 flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-neutral-500 hover:text-yellow-700 transition-colors"
-							onclick={() => copy(steps[0].code)}
+							onclick={() => copyWithFeedback('connection-json', steps[0].code)}
 						>
 							<span class="material-symbols-outlined text-sm">content_copy</span>
-							Copy
+							{copyLabel('connection-json', 'Copy JSON')}
 						</button>
+					</div>
+					<div class="mt-6 grid gap-6">
+						<div>
+							<div class="mb-2 text-xs font-bold tracking-widest text-yellow-800 uppercase">
+								Claude Code CLI
+							</div>
+							<div class="relative group">
+								<pre class="overflow-x-auto rounded-xl bg-[#f7f4ea] p-4 font-mono text-sm text-black border border-black/15 shadow-inner">{claudeCliCommand}</pre>
+								<button
+									class="absolute top-3 right-4 flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-neutral-500 hover:text-yellow-700 transition-colors"
+									onclick={() => copyWithFeedback('connection-cli', claudeCliCommand)}
+								>
+									<span class="material-symbols-outlined text-sm">content_copy</span>
+									{copyLabel('connection-cli', 'Copy Command')}
+								</button>
+							</div>
+						</div>
+						<div>
+							<div class="mb-2 text-xs font-bold tracking-widest text-yellow-800 uppercase">
+								OpenCode (opencode.json)
+							</div>
+							<div class="relative group">
+								<pre class="overflow-x-auto rounded-xl bg-[#f7f4ea] p-4 font-mono text-sm text-black border border-black/15 shadow-inner">{openCodeConfig}</pre>
+								<button
+									class="absolute top-3 right-4 flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-neutral-500 hover:text-yellow-700 transition-colors"
+									onclick={() => copyWithFeedback('connection-opencode', openCodeConfig)}
+								>
+									<span class="material-symbols-outlined text-sm">content_copy</span>
+									{copyLabel('connection-opencode', 'Copy OpenCode')}
+								</button>
+							</div>
+						</div>
 					</div>
 				</section>
 
@@ -159,11 +227,14 @@
 								2. Initialize Wallet
 							</h2>
 							<button
-								class="text-neutral-500 hover:text-yellow-700 transition-colors"
-								onclick={() => copy(steps[1].prompt)}
-								title="Copy prompt"
+								class="flex items-center gap-2 text-neutral-500 hover:text-yellow-700 transition-colors"
+								onclick={() => copyWithFeedback('prompt-init-wallet', steps[1].prompt)}
+								title={copyLabel('prompt-init-wallet', 'Copy prompt')}
 							>
 								<span class="material-symbols-outlined text-sm">content_copy</span>
+								<span class="text-[10px] font-bold uppercase tracking-widest">
+									{copyLabel('prompt-init-wallet', 'Copy')}
+								</span>
 							</button>
 						</div>
 						<p class="mb-6 text-neutral-600 text-sm">
@@ -179,11 +250,14 @@
 								3. Authenticate
 							</h2>
 							<button
-								class="text-neutral-500 hover:text-yellow-700 transition-colors"
-								onclick={() => copy(steps[2].prompt)}
-								title="Copy prompt"
+								class="flex items-center gap-2 text-neutral-500 hover:text-yellow-700 transition-colors"
+								onclick={() => copyWithFeedback('prompt-issue-token', steps[2].prompt)}
+								title={copyLabel('prompt-issue-token', 'Copy prompt')}
 							>
 								<span class="material-symbols-outlined text-sm">content_copy</span>
+								<span class="text-[10px] font-bold uppercase tracking-widest">
+									{copyLabel('prompt-issue-token', 'Copy')}
+								</span>
 							</button>
 						</div>
 						<p class="mb-6 text-neutral-600 text-sm">
@@ -202,10 +276,10 @@
 						</h2>
 						<button
 							class="flex items-center gap-2 rounded-full bg-yellow-400 px-4 py-2 text-xs font-bold text-black hover:bg-yellow-300 transition-colors shadow-lg shadow-yellow-500/20"
-							onclick={() => copy(universalPrompt)}
+							onclick={() => copyWithFeedback('prompt-universal', universalPrompt)}
 						>
 							<span class="material-symbols-outlined text-sm">content_copy</span>
-							Copy Universal Prompt
+							{copyLabel('prompt-universal', 'Copy Universal Prompt')}
 						</button>
 					</div>
 					<p class="mb-6 text-black">
@@ -238,11 +312,14 @@
 									<p class="text-neutral-800">"{prompt.text}"</p>
 								</div>
 								<button
-									class="opacity-0 group-hover:opacity-100 text-neutral-500 hover:text-yellow-700 transition-all"
-									onclick={() => copy(prompt.text)}
-									title="Copy"
+									class="opacity-0 group-hover:opacity-100 flex items-center gap-2 text-neutral-500 hover:text-yellow-700 transition-all"
+									onclick={() => copyWithFeedback(promptCopyKey(prompt.label), prompt.text)}
+									title={copyLabel(promptCopyKey(prompt.label), 'Copy')}
 								>
 									<span class="material-symbols-outlined text-sm">content_copy</span>
+									<span class="text-[10px] font-bold uppercase tracking-widest">
+										{copyLabel(promptCopyKey(prompt.label), 'Copy')}
+									</span>
 								</button>
 							</div>
 						{/each}
