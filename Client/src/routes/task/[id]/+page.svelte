@@ -321,14 +321,14 @@
 		const currentIndex = workflowIndex();
 
 		if (index < currentIndex) {
-			return 'border-emerald-400/20 bg-emerald-400/10 text-emerald-100';
+			return 'border-yellow-500/80 bg-yellow-100 text-black';
 		}
 
 		if (index === currentIndex) {
-			return 'border-cyan-400/30 bg-cyan-400/10 text-cyan-100';
+			return 'border-yellow-500 bg-yellow-100 text-black';
 		}
 
-		return 'border-slate-800 bg-slate-950/65 text-slate-300';
+		return 'border-black/10 bg-[#f7f4ea]/65 text-neutral-700';
 	}
 
 	function workflowBadge(index: number) {
@@ -523,38 +523,38 @@
 </svelte:head>
 
 <main
-	class="min-h-screen bg-[radial-gradient(circle_at_top,rgba(34,211,238,0.14),transparent_24%),linear-gradient(180deg,#020617_0%,#08111f_42%,#020617_100%)] px-6 py-12 text-slate-100"
+	class="min-h-screen bg-[radial-gradient(circle_at_top,rgba(250,204,21,0.28),transparent_28%),linear-gradient(180deg,#fffdf2_0%,#f7f4ea_55%,#ffffff_100%)] px-6 py-12 text-black"
 >
 	<div class="mx-auto max-w-7xl space-y-8">
 		<header
-			class="overflow-hidden rounded-[2rem] border border-cyan-400/20 bg-slate-950/80 p-8 shadow-[0_30px_90px_rgba(8,145,178,0.16)] backdrop-blur-xl"
+			class="overflow-hidden rounded-[2rem] border border-yellow-500/80 bg-white p-8 shadow-[0_30px_90px_rgba(250,204,21,0.22)] backdrop-blur-xl"
 		>
 			<div class="flex flex-col gap-8 xl:flex-row xl:items-end xl:justify-between">
 				<div class="max-w-4xl">
 					<div class="flex flex-wrap items-center gap-3">
 						<span
-							class="rounded-full border border-cyan-400/20 bg-cyan-400/10 px-4 py-2 text-xs font-semibold tracking-[0.24em] text-cyan-200 uppercase"
+							class="rounded-full border border-yellow-500/80 bg-yellow-100 px-4 py-2 text-xs font-semibold tracking-[0.24em] text-yellow-800 uppercase"
 						>
 							{data.task.status}
 						</span>
 						<span
-							class="rounded-full border border-slate-700 bg-slate-900/70 px-4 py-2 text-xs font-semibold tracking-[0.22em] text-slate-200 uppercase"
+							class="rounded-full border border-black/20 bg-white px-4 py-2 text-xs font-semibold tracking-[0.22em] text-neutral-800 uppercase"
 						>
 							{fundingStateLabel()}
 						</span>
 					</div>
 					<h1
-						class="mt-5 font-['Space_Grotesk'] text-4xl font-bold tracking-tight text-white md:text-5xl"
+						class="mt-5 font-['Space_Grotesk'] text-4xl font-bold tracking-tight text-black md:text-5xl"
 					>
 						{data.task.title}
 					</h1>
-					<p class="mt-4 max-w-3xl text-sm leading-7 text-slate-300">{data.task.brief}</p>
-					<p class="mt-4 max-w-3xl text-sm leading-7 text-slate-300">{introCopy()}</p>
+					<p class="mt-4 max-w-3xl text-sm leading-7 text-neutral-700">{data.task.brief}</p>
+					<p class="mt-4 max-w-3xl text-sm leading-7 text-neutral-700">{introCopy()}</p>
 					{#if data.highlightFundingStep && canFundTask()}
 						<div
-							class="mt-5 max-w-3xl rounded-[1.5rem] border border-cyan-400/20 bg-cyan-400/10 px-5 py-4 text-sm leading-7 text-cyan-100"
+							class="mt-5 max-w-3xl rounded-[1.5rem] border border-yellow-500/80 bg-yellow-100 px-5 py-4 text-sm leading-7 text-black"
 						>
-							<div class="font-semibold text-white">Task created. Funding is next.</div>
+							<div class="font-semibold text-black">Task created. Funding is next.</div>
 							<p class="mt-2">
 								This draft is saved and ready for the Stellar Testnet payment step below. Once you
 								confirm the XLM funding transaction, the task can open for claims.
@@ -564,35 +564,35 @@
 				</div>
 
 				<div class="grid w-full gap-4 sm:grid-cols-2 xl:max-w-xl">
-					<div class="rounded-[1.5rem] border border-slate-800 bg-slate-900/70 p-5">
-						<div class="text-xs tracking-[0.22em] text-slate-500 uppercase">Payout target</div>
-						<div class="mt-3 font-['Space_Grotesk'] text-3xl font-bold text-white">
+					<div class="rounded-[1.5rem] border border-black/10 bg-white p-5">
+						<div class="text-xs tracking-[0.22em] text-neutral-500 uppercase">Payout target</div>
+						<div class="mt-3 font-['Space_Grotesk'] text-3xl font-bold text-black">
 							{data.task.payoutAmount}
 						</div>
-						<div class="mt-2 text-sm text-cyan-200">
+						<div class="mt-2 text-sm text-yellow-800">
 							{data.task.currencyAsset} on Stellar Testnet
 						</div>
 					</div>
-					<div class="rounded-[1.5rem] border border-slate-800 bg-slate-900/70 p-5">
-						<div class="text-xs tracking-[0.22em] text-slate-500 uppercase">Assignment</div>
-						<div class="mt-3 font-['Space_Grotesk'] text-2xl font-bold text-white">
+					<div class="rounded-[1.5rem] border border-black/10 bg-white p-5">
+						<div class="text-xs tracking-[0.22em] text-neutral-500 uppercase">Assignment</div>
+						<div class="mt-3 font-['Space_Grotesk'] text-2xl font-bold text-black">
 							{assignmentLabel()}
 						</div>
-						<div class="mt-2 text-sm text-slate-300">
+						<div class="mt-2 text-sm text-neutral-700">
 							Review window {data.task.reviewWindowHours}h
 						</div>
 					</div>
-					<div class="rounded-[1.5rem] border border-slate-800 bg-slate-900/70 p-5">
-						<div class="text-xs tracking-[0.22em] text-slate-500 uppercase">Created</div>
-						<div class="mt-3 text-sm leading-6 text-white">{formatDate(data.task.createdAt)}</div>
-						<div class="mt-2 text-sm text-slate-400">Updated {formatDate(data.task.updatedAt)}</div>
+					<div class="rounded-[1.5rem] border border-black/10 bg-white p-5">
+						<div class="text-xs tracking-[0.22em] text-neutral-500 uppercase">Created</div>
+						<div class="mt-3 text-sm leading-6 text-black">{formatDate(data.task.createdAt)}</div>
+						<div class="mt-2 text-sm text-neutral-600">Updated {formatDate(data.task.updatedAt)}</div>
 					</div>
-					<div class="rounded-[1.5rem] border border-slate-800 bg-slate-900/70 p-5">
-						<div class="text-xs tracking-[0.22em] text-slate-500 uppercase">Review deadline</div>
-						<div class="mt-3 text-sm leading-6 text-white">
+					<div class="rounded-[1.5rem] border border-black/10 bg-white p-5">
+						<div class="text-xs tracking-[0.22em] text-neutral-500 uppercase">Review deadline</div>
+						<div class="mt-3 text-sm leading-6 text-black">
 							{formatDate(data.task.reviewDeadline)}
 						</div>
-						<div class="mt-2 text-sm text-slate-400">
+						<div class="mt-2 text-sm text-neutral-600">
 							Worker wallet {formatWallet(data.payoutStatus.workerWalletAddress)}
 						</div>
 					</div>
@@ -606,7 +606,7 @@
 					<div class="flex items-center justify-between gap-4">
 						<div class="text-xs tracking-[0.22em] uppercase opacity-80">{step.label}</div>
 						<div
-							class="rounded-full border border-current/20 bg-slate-950/30 px-3 py-1 text-[11px] font-semibold tracking-[0.22em] uppercase"
+							class="rounded-full border border-current/20 bg-[#f7f4ea]/30 px-3 py-1 text-[11px] font-semibold tracking-[0.22em] uppercase"
 						>
 							{workflowBadge(index)}
 						</div>
@@ -618,20 +618,20 @@
 
 		<section class="grid gap-6 lg:grid-cols-[1.08fr_0.92fr]">
 			<div class="space-y-6">
-				<article class="rounded-[2rem] border border-slate-800 bg-slate-900/70 p-8">
+				<article class="rounded-[2rem] border border-black/10 bg-white p-8">
 					<div
-						class="flex flex-col gap-4 border-b border-slate-800 pb-6 md:flex-row md:items-end md:justify-between"
+						class="flex flex-col gap-4 border-b border-black/10 pb-6 md:flex-row md:items-end md:justify-between"
 					>
 						<div>
-							<p class="text-xs tracking-[0.22em] text-slate-500 uppercase">Workflow hub</p>
-							<h2 class="mt-3 font-['Space_Grotesk'] text-3xl font-semibold text-white">
+							<p class="text-xs tracking-[0.22em] text-neutral-500 uppercase">Workflow hub</p>
+							<h2 class="mt-3 font-['Space_Grotesk'] text-3xl font-semibold text-black">
 								Next move
 							</h2>
 						</div>
 						<div class="flex flex-wrap gap-3">
 							{#if canOpenReport()}
 								<a
-									class="rounded-full border border-slate-700 px-4 py-2 text-sm font-medium text-slate-200 transition hover:border-cyan-400/30 hover:text-white"
+									class="rounded-full border border-black/20 px-4 py-2 text-sm font-medium text-neutral-800 transition hover:border-yellow-500 hover:text-black"
 									href={`/task/${data.task.id}/report`}
 								>
 									Open report
@@ -639,7 +639,7 @@
 							{/if}
 							{#if canOpenReview()}
 								<a
-									class="rounded-full border border-cyan-400/30 bg-cyan-400/10 px-4 py-2 text-sm font-semibold text-cyan-200 transition hover:border-cyan-300 hover:text-white"
+									class="rounded-full border border-yellow-500 bg-yellow-100 px-4 py-2 text-sm font-semibold text-yellow-800 transition hover:border-yellow-500 hover:text-black"
 									href={`/task/${data.task.id}/review`}
 								>
 									Open review
@@ -647,7 +647,7 @@
 							{/if}
 							{#if canOpenReceipt()}
 								<a
-									class="rounded-full border border-cyan-400/30 bg-cyan-400/10 px-4 py-2 text-sm font-semibold text-cyan-200 transition hover:border-cyan-300 hover:text-white"
+									class="rounded-full border border-yellow-500 bg-yellow-100 px-4 py-2 text-sm font-semibold text-yellow-800 transition hover:border-yellow-500 hover:text-black"
 									href={`/task/${data.task.id}/receipt`}
 								>
 									Open receipt
@@ -657,16 +657,16 @@
 					</div>
 
 					{#if !data.session}
-						<div class="mt-6 rounded-[1.5rem] border border-cyan-400/20 bg-cyan-400/10 p-6">
-							<h3 class="font-['Space_Grotesk'] text-2xl font-semibold text-white">
+						<div class="mt-6 rounded-[1.5rem] border border-yellow-500/80 bg-yellow-100 p-6">
+							<h3 class="font-['Space_Grotesk'] text-2xl font-semibold text-black">
 								Sign in to act on this task
 							</h3>
-							<p class="mt-4 max-w-2xl text-sm leading-7 text-slate-200">
+							<p class="mt-4 max-w-2xl text-sm leading-7 text-neutral-800">
 								Wallet authentication decides whether you can fund the task as the client, claim it
 								as a worker, or continue into review and payout visibility.
 							</p>
 							<a
-								class="mt-6 inline-flex items-center justify-center rounded-2xl bg-cyan-400 px-5 py-3 font-semibold text-slate-950 transition hover:bg-cyan-300"
+								class="mt-6 inline-flex items-center justify-center rounded-2xl bg-yellow-400 px-5 py-3 font-semibold text-black transition hover:bg-yellow-300"
 								href="/auth"
 							>
 								Open wallet auth
@@ -674,7 +674,7 @@
 						</div>
 					{:else if canFundTask()}
 						<form
-							class="mt-6 rounded-[1.75rem] border border-cyan-400/20 bg-[linear-gradient(160deg,rgba(8,47,73,0.55),rgba(15,23,42,0.92))] p-6"
+							class="mt-6 rounded-[1.75rem] border border-yellow-500/80 bg-[linear-gradient(160deg,#fff7bf,#ffffff)] p-6"
 							method="POST"
 							action="?/fund"
 							bind:this={fundingForm}
@@ -692,62 +692,62 @@
 							<input type="hidden" name="txHash" value={fundingTxHash} />
 
 							<div
-								class="flex flex-col gap-4 border-b border-cyan-400/10 pb-6 lg:flex-row lg:items-end lg:justify-between"
+								class="flex flex-col gap-4 border-b border-yellow-500/60 pb-6 lg:flex-row lg:items-end lg:justify-between"
 							>
 								<div>
-									<p class="text-xs font-semibold tracking-[0.22em] text-cyan-200 uppercase">
+									<p class="text-xs font-semibold tracking-[0.22em] text-yellow-800 uppercase">
 										Client action
 									</p>
-									<h3 class="mt-3 font-['Space_Grotesk'] text-3xl font-semibold text-white">
+									<h3 class="mt-3 font-['Space_Grotesk'] text-3xl font-semibold text-black">
 										Confirm Stellar funding
 									</h3>
-									<p class="mt-4 max-w-2xl text-sm leading-7 text-slate-200">
+									<p class="mt-4 max-w-2xl text-sm leading-7 text-neutral-800">
 										Launch a native XLM payment through Freighter, submit it to Stellar Testnet,
 										then let the backend open the task for claims with the returned transaction
 										hash.
 									</p>
 								</div>
 								<div
-									class="rounded-[1.25rem] border border-slate-800 bg-slate-950/60 px-4 py-3 text-sm text-slate-200"
+									class="rounded-[1.25rem] border border-black/10 bg-white/90 px-4 py-3 text-sm text-neutral-800"
 								>
 									<div>{data.task.payoutAmount} {data.task.currencyAsset}</div>
-									<div class="mt-1 text-slate-400">Required match for this task</div>
+									<div class="mt-1 text-neutral-600">Required match for this task</div>
 								</div>
 							</div>
 
 							<div class="mt-6 grid gap-5 md:grid-cols-2">
-								<div class="rounded-[1.5rem] border border-slate-800 bg-slate-950/70 p-5">
-									<div class="text-xs tracking-[0.22em] text-slate-500 uppercase">From wallet</div>
-									<div class="mt-3 text-sm leading-7 break-all text-cyan-200">
+								<div class="rounded-[1.5rem] border border-black/10 bg-white p-5">
+									<div class="text-xs tracking-[0.22em] text-neutral-500 uppercase">From wallet</div>
+									<div class="mt-3 text-sm leading-7 break-all text-yellow-800">
 										{fundingWalletAddress || data.session.walletAddress}
 									</div>
 								</div>
-								<div class="rounded-[1.5rem] border border-slate-800 bg-slate-950/70 p-5">
-									<div class="text-xs tracking-[0.22em] text-slate-500 uppercase">To wallet</div>
-									<div class="mt-3 text-sm leading-7 break-all text-cyan-200">
+								<div class="rounded-[1.5rem] border border-black/10 bg-white p-5">
+									<div class="text-xs tracking-[0.22em] text-neutral-500 uppercase">To wallet</div>
+									<div class="mt-3 text-sm leading-7 break-all text-yellow-800">
 										{data.platformFundingWallet}
 									</div>
 								</div>
 							</div>
 
-							<div class="mt-6 rounded-[1.5rem] border border-slate-800 bg-slate-950/70 p-5">
+							<div class="mt-6 rounded-[1.5rem] border border-black/10 bg-white p-5">
 								<div class="flex items-center justify-between gap-4">
 									<div>
-										<div class="text-xs tracking-[0.22em] text-slate-500 uppercase">
+										<div class="text-xs tracking-[0.22em] text-neutral-500 uppercase">
 											Funding stage
 										</div>
-										<div class="mt-3 text-sm font-semibold text-white">{fundingStage}</div>
+										<div class="mt-3 text-sm font-semibold text-black">{fundingStage}</div>
 									</div>
 									<div>
-										<div class="text-xs tracking-[0.22em] text-slate-500 uppercase">
+										<div class="text-xs tracking-[0.22em] text-neutral-500 uppercase">
 											Transaction hash
 										</div>
-										<div class="mt-3 text-right text-sm leading-6 break-all text-cyan-300">
+										<div class="mt-3 text-right text-sm leading-6 break-all text-yellow-700">
 											{fundingTxHash || 'Not submitted yet'}
 										</div>
 									</div>
 								</div>
-								<p class="mt-4 text-sm leading-6 text-slate-300">
+								<p class="mt-4 text-sm leading-6 text-neutral-700">
 									The backend still validates the amount, asset, and wallet after the on-chain
 									payment succeeds. If backend confirmation fails after submission, retrying uses
 									the same recorded transaction hash instead of sending funds twice.
@@ -756,7 +756,7 @@
 
 							{#if fundingNotice}
 								<p
-									class="mt-4 rounded-[1.25rem] border border-cyan-400/30 bg-cyan-400/10 px-4 py-3 text-sm text-cyan-100"
+									class="mt-4 rounded-[1.25rem] border border-yellow-500 bg-yellow-100 px-4 py-3 text-sm text-black"
 								>
 									{fundingNotice}
 								</p>
@@ -764,7 +764,7 @@
 
 							{#if fundingError}
 								<p
-									class="mt-4 rounded-[1.25rem] border border-rose-500/40 bg-rose-500/10 px-4 py-3 text-sm text-rose-200"
+									class="mt-4 rounded-[1.25rem] border border-black/30 bg-yellow-100 px-4 py-3 text-sm text-black"
 								>
 									{fundingError}
 								</p>
@@ -772,7 +772,7 @@
 
 							{#if form?.error && form.intent === 'fund'}
 								<p
-									class="mt-4 rounded-[1.25rem] border border-rose-500/40 bg-rose-500/10 px-4 py-3 text-sm text-rose-200"
+									class="mt-4 rounded-[1.25rem] border border-black/30 bg-yellow-100 px-4 py-3 text-sm text-black"
 								>
 									{form.error}
 								</p>
@@ -781,7 +781,7 @@
 							<div class="mt-6 space-y-4">
 								{#if !hasPendingFundingConfirmation()}
 									<button
-										class="inline-flex w-full items-center justify-center rounded-2xl bg-cyan-400 px-5 py-4 font-semibold text-slate-950 transition hover:bg-cyan-300 disabled:cursor-not-allowed disabled:opacity-60"
+										class="inline-flex w-full items-center justify-center rounded-2xl bg-yellow-400 px-5 py-4 font-semibold text-black transition hover:bg-yellow-300 disabled:cursor-not-allowed disabled:opacity-60"
 										type="button"
 										onclick={startFundingFlow}
 										disabled={fundingStage !== 'idle' || fundingPending}
@@ -792,7 +792,7 @@
 
 								{#if hasPendingFundingConfirmation()}
 									<button
-										class="inline-flex w-full items-center justify-center rounded-2xl border border-slate-700 px-5 py-4 font-semibold text-slate-100 transition hover:border-cyan-400/30 hover:text-white disabled:cursor-not-allowed disabled:opacity-60"
+										class="inline-flex w-full items-center justify-center rounded-2xl border border-black/20 px-5 py-4 font-semibold text-black transition hover:border-yellow-500 hover:text-black disabled:cursor-not-allowed disabled:opacity-60"
 										type="submit"
 										disabled={fundingPending || fundingStage !== 'idle'}
 									>
@@ -802,11 +802,11 @@
 							</div>
 						</form>
 					{:else if isFundingBlockedByConfig()}
-						<div class="mt-6 rounded-[1.5rem] border border-amber-400/20 bg-amber-400/10 p-6">
-							<h3 class="font-['Space_Grotesk'] text-2xl font-semibold text-white">
+						<div class="mt-6 rounded-[1.5rem] border border-amber-400/20 bg-yellow-100 p-6">
+							<h3 class="font-['Space_Grotesk'] text-2xl font-semibold text-black">
 								Funding wallet is not configured
 							</h3>
-							<p class="mt-4 text-sm leading-7 text-slate-200">
+							<p class="mt-4 text-sm leading-7 text-neutral-800">
 								This task is still waiting on Stellar funding, but the frontend environment is
 								missing one of the required values for the wallet send flow. Add
 								`PUBLIC_PLATFORM_FUNDING_WALLET`, `PUBLIC_STELLAR_HORIZON_URL`, and
@@ -814,29 +814,29 @@
 							</p>
 						</div>
 					{:else if isLegacyFundingAsset()}
-						<div class="mt-6 rounded-[1.5rem] border border-amber-400/20 bg-amber-400/10 p-6">
-							<h3 class="font-['Space_Grotesk'] text-2xl font-semibold text-white">
+						<div class="mt-6 rounded-[1.5rem] border border-amber-400/20 bg-yellow-100 p-6">
+							<h3 class="font-['Space_Grotesk'] text-2xl font-semibold text-black">
 								Outside the current funding path
 							</h3>
-							<p class="mt-4 text-sm leading-7 text-slate-200">
+							<p class="mt-4 text-sm leading-7 text-neutral-800">
 								This draft uses `{data.task.currencyAsset}`, but the launch funding flow is now
 								locked to native XLM on Stellar Testnet. The hub keeps the payment action disabled
 								instead of suggesting a wallet path that the product no longer supports.
 							</p>
 						</div>
 					{:else if canClaimTask()}
-						<div class="mt-6 rounded-[1.5rem] border border-cyan-400/20 bg-cyan-400/10 p-6">
-							<h3 class="font-['Space_Grotesk'] text-2xl font-semibold text-white">
+						<div class="mt-6 rounded-[1.5rem] border border-yellow-500/80 bg-yellow-100 p-6">
+							<h3 class="font-['Space_Grotesk'] text-2xl font-semibold text-black">
 								Claim and continue into submission
 							</h3>
-							<p class="mt-4 text-sm leading-7 text-slate-200">
+							<p class="mt-4 text-sm leading-7 text-neutral-800">
 								Funding is already confirmed. Claiming here assigns the task to your worker profile
 								and sends you straight into the writing submission route.
 							</p>
 
 							{#if form?.error && form.intent !== 'fund'}
 								<p
-									class="mt-4 rounded-[1.25rem] border border-rose-500/40 bg-rose-500/10 px-4 py-3 text-sm text-rose-200"
+									class="mt-4 rounded-[1.25rem] border border-black/30 bg-yellow-100 px-4 py-3 text-sm text-black"
 								>
 									{form.error}
 								</p>
@@ -855,7 +855,7 @@
 								}}
 							>
 								<button
-									class="w-full rounded-2xl bg-cyan-400 px-5 py-4 font-semibold text-slate-950 transition hover:bg-cyan-300 disabled:cursor-not-allowed disabled:opacity-60"
+									class="w-full rounded-2xl bg-yellow-400 px-5 py-4 font-semibold text-black transition hover:bg-yellow-300 disabled:cursor-not-allowed disabled:opacity-60"
 									type="submit"
 									disabled={claiming}
 								>
@@ -864,65 +864,65 @@
 							</form>
 						</div>
 					{:else if canSubmitTask()}
-						<div class="mt-6 rounded-[1.5rem] border border-cyan-400/20 bg-cyan-400/10 p-6">
-							<h3 class="font-['Space_Grotesk'] text-2xl font-semibold text-white">
+						<div class="mt-6 rounded-[1.5rem] border border-yellow-500/80 bg-yellow-100 p-6">
+							<h3 class="font-['Space_Grotesk'] text-2xl font-semibold text-black">
 								Submit the writing draft
 							</h3>
-							<p class="mt-4 text-sm leading-7 text-slate-200">
+							<p class="mt-4 text-sm leading-7 text-neutral-800">
 								You are the assigned worker for this task. Continue into the submission route to
 								deliver the draft, notes, and any external document URL.
 							</p>
 							<a
-								class="mt-6 inline-flex items-center justify-center rounded-2xl bg-cyan-400 px-5 py-3 font-semibold text-slate-950 transition hover:bg-cyan-300"
+								class="mt-6 inline-flex items-center justify-center rounded-2xl bg-yellow-400 px-5 py-3 font-semibold text-black transition hover:bg-yellow-300"
 								href={`/task/${data.task.id}/submit`}
 							>
 								Continue to submit
 							</a>
 						</div>
 					{:else if canOpenReview()}
-						<div class="mt-6 rounded-[1.5rem] border border-cyan-400/20 bg-cyan-400/10 p-6">
-							<h3 class="font-['Space_Grotesk'] text-2xl font-semibold text-white">
+						<div class="mt-6 rounded-[1.5rem] border border-yellow-500/80 bg-yellow-100 p-6">
+							<h3 class="font-['Space_Grotesk'] text-2xl font-semibold text-black">
 								Review the submission
 							</h3>
-							<p class="mt-4 text-sm leading-7 text-slate-200">
+							<p class="mt-4 text-sm leading-7 text-neutral-800">
 								The writing and verification output are ready. Use the review route to approve for
 								payout or reject with a saved reason.
 							</p>
 							<a
-								class="mt-6 inline-flex items-center justify-center rounded-2xl bg-cyan-400 px-5 py-3 font-semibold text-slate-950 transition hover:bg-cyan-300"
+								class="mt-6 inline-flex items-center justify-center rounded-2xl bg-yellow-400 px-5 py-3 font-semibold text-black transition hover:bg-yellow-300"
 								href={`/task/${data.task.id}/review`}
 							>
 								Open review
 							</a>
 						</div>
 					{:else if canOpenReceipt()}
-						<div class="mt-6 rounded-[1.5rem] border border-cyan-400/20 bg-cyan-400/10 p-6">
-							<h3 class="font-['Space_Grotesk'] text-2xl font-semibold text-white">
+						<div class="mt-6 rounded-[1.5rem] border border-yellow-500/80 bg-yellow-100 p-6">
+							<h3 class="font-['Space_Grotesk'] text-2xl font-semibold text-black">
 								Check payout visibility
 							</h3>
-							<p class="mt-4 text-sm leading-7 text-slate-200">
+							<p class="mt-4 text-sm leading-7 text-neutral-800">
 								This task already has payout state to inspect. The receipt route shows the real
 								Stellar transaction outcome instead of a hardcoded success screen.
 							</p>
 							<a
-								class="mt-6 inline-flex items-center justify-center rounded-2xl bg-cyan-400 px-5 py-3 font-semibold text-slate-950 transition hover:bg-cyan-300"
+								class="mt-6 inline-flex items-center justify-center rounded-2xl bg-yellow-400 px-5 py-3 font-semibold text-black transition hover:bg-yellow-300"
 								href={`/task/${data.task.id}/receipt`}
 							>
 								Open receipt
 							</a>
 						</div>
 					{:else if canOpenReport()}
-						<div class="mt-6 rounded-[1.5rem] border border-slate-800 bg-slate-950/70 p-6">
-							<h3 class="font-['Space_Grotesk'] text-2xl font-semibold text-white">
+						<div class="mt-6 rounded-[1.5rem] border border-black/10 bg-white p-6">
+							<h3 class="font-['Space_Grotesk'] text-2xl font-semibold text-black">
 								Inspect the report state
 							</h3>
-							<p class="mt-4 text-sm leading-7 text-slate-300">
+							<p class="mt-4 text-sm leading-7 text-neutral-700">
 								The task is already in its report-aware workflow stage. Open the task report to see
 								the submission snapshot, verification output, review decision, and payout visibility
 								together.
 							</p>
 							<a
-								class="mt-6 inline-flex items-center justify-center rounded-2xl border border-slate-700 px-5 py-3 font-semibold text-slate-100 transition hover:border-cyan-400/30 hover:text-white"
+								class="mt-6 inline-flex items-center justify-center rounded-2xl border border-black/20 px-5 py-3 font-semibold text-black transition hover:border-yellow-500 hover:text-black"
 								href={`/task/${data.task.id}/report`}
 							>
 								Open report
@@ -930,16 +930,16 @@
 						</div>
 					{:else}
 						{@const fallback = waitingState()}
-						<div class="mt-6 rounded-[1.5rem] border border-slate-800 bg-slate-950/70 p-6">
-							<h3 class="font-['Space_Grotesk'] text-2xl font-semibold text-white">
+						<div class="mt-6 rounded-[1.5rem] border border-black/10 bg-white p-6">
+							<h3 class="font-['Space_Grotesk'] text-2xl font-semibold text-black">
 								{fallback?.title}
 							</h3>
-							<p class="mt-4 text-sm leading-7 text-slate-300">
+							<p class="mt-4 text-sm leading-7 text-neutral-700">
 								{fallback?.copy}
 							</p>
 							{#if fallback?.ctaLabel && fallback?.href}
 								<a
-									class="mt-6 inline-flex items-center justify-center rounded-2xl border border-slate-700 px-5 py-3 font-semibold text-slate-100 transition hover:border-cyan-400/30 hover:text-white"
+									class="mt-6 inline-flex items-center justify-center rounded-2xl border border-black/20 px-5 py-3 font-semibold text-black transition hover:border-yellow-500 hover:text-black"
 									href={fallback.href}
 								>
 									{fallback.ctaLabel}
@@ -949,57 +949,57 @@
 					{/if}
 				</article>
 
-				<article class="rounded-[2rem] border border-slate-800 bg-slate-900/70 p-8">
+				<article class="rounded-[2rem] border border-black/10 bg-white p-8">
 					<div
-						class="flex flex-col gap-4 border-b border-slate-800 pb-6 md:flex-row md:items-end md:justify-between"
+						class="flex flex-col gap-4 border-b border-black/10 pb-6 md:flex-row md:items-end md:justify-between"
 					>
 						<div>
-							<p class="text-xs tracking-[0.22em] text-slate-500 uppercase">Task brief</p>
-							<h2 class="mt-3 font-['Space_Grotesk'] text-3xl font-semibold text-white">
+							<p class="text-xs tracking-[0.22em] text-neutral-500 uppercase">Task brief</p>
+							<h2 class="mt-3 font-['Space_Grotesk'] text-3xl font-semibold text-black">
 								Writing requirements
 							</h2>
 						</div>
-						<div class="text-sm text-slate-400">Task ID {data.task.id}</div>
+						<div class="text-sm text-neutral-600">Task ID {data.task.id}</div>
 					</div>
 
 					<div class="mt-6 grid gap-5 md:grid-cols-2">
-						<div class="rounded-[1.5rem] border border-slate-800 bg-slate-950/70 p-5 md:col-span-2">
-							<div class="text-xs tracking-[0.22em] text-slate-500 uppercase">Description</div>
-							<div class="mt-4 text-sm leading-7 whitespace-pre-wrap text-slate-200">
+						<div class="rounded-[1.5rem] border border-black/10 bg-white p-5 md:col-span-2">
+							<div class="text-xs tracking-[0.22em] text-neutral-500 uppercase">Description</div>
+							<div class="mt-4 text-sm leading-7 whitespace-pre-wrap text-neutral-800">
 								{data.task.description}
 							</div>
 						</div>
-						<div class="rounded-[1.5rem] border border-slate-800 bg-slate-950/70 p-5">
-							<div class="text-xs tracking-[0.22em] text-slate-500 uppercase">Target audience</div>
-							<div class="mt-4 text-sm leading-7 text-white">{data.task.targetAudience}</div>
+						<div class="rounded-[1.5rem] border border-black/10 bg-white p-5">
+							<div class="text-xs tracking-[0.22em] text-neutral-500 uppercase">Target audience</div>
+							<div class="mt-4 text-sm leading-7 text-black">{data.task.targetAudience}</div>
 						</div>
-						<div class="rounded-[1.5rem] border border-slate-800 bg-slate-950/70 p-5">
-							<div class="text-xs tracking-[0.22em] text-slate-500 uppercase">Tone</div>
-							<div class="mt-4 text-sm leading-7 text-white">{data.task.tone}</div>
+						<div class="rounded-[1.5rem] border border-black/10 bg-white p-5">
+							<div class="text-xs tracking-[0.22em] text-neutral-500 uppercase">Tone</div>
+							<div class="mt-4 text-sm leading-7 text-black">{data.task.tone}</div>
 						</div>
-						<div class="rounded-[1.5rem] border border-slate-800 bg-slate-950/70 p-5">
-							<div class="text-xs tracking-[0.22em] text-slate-500 uppercase">Minimum words</div>
-							<div class="mt-4 text-sm leading-7 text-white">{data.task.minWordCount}</div>
+						<div class="rounded-[1.5rem] border border-black/10 bg-white p-5">
+							<div class="text-xs tracking-[0.22em] text-neutral-500 uppercase">Minimum words</div>
+							<div class="mt-4 text-sm leading-7 text-black">{data.task.minWordCount}</div>
 						</div>
-						<div class="rounded-[1.5rem] border border-slate-800 bg-slate-950/70 p-5">
-							<div class="text-xs tracking-[0.22em] text-slate-500 uppercase">
+						<div class="rounded-[1.5rem] border border-black/10 bg-white p-5">
+							<div class="text-xs tracking-[0.22em] text-neutral-500 uppercase">
 								Allowed claimant type
 							</div>
-							<div class="mt-4 text-sm leading-7 text-white">{data.task.allowedClaimantType}</div>
+							<div class="mt-4 text-sm leading-7 text-black">{data.task.allowedClaimantType}</div>
 						</div>
 					</div>
 
 					<div class="mt-6">
-						<div class="text-xs tracking-[0.22em] text-slate-500 uppercase">Required keywords</div>
+						<div class="text-xs tracking-[0.22em] text-neutral-500 uppercase">Required keywords</div>
 						{#if data.task.requiredKeywords.length === 0}
-							<p class="mt-4 text-sm leading-7 text-slate-300">
+							<p class="mt-4 text-sm leading-7 text-neutral-700">
 								No required keywords were added to this brief.
 							</p>
 						{:else}
 							<div class="mt-4 flex flex-wrap gap-2">
 								{#each data.task.requiredKeywords as keyword}
 									<span
-										class="rounded-full border border-cyan-400/20 bg-cyan-400/10 px-3 py-1 text-xs font-medium text-cyan-200"
+										class="rounded-full border border-yellow-500/80 bg-yellow-100 px-3 py-1 text-xs font-medium text-yellow-800"
 									>
 										{keyword}
 									</span>
@@ -1010,23 +1010,23 @@
 				</article>
 
 				{#if data.report}
-					<article class="rounded-[2rem] border border-slate-800 bg-slate-900/70 p-8">
+					<article class="rounded-[2rem] border border-black/10 bg-white p-8">
 						<div
-							class="flex flex-col gap-4 border-b border-slate-800 pb-6 md:flex-row md:items-end md:justify-between"
+							class="flex flex-col gap-4 border-b border-black/10 pb-6 md:flex-row md:items-end md:justify-between"
 						>
 							<div>
-								<p class="text-xs tracking-[0.22em] text-slate-500 uppercase">Workflow evidence</p>
-								<h2 class="mt-3 font-['Space_Grotesk'] text-3xl font-semibold text-white">
+								<p class="text-xs tracking-[0.22em] text-neutral-500 uppercase">Workflow evidence</p>
+								<h2 class="mt-3 font-['Space_Grotesk'] text-3xl font-semibold text-black">
 									{reportPreviewTitle()}
 								</h2>
-								<p class="mt-3 max-w-2xl text-sm leading-6 text-slate-300">
+								<p class="mt-3 max-w-2xl text-sm leading-6 text-neutral-700">
 									I keep only the high-signal report state here so the hub stays focused on next
 									actions. The full verification summary and deeper evidence live in the dedicated
 									report route.
 								</p>
 							</div>
 							<a
-								class="text-sm font-medium text-cyan-300 transition hover:text-cyan-200"
+								class="text-sm font-medium text-yellow-700 transition hover:text-yellow-800"
 								href={`/task/${data.task.id}/report`}
 							>
 								Open full report
@@ -1034,39 +1034,39 @@
 						</div>
 
 						<div class="mt-6 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
-							<div class="rounded-[1.5rem] border border-slate-800 bg-slate-950/70 p-5">
-								<div class="text-xs tracking-[0.22em] text-slate-500 uppercase">Submitted</div>
-								<div class="mt-4 text-sm leading-7 text-white">
+							<div class="rounded-[1.5rem] border border-black/10 bg-white p-5">
+								<div class="text-xs tracking-[0.22em] text-neutral-500 uppercase">Submitted</div>
+								<div class="mt-4 text-sm leading-7 text-black">
 									{formatDate(data.report.submission?.submittedAt ?? null)}
 								</div>
 							</div>
-							<div class="rounded-[1.5rem] border border-slate-800 bg-slate-950/70 p-5">
-								<div class="text-xs tracking-[0.22em] text-slate-500 uppercase">
+							<div class="rounded-[1.5rem] border border-black/10 bg-white p-5">
+								<div class="text-xs tracking-[0.22em] text-neutral-500 uppercase">
 									Verification score
 								</div>
-								<div class="mt-4 font-['Space_Grotesk'] text-3xl font-bold text-cyan-200">
+								<div class="mt-4 font-['Space_Grotesk'] text-3xl font-bold text-yellow-800">
 									{data.report.verificationReport?.score ?? 'N/A'}
 								</div>
 							</div>
-							<div class="rounded-[1.5rem] border border-slate-800 bg-slate-950/70 p-5">
-								<div class="text-xs tracking-[0.22em] text-slate-500 uppercase">
+							<div class="rounded-[1.5rem] border border-black/10 bg-white p-5">
+								<div class="text-xs tracking-[0.22em] text-neutral-500 uppercase">
 									Latest decision
 								</div>
-								<div class="mt-4 text-sm leading-7 text-white">
+								<div class="mt-4 text-sm leading-7 text-black">
 									{data.report.latestReviewDecision?.decision ?? 'No review saved yet'}
 								</div>
 							</div>
-							<div class="rounded-[1.5rem] border border-slate-800 bg-slate-950/70 p-5">
-								<div class="text-xs tracking-[0.22em] text-slate-500 uppercase">Recommendation</div>
-								<div class="mt-4 text-sm leading-7 text-white">
+							<div class="rounded-[1.5rem] border border-black/10 bg-white p-5">
+								<div class="text-xs tracking-[0.22em] text-neutral-500 uppercase">Recommendation</div>
+								<div class="mt-4 text-sm leading-7 text-black">
 									{data.report.verificationReport?.recommendation ?? 'No recommendation yet'}
 								</div>
 							</div>
-							<div class="rounded-[1.5rem] border border-slate-800 bg-slate-950/70 p-5">
-								<div class="text-xs tracking-[0.22em] text-slate-500 uppercase">
+							<div class="rounded-[1.5rem] border border-black/10 bg-white p-5">
+								<div class="text-xs tracking-[0.22em] text-neutral-500 uppercase">
 									Payout visibility
 								</div>
-								<div class="mt-4 text-sm leading-7 text-white">
+								<div class="mt-4 text-sm leading-7 text-black">
 									{data.report.payoutStatus.payout?.status ?? 'No payout record yet'}
 								</div>
 							</div>
@@ -1076,114 +1076,114 @@
 			</div>
 
 			<aside class="space-y-6">
-				<article class="rounded-[2rem] border border-slate-800 bg-slate-900/70 p-6">
-					<h2 class="font-['Space_Grotesk'] text-2xl font-semibold text-white">
+				<article class="rounded-[2rem] border border-black/10 bg-white p-6">
+					<h2 class="font-['Space_Grotesk'] text-2xl font-semibold text-black">
 						Funding and payout
 					</h2>
-					<div class="mt-6 space-y-4 text-sm text-slate-300">
+					<div class="mt-6 space-y-4 text-sm text-neutral-700">
 						<div class="flex items-center justify-between gap-4">
 							<span>Funding confirmed</span>
-							<span class="text-right text-white">
+							<span class="text-right text-black">
 								{data.payoutStatus.hasConfirmedFunding ? 'Yes' : 'No'}
 							</span>
 						</div>
 						<div class="flex items-center justify-between gap-4">
 							<span>Payout eligible</span>
-							<span class="text-right text-white">
+							<span class="text-right text-black">
 								{data.payoutStatus.isPayoutEligible ? 'Yes' : 'No'}
 							</span>
 						</div>
 						<div class="flex items-center justify-between gap-4">
 							<span>Payout status</span>
-							<span class="text-right text-white">
+							<span class="text-right text-black">
 								{data.payoutStatus.payout?.status ?? 'No payout record'}
 							</span>
 						</div>
 						<div class="flex items-center justify-between gap-4">
 							<span>Worker wallet</span>
-							<span class="text-right text-white">
+							<span class="text-right text-black">
 								{formatWallet(data.payoutStatus.workerWalletAddress)}
 							</span>
 						</div>
 					</div>
 
 					{#if data.platformFundingWallet}
-						<div class="mt-6 rounded-[1.5rem] border border-slate-800 bg-slate-950/70 p-5">
-							<div class="text-xs tracking-[0.22em] text-slate-500 uppercase">
+						<div class="mt-6 rounded-[1.5rem] border border-black/10 bg-white p-5">
+							<div class="text-xs tracking-[0.22em] text-neutral-500 uppercase">
 								Platform funding wallet
 							</div>
-							<div class="mt-3 text-sm leading-7 break-all text-cyan-300">
+							<div class="mt-3 text-sm leading-7 break-all text-yellow-700">
 								{data.platformFundingWallet}
 							</div>
 						</div>
 					{/if}
 
 					{#if data.payoutStatus.payout?.txHash}
-						<div class="mt-6 rounded-[1.5rem] border border-slate-800 bg-slate-950/70 p-5">
-							<div class="text-xs tracking-[0.22em] text-slate-500 uppercase">
+						<div class="mt-6 rounded-[1.5rem] border border-black/10 bg-white p-5">
+							<div class="text-xs tracking-[0.22em] text-neutral-500 uppercase">
 								Recorded payout tx
 							</div>
-							<div class="mt-3 text-sm leading-7 break-all text-cyan-300">
+							<div class="mt-3 text-sm leading-7 break-all text-yellow-700">
 								{data.payoutStatus.payout.txHash}
 							</div>
 						</div>
 					{/if}
 				</article>
 
-				<article class="rounded-[2rem] border border-slate-800 bg-slate-900/70 p-6">
-					<h2 class="font-['Space_Grotesk'] text-2xl font-semibold text-white">Route map</h2>
+				<article class="rounded-[2rem] border border-black/10 bg-white p-6">
+					<h2 class="font-['Space_Grotesk'] text-2xl font-semibold text-black">Route map</h2>
 					<div class="mt-6 space-y-4">
 						<a
-							class="block rounded-[1.5rem] border border-slate-800 bg-slate-950/70 p-5 transition hover:border-cyan-400/30"
+							class="block rounded-[1.5rem] border border-black/10 bg-white p-5 transition hover:border-yellow-500"
 							href={`/task/${data.task.id}`}
 						>
-							<div class="text-sm font-semibold text-white">Task hub</div>
-							<div class="mt-2 text-sm leading-6 text-slate-300">
+							<div class="text-sm font-semibold text-black">Task hub</div>
+							<div class="mt-2 text-sm leading-6 text-neutral-700">
 								Track the current workflow state and the next valid action.
 							</div>
 						</a>
 						<a
-							class="block rounded-[1.5rem] border border-slate-800 bg-slate-950/70 p-5 transition hover:border-cyan-400/30 {canOpenReport()
+							class="block rounded-[1.5rem] border border-black/10 bg-white p-5 transition hover:border-yellow-500 {canOpenReport()
 								? ''
 								: 'pointer-events-none opacity-50'}"
 							href={canOpenReport() ? `/task/${data.task.id}/report` : `/task/${data.task.id}`}
 						>
-							<div class="text-sm font-semibold text-white">Report</div>
-							<div class="mt-2 text-sm leading-6 text-slate-300">
+							<div class="text-sm font-semibold text-black">Report</div>
+							<div class="mt-2 text-sm leading-6 text-neutral-700">
 								Read the submission snapshot, verification output, review history, and payout
 								visibility.
 							</div>
 						</a>
 						<a
-							class="block rounded-[1.5rem] border border-slate-800 bg-slate-950/70 p-5 transition hover:border-cyan-400/30 {canSubmitTask()
+							class="block rounded-[1.5rem] border border-black/10 bg-white p-5 transition hover:border-yellow-500 {canSubmitTask()
 								? ''
 								: 'pointer-events-none opacity-50'}"
 							href={canSubmitTask() ? `/task/${data.task.id}/submit` : `/task/${data.task.id}`}
 						>
-							<div class="text-sm font-semibold text-white">Submit</div>
-							<div class="mt-2 text-sm leading-6 text-slate-300">
+							<div class="text-sm font-semibold text-black">Submit</div>
+							<div class="mt-2 text-sm leading-6 text-neutral-700">
 								Available only to the assigned worker while the task is in the claimed state.
 							</div>
 						</a>
 						<a
-							class="block rounded-[1.5rem] border border-slate-800 bg-slate-950/70 p-5 transition hover:border-cyan-400/30 {canOpenReview()
+							class="block rounded-[1.5rem] border border-black/10 bg-white p-5 transition hover:border-yellow-500 {canOpenReview()
 								? ''
 								: 'pointer-events-none opacity-50'}"
 							href={canOpenReview() ? `/task/${data.task.id}/review` : `/task/${data.task.id}`}
 						>
-							<div class="text-sm font-semibold text-white">Review</div>
-							<div class="mt-2 text-sm leading-6 text-slate-300">
+							<div class="text-sm font-semibold text-black">Review</div>
+							<div class="mt-2 text-sm leading-6 text-neutral-700">
 								Available to the task owner when the writing is waiting on client review.
 							</div>
 						</a>
 						<a
-							class="block rounded-[1.5rem] border border-slate-800 bg-slate-950/70 p-5 transition hover:border-cyan-400/30 {canOpenReceipt()
+							class="block rounded-[1.5rem] border border-black/10 bg-white p-5 transition hover:border-yellow-500 {canOpenReceipt()
 								? ''
 								: 'pointer-events-none opacity-50'}"
 							href={canOpenReceipt() ? `/task/${data.task.id}/receipt` : `/task/${data.task.id}`}
 						>
-							<div class="text-sm font-semibold text-white">Receipt</div>
-							<div class="mt-2 text-sm leading-6 text-slate-300">
+							<div class="text-sm font-semibold text-black">Receipt</div>
+							<div class="mt-2 text-sm leading-6 text-neutral-700">
 								Shows pending, confirmed, or failed payout state once the task reaches payout
 								visibility.
 							</div>

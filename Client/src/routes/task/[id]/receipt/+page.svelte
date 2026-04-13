@@ -22,14 +22,14 @@
 
 	function payoutTone(status: 'pending' | 'confirmed' | 'failed' | null) {
 		if (status === 'confirmed') {
-			return 'border-emerald-400/25 bg-emerald-400/10 text-emerald-200';
+			return 'border-yellow-500 bg-yellow-100 text-yellow-800';
 		}
 
 		if (status === 'failed') {
-			return 'border-rose-400/25 bg-rose-400/10 text-rose-200';
+			return 'border-black/30 bg-yellow-100 text-black';
 		}
 
-		return 'border-amber-400/25 bg-amber-400/10 text-amber-200';
+		return 'border-amber-400/25 bg-yellow-100 text-amber-200';
 	}
 
 	function payoutHeadline() {
@@ -97,21 +97,21 @@
 </svelte:head>
 
 <main
-	class="min-h-screen bg-[radial-gradient(circle_at_top,rgba(34,211,238,0.13),transparent_22%),linear-gradient(180deg,#020617_0%,#08111f_38%,#020617_100%)] px-6 py-12 text-slate-100"
+	class="min-h-screen bg-[radial-gradient(circle_at_top,rgba(250,204,21,0.28),transparent_28%),linear-gradient(180deg,#fffdf2_0%,#f7f4ea_55%,#ffffff_100%)] px-6 py-12 text-black"
 >
 	<div class="mx-auto max-w-6xl space-y-8">
 		<header
-			class="rounded-[2rem] border border-cyan-400/20 bg-slate-950/80 p-8 shadow-[0_30px_90px_rgba(8,145,178,0.15)] backdrop-blur-xl"
+			class="rounded-[2rem] border border-yellow-500/80 bg-white p-8 shadow-[0_30px_90px_rgba(250,204,21,0.22)] backdrop-blur-xl"
 		>
 			<div class="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
 				<div>
-					<p class="text-xs font-semibold tracking-[0.28em] text-cyan-300 uppercase">
+					<p class="text-xs font-semibold tracking-[0.28em] text-yellow-700 uppercase">
 						Payout receipt
 					</p>
-					<h1 class="mt-4 font-['Space_Grotesk'] text-4xl font-bold tracking-tight text-white">
+					<h1 class="mt-4 font-['Space_Grotesk'] text-4xl font-bold tracking-tight text-black">
 						{payoutHeadline()}
 					</h1>
-					<p class="mt-4 max-w-3xl text-sm leading-7 text-slate-300">{payoutMessage()}</p>
+					<p class="mt-4 max-w-3xl text-sm leading-7 text-neutral-700">{payoutMessage()}</p>
 				</div>
 
 				<div class="flex flex-wrap gap-3">
@@ -123,7 +123,7 @@
 						{payoutStatusLabel === 'not_started' ? 'no payout' : payoutStatusLabel}
 					</span>
 					<a
-						class="rounded-full border border-slate-700 px-4 py-2 text-sm font-medium text-slate-200 transition hover:border-cyan-400/30 hover:text-white"
+						class="rounded-full border border-black/20 px-4 py-2 text-sm font-medium text-neutral-800 transition hover:border-yellow-500 hover:text-black"
 						href={`/task/${data.task.id}/report`}
 					>
 						Open report
@@ -134,34 +134,34 @@
 
 		<section class="grid gap-6 lg:grid-cols-[1.05fr_0.95fr]">
 			<div class="space-y-6">
-				<article class="rounded-[2rem] border border-slate-800 bg-slate-900/70 p-8">
+				<article class="rounded-[2rem] border border-black/10 bg-white p-8">
 					<div
-						class="flex flex-col gap-4 border-b border-slate-800 pb-6 md:flex-row md:items-end md:justify-between"
+						class="flex flex-col gap-4 border-b border-black/10 pb-6 md:flex-row md:items-end md:justify-between"
 					>
 						<div>
-							<p class="text-xs tracking-[0.22em] text-slate-500 uppercase">Ledger state</p>
-							<h2 class="mt-3 font-['Space_Grotesk'] text-3xl font-semibold text-white">
+							<p class="text-xs tracking-[0.22em] text-neutral-500 uppercase">Ledger state</p>
+							<h2 class="mt-3 font-['Space_Grotesk'] text-3xl font-semibold text-black">
 								Receipt detail
 							</h2>
 						</div>
-						<div class="text-sm text-slate-400">Task ID {data.task.id}</div>
+						<div class="text-sm text-neutral-600">Task ID {data.task.id}</div>
 					</div>
 
 					<div class="mt-6 space-y-5">
 						<div
-							class="rounded-[1.5rem] border border-slate-800 bg-[linear-gradient(160deg,rgba(8,47,73,0.55),rgba(15,23,42,0.92))] p-6"
+							class="rounded-[1.5rem] border border-black/10 bg-[linear-gradient(160deg,#fff7bf,#ffffff)] p-6"
 						>
 							<div class="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
 								<div>
-									<div class="text-xs tracking-[0.22em] text-slate-400 uppercase">Amount</div>
-									<div class="mt-3 font-['Space_Grotesk'] text-4xl font-bold text-white">
+									<div class="text-xs tracking-[0.22em] text-neutral-600 uppercase">Amount</div>
+									<div class="mt-3 font-['Space_Grotesk'] text-4xl font-bold text-black">
 										{data.task.payoutAmount}
 										{data.task.currencyAsset}
 									</div>
 								</div>
 								<div class="text-right">
-									<div class="text-xs tracking-[0.22em] text-slate-400 uppercase">Triggered by</div>
-									<div class="mt-3 text-sm font-semibold tracking-[0.16em] text-cyan-200 uppercase">
+									<div class="text-xs tracking-[0.22em] text-neutral-600 uppercase">Triggered by</div>
+									<div class="mt-3 text-sm font-semibold tracking-[0.16em] text-yellow-800 uppercase">
 										{data.payoutStatus.payout?.triggeredBy ?? 'Not triggered'}
 									</div>
 								</div>
@@ -169,58 +169,58 @@
 						</div>
 
 						<div class="grid gap-5 md:grid-cols-2">
-							<div class="rounded-[1.5rem] border border-slate-800 bg-slate-950/80 p-5">
-								<div class="text-xs tracking-[0.22em] text-slate-500 uppercase">Task status</div>
-								<div class="mt-4 text-lg font-semibold text-white">{data.task.status}</div>
+							<div class="rounded-[1.5rem] border border-black/10 bg-white p-5">
+								<div class="text-xs tracking-[0.22em] text-neutral-500 uppercase">Task status</div>
+								<div class="mt-4 text-lg font-semibold text-black">{data.task.status}</div>
 							</div>
 
-							<div class="rounded-[1.5rem] border border-slate-800 bg-slate-950/80 p-5">
-								<div class="text-xs tracking-[0.22em] text-slate-500 uppercase">
+							<div class="rounded-[1.5rem] border border-black/10 bg-white p-5">
+								<div class="text-xs tracking-[0.22em] text-neutral-500 uppercase">
 									Funding confirmed
 								</div>
-								<div class="mt-4 text-lg font-semibold text-white">
+								<div class="mt-4 text-lg font-semibold text-black">
 									{data.payoutStatus.hasConfirmedFunding ? 'Yes' : 'No'}
 								</div>
 							</div>
 
-							<div class="rounded-[1.5rem] border border-slate-800 bg-slate-950/80 p-5">
-								<div class="text-xs tracking-[0.22em] text-slate-500 uppercase">Worker wallet</div>
-								<div class="mt-4 text-sm leading-7 break-all text-cyan-300">
+							<div class="rounded-[1.5rem] border border-black/10 bg-white p-5">
+								<div class="text-xs tracking-[0.22em] text-neutral-500 uppercase">Worker wallet</div>
+								<div class="mt-4 text-sm leading-7 break-all text-yellow-700">
 									{data.payoutStatus.payout?.workerWalletAddress ??
 										data.payoutStatus.workerWalletAddress ??
 										'Not available'}
 								</div>
 							</div>
 
-							<div class="rounded-[1.5rem] border border-slate-800 bg-slate-950/80 p-5">
-								<div class="text-xs tracking-[0.22em] text-slate-500 uppercase">Paid at</div>
-								<div class="mt-4 text-sm leading-7 text-slate-200">
+							<div class="rounded-[1.5rem] border border-black/10 bg-white p-5">
+								<div class="text-xs tracking-[0.22em] text-neutral-500 uppercase">Paid at</div>
+								<div class="mt-4 text-sm leading-7 text-neutral-800">
 									{formatDate(data.payoutStatus.payout?.paidAt ?? null)}
 								</div>
 							</div>
 						</div>
 
-						<div class="rounded-[1.5rem] border border-slate-800 bg-slate-950/80 p-5">
-							<div class="text-xs tracking-[0.22em] text-slate-500 uppercase">Transaction hash</div>
-							<div class="mt-4 text-sm leading-7 break-all text-cyan-300">
+						<div class="rounded-[1.5rem] border border-black/10 bg-white p-5">
+							<div class="text-xs tracking-[0.22em] text-neutral-500 uppercase">Transaction hash</div>
+							<div class="mt-4 text-sm leading-7 break-all text-yellow-700">
 								{data.payoutStatus.payout?.txHash ?? 'Not available yet'}
 							</div>
 						</div>
 					</div>
 				</article>
 
-				<article class="rounded-[2rem] border border-slate-800 bg-slate-900/70 p-8">
+				<article class="rounded-[2rem] border border-black/10 bg-white p-8">
 					<div
-						class="flex flex-col gap-4 border-b border-slate-800 pb-6 md:flex-row md:items-end md:justify-between"
+						class="flex flex-col gap-4 border-b border-black/10 pb-6 md:flex-row md:items-end md:justify-between"
 					>
 						<div>
-							<p class="text-xs tracking-[0.22em] text-slate-500 uppercase">Task context</p>
-							<h2 class="mt-3 font-['Space_Grotesk'] text-3xl font-semibold text-white">
+							<p class="text-xs tracking-[0.22em] text-neutral-500 uppercase">Task context</p>
+							<h2 class="mt-3 font-['Space_Grotesk'] text-3xl font-semibold text-black">
 								Workflow trace
 							</h2>
 						</div>
 						<a
-							class="text-sm font-medium text-slate-300 transition hover:text-white"
+							class="text-sm font-medium text-neutral-700 transition hover:text-black"
 							href={`/task/${data.task.id}`}
 						>
 							Back to task detail
@@ -228,30 +228,30 @@
 					</div>
 
 					<div class="mt-6 grid gap-5 md:grid-cols-2">
-						<div class="rounded-[1.5rem] border border-slate-800 bg-slate-950/80 p-5">
-							<div class="text-xs tracking-[0.22em] text-slate-500 uppercase">Review decision</div>
-							<div class="mt-4 text-lg font-semibold text-white">
+						<div class="rounded-[1.5rem] border border-black/10 bg-white p-5">
+							<div class="text-xs tracking-[0.22em] text-neutral-500 uppercase">Review decision</div>
+							<div class="mt-4 text-lg font-semibold text-black">
 								{reviewDecision ?? 'No manual decision'}
 							</div>
 						</div>
 
-						<div class="rounded-[1.5rem] border border-slate-800 bg-slate-950/80 p-5">
-							<div class="text-xs tracking-[0.22em] text-slate-500 uppercase">Review deadline</div>
-							<div class="mt-4 text-sm leading-7 text-slate-200">
+						<div class="rounded-[1.5rem] border border-black/10 bg-white p-5">
+							<div class="text-xs tracking-[0.22em] text-neutral-500 uppercase">Review deadline</div>
+							<div class="mt-4 text-sm leading-7 text-neutral-800">
 								{formatDate(data.task.reviewDeadline)}
 							</div>
 						</div>
 
-						<div class="rounded-[1.5rem] border border-slate-800 bg-slate-950/80 p-5">
-							<div class="text-xs tracking-[0.22em] text-slate-500 uppercase">Submission</div>
-							<div class="mt-4 text-sm leading-7 text-slate-200">
+						<div class="rounded-[1.5rem] border border-black/10 bg-white p-5">
+							<div class="text-xs tracking-[0.22em] text-neutral-500 uppercase">Submission</div>
+							<div class="mt-4 text-sm leading-7 text-neutral-800">
 								{formatDate(data.report.submission?.submittedAt ?? null)}
 							</div>
 						</div>
 
-						<div class="rounded-[1.5rem] border border-slate-800 bg-slate-950/80 p-5">
-							<div class="text-xs tracking-[0.22em] text-slate-500 uppercase">Recipient</div>
-							<div class="mt-4 text-sm leading-7 text-slate-200">
+						<div class="rounded-[1.5rem] border border-black/10 bg-white p-5">
+							<div class="text-xs tracking-[0.22em] text-neutral-500 uppercase">Recipient</div>
+							<div class="mt-4 text-sm leading-7 text-neutral-800">
 								{formatWallet(
 									data.payoutStatus.payout?.workerWalletAddress ??
 										data.payoutStatus.workerWalletAddress
@@ -261,9 +261,9 @@
 					</div>
 
 					{#if data.report.latestReviewDecision?.reason}
-						<div class="mt-5 rounded-[1.5rem] border border-slate-800 bg-slate-950/80 p-5">
-							<div class="text-xs tracking-[0.22em] text-slate-500 uppercase">Review note</div>
-							<div class="mt-4 text-sm leading-7 whitespace-pre-wrap text-slate-200">
+						<div class="mt-5 rounded-[1.5rem] border border-black/10 bg-white p-5">
+							<div class="text-xs tracking-[0.22em] text-neutral-500 uppercase">Review note</div>
+							<div class="mt-4 text-sm leading-7 whitespace-pre-wrap text-neutral-800">
 								{data.report.latestReviewDecision.reason}
 							</div>
 						</div>
@@ -272,52 +272,52 @@
 			</div>
 
 			<aside class="space-y-6">
-				<article class="rounded-[2rem] border border-slate-800 bg-slate-900/70 p-6">
-					<h2 class="font-['Space_Grotesk'] text-2xl font-semibold text-white">State guidance</h2>
-					<p class="mt-5 text-sm leading-7 text-slate-300">{payoutMessage()}</p>
-					<div class="mt-6 space-y-4 text-sm text-slate-300">
+				<article class="rounded-[2rem] border border-black/10 bg-white p-6">
+					<h2 class="font-['Space_Grotesk'] text-2xl font-semibold text-black">State guidance</h2>
+					<p class="mt-5 text-sm leading-7 text-neutral-700">{payoutMessage()}</p>
+					<div class="mt-6 space-y-4 text-sm text-neutral-700">
 						<div class="flex items-center justify-between gap-4">
 							<span>Payout eligible</span>
-							<span class="text-white">
+							<span class="text-black">
 								{data.payoutStatus.isPayoutEligible ? 'Yes' : 'No'}
 							</span>
 						</div>
 						<div class="flex items-center justify-between gap-4">
 							<span>Receipt visible</span>
-							<span class="text-white">
+							<span class="text-black">
 								{data.payoutStatus.payout || data.task.status === 'PAID' ? 'Yes' : 'Preview only'}
 							</span>
 						</div>
 					</div>
 				</article>
 
-				<article class="rounded-[2rem] border border-slate-800 bg-slate-900/70 p-6">
-					<h2 class="font-['Space_Grotesk'] text-2xl font-semibold text-white">
+				<article class="rounded-[2rem] border border-black/10 bg-white p-6">
+					<h2 class="font-['Space_Grotesk'] text-2xl font-semibold text-black">
 						Verification snapshot
 					</h2>
 					{#if data.report.verificationReport}
 						<div class="mt-6 space-y-4">
-							<div class="rounded-[1.5rem] border border-slate-800 bg-slate-950/80 p-4">
+							<div class="rounded-[1.5rem] border border-black/10 bg-white p-4">
 								<div class="flex items-center justify-between gap-4">
-									<div class="text-xs tracking-[0.22em] text-slate-500 uppercase">Score</div>
-									<div class="text-lg font-semibold text-cyan-200">
+									<div class="text-xs tracking-[0.22em] text-neutral-500 uppercase">Score</div>
+									<div class="text-lg font-semibold text-yellow-800">
 										{data.report.verificationReport.score}
 									</div>
 								</div>
-								<p class="mt-3 text-sm leading-6 text-slate-200">
+								<p class="mt-3 text-sm leading-6 text-neutral-800">
 									{data.report.verificationReport.summary}
 								</p>
 							</div>
 
-							<div class="rounded-[1.5rem] border border-slate-800 bg-slate-950/80 p-4">
-								<div class="text-xs tracking-[0.22em] text-slate-500 uppercase">Recommendation</div>
-								<div class="mt-3 text-sm font-semibold tracking-[0.18em] text-white uppercase">
+							<div class="rounded-[1.5rem] border border-black/10 bg-white p-4">
+								<div class="text-xs tracking-[0.22em] text-neutral-500 uppercase">Recommendation</div>
+								<div class="mt-3 text-sm font-semibold tracking-[0.18em] text-black uppercase">
 									{data.report.verificationReport.recommendation}
 								</div>
 							</div>
 						</div>
 					{:else}
-						<p class="mt-6 text-sm leading-7 text-slate-300">
+						<p class="mt-6 text-sm leading-7 text-neutral-700">
 							Verification output is not available yet.
 						</p>
 					{/if}
@@ -326,14 +326,14 @@
 				<div class="flex flex-wrap gap-3">
 					{#if data.task.status === 'PENDING_REVIEW' && data.session.id === data.task.clientId}
 						<a
-							class="inline-flex items-center gap-3 rounded-2xl border border-cyan-400/30 bg-cyan-400/10 px-5 py-3 text-sm font-semibold text-cyan-200 transition hover:border-cyan-300 hover:text-white"
+							class="inline-flex items-center gap-3 rounded-2xl border border-yellow-500 bg-yellow-100 px-5 py-3 text-sm font-semibold text-yellow-800 transition hover:border-yellow-500 hover:text-black"
 							href={`/task/${data.task.id}/review`}
 						>
 							Continue to review
 						</a>
 					{/if}
 					<a
-						class="inline-flex items-center gap-3 rounded-2xl border border-slate-700 px-5 py-3 text-sm font-semibold text-slate-100 transition hover:border-cyan-400/30 hover:text-white"
+						class="inline-flex items-center gap-3 rounded-2xl border border-black/20 px-5 py-3 text-sm font-semibold text-black transition hover:border-yellow-500 hover:text-black"
 						href={`/task/${data.task.id}/report`}
 					>
 						Return to report

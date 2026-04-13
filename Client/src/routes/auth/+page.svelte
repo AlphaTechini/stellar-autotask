@@ -124,44 +124,44 @@
 </svelte:head>
 
 <main
-	class="min-h-screen bg-[radial-gradient(circle_at_top,rgba(34,211,238,0.14),transparent_24%),linear-gradient(180deg,#020617_0%,#08111f_40%,#020617_100%)] px-6 py-20 text-slate-100"
+	class="min-h-screen bg-[radial-gradient(circle_at_top,rgba(250,204,21,0.28),transparent_28%),linear-gradient(180deg,#fffdf2_0%,#f7f4ea_55%,#ffffff_100%)] px-6 py-20 text-black"
 >
 	<div class="mx-auto grid max-w-6xl gap-10 lg:grid-cols-[1.05fr_0.95fr]">
 		<section
-			class="rounded-[2rem] border border-cyan-400/20 bg-slate-950/80 p-10 shadow-[0_30px_90px_rgba(8,145,178,0.16)] backdrop-blur-xl"
+			class="rounded-[2rem] border border-yellow-500/80 bg-white p-10 shadow-[0_30px_90px_rgba(250,204,21,0.22)] backdrop-blur-xl"
 		>
-			<p class="mb-4 text-xs font-semibold tracking-[0.3em] text-cyan-300 uppercase">
+			<p class="mb-4 text-xs font-semibold tracking-[0.3em] text-yellow-700 uppercase">
 				Wallet-first access
 			</p>
-			<h1 class="max-w-3xl font-['Space_Grotesk'] text-4xl font-bold tracking-tight text-white">
+			<h1 class="max-w-3xl font-['Space_Grotesk'] text-4xl font-bold tracking-tight text-black">
 				Authenticate with a Stellar wallet and let the backend own the session.
 			</h1>
-			<p class="mt-4 max-w-3xl text-base leading-7 text-slate-300">
+			<p class="mt-4 max-w-3xl text-base leading-7 text-neutral-700">
 				This flow now uses the real backend challenge and verify routes. Freighter signs the
 				short-lived Stellar challenge, then SvelteKit stores the returned JWT in the server-side
 				session cookie instead of leaving auth state in browser storage.
 			</p>
 
 			<div class="mt-10 grid gap-4 md:grid-cols-2">
-				<div class="rounded-[1.5rem] border border-slate-800 bg-slate-900/70 p-5">
-					<div class="text-xs tracking-[0.22em] text-slate-500 uppercase">Flow</div>
-					<div class="mt-3 text-sm leading-7 text-slate-200">
+				<div class="rounded-[1.5rem] border border-black/10 bg-white p-5">
+					<div class="text-xs tracking-[0.22em] text-neutral-500 uppercase">Flow</div>
+					<div class="mt-3 text-sm leading-7 text-neutral-800">
 						Connect wallet, request challenge, sign in Freighter, then verify on the backend.
 					</div>
 				</div>
-				<div class="rounded-[1.5rem] border border-slate-800 bg-slate-900/70 p-5">
-					<div class="text-xs tracking-[0.22em] text-slate-500 uppercase">Redirect target</div>
-					<div class="mt-3 text-sm leading-7 break-all text-cyan-200">
+				<div class="rounded-[1.5rem] border border-black/10 bg-white p-5">
+					<div class="text-xs tracking-[0.22em] text-neutral-500 uppercase">Redirect target</div>
+					<div class="mt-3 text-sm leading-7 break-all text-yellow-800">
 						{data.redirectTo}
 					</div>
 				</div>
 			</div>
 
-			<div class="mt-8 rounded-[1.5rem] border border-slate-800 bg-slate-900/60 p-6">
-				<h2 class="font-['Space_Grotesk'] text-xl font-semibold text-white">
+			<div class="mt-8 rounded-[1.5rem] border border-black/10 bg-white p-6">
+				<h2 class="font-['Space_Grotesk'] text-xl font-semibold text-black">
 					What this auth step does
 				</h2>
-				<ul class="mt-4 space-y-3 text-sm leading-6 text-slate-300">
+				<ul class="mt-4 space-y-3 text-sm leading-6 text-neutral-700">
 					<li>Confirms wallet control through a short-lived Stellar challenge.</li>
 					<li>Creates the first wallet-backed human profile when a username is supplied.</li>
 					<li>Restores protected route redirects after successful verification.</li>
@@ -170,12 +170,12 @@
 			</div>
 		</section>
 
-		<section class="rounded-[2rem] border border-slate-800 bg-slate-900/70 p-8">
-			<div class="border-b border-slate-800 pb-6">
-				<h2 class="font-['Space_Grotesk'] text-3xl font-semibold text-white">
+		<section class="rounded-[2rem] border border-black/10 bg-white p-8">
+			<div class="border-b border-black/10 pb-6">
+				<h2 class="font-['Space_Grotesk'] text-3xl font-semibold text-black">
 					Sign in with Freighter
 				</h2>
-				<p class="mt-3 text-sm leading-6 text-slate-300">
+				<p class="mt-3 text-sm leading-6 text-neutral-700">
 					Use a Stellar wallet already connected to Freighter. If this wallet has never signed in
 					before, include a username so the backend can create the profile.
 				</p>
@@ -198,51 +198,51 @@
 				<input type="hidden" name="redirectTo" value={data.redirectTo} />
 
 				<div>
-					<label class="mb-2 block text-sm font-medium text-slate-200" for="username">
+					<label class="mb-2 block text-sm font-medium text-neutral-800" for="username">
 						Username
 					</label>
 					<input
 						id="username"
 						name="username"
-						class="w-full rounded-[1.25rem] border border-slate-700 bg-slate-950 px-4 py-3 text-white transition outline-none focus:border-cyan-400"
+						class="w-full rounded-[1.25rem] border border-black/20 bg-[#f7f4ea] px-4 py-3 text-black transition outline-none focus:border-yellow-500"
 						bind:value={username}
 						placeholder="writername"
 					/>
-					<p class="mt-3 text-sm leading-6 text-slate-400">
+					<p class="mt-3 text-sm leading-6 text-neutral-600">
 						The backend requires this only when the wallet is signing in for the first time.
 					</p>
 				</div>
 
-				<div class="rounded-[1.5rem] border border-slate-800 bg-slate-950/80 p-5">
+				<div class="rounded-[1.5rem] border border-black/10 bg-white p-5">
 					<div class="flex items-center justify-between gap-4">
 						<div>
-							<div class="text-xs tracking-[0.22em] text-slate-500 uppercase">Connected wallet</div>
-							<div class="mt-3 text-sm leading-7 break-all text-cyan-300">
+							<div class="text-xs tracking-[0.22em] text-neutral-500 uppercase">Connected wallet</div>
+							<div class="mt-3 text-sm leading-7 break-all text-yellow-700">
 								{walletAddress || 'No wallet connected yet'}
 							</div>
 						</div>
 						<div
-							class="rounded-full border border-cyan-400/20 bg-cyan-400/10 px-3 py-1 text-xs font-semibold tracking-[0.22em] text-cyan-200 uppercase"
+							class="rounded-full border border-yellow-500/80 bg-yellow-100 px-3 py-1 text-xs font-semibold tracking-[0.22em] text-yellow-800 uppercase"
 						>
 							{walletStage}
 						</div>
 					</div>
 
-					<div class="mt-5 space-y-3 text-sm text-slate-300">
+					<div class="mt-5 space-y-3 text-sm text-neutral-700">
 						<div class="flex items-center justify-between gap-4">
 							<span>Challenge expiry</span>
-							<span class="text-right text-white">{formatDate(challengeExpiresAt)}</span>
+							<span class="text-right text-black">{formatDate(challengeExpiresAt)}</span>
 						</div>
 						<div class="flex items-center justify-between gap-4">
 							<span>Signed challenge</span>
-							<span class="text-right text-white">{transactionXdr ? 'Ready' : 'Not yet'}</span>
+							<span class="text-right text-black">{transactionXdr ? 'Ready' : 'Not yet'}</span>
 						</div>
 					</div>
 				</div>
 
 				{#if walletNotice}
 					<p
-						class="rounded-[1.25rem] border border-cyan-400/30 bg-cyan-400/10 px-4 py-3 text-sm text-cyan-100"
+						class="rounded-[1.25rem] border border-yellow-500 bg-yellow-100 px-4 py-3 text-sm text-black"
 					>
 						{walletNotice}
 					</p>
@@ -250,7 +250,7 @@
 
 				{#if walletError}
 					<p
-						class="rounded-[1.25rem] border border-rose-500/40 bg-rose-500/10 px-4 py-3 text-sm text-rose-200"
+						class="rounded-[1.25rem] border border-black/30 bg-yellow-100 px-4 py-3 text-sm text-black"
 					>
 						{walletError}
 					</p>
@@ -258,15 +258,15 @@
 
 				{#if form?.error}
 					<p
-						class="rounded-[1.25rem] border border-rose-500/40 bg-rose-500/10 px-4 py-3 text-sm text-rose-200"
+						class="rounded-[1.25rem] border border-black/30 bg-yellow-100 px-4 py-3 text-sm text-black"
 					>
 						{form.error}
 					</p>
 				{/if}
 
-				<div class="space-y-4 border-t border-slate-800 pt-6">
+				<div class="space-y-4 border-t border-black/10 pt-6">
 					<button
-						class="inline-flex w-full items-center justify-center rounded-2xl bg-cyan-400 px-5 py-4 font-semibold text-slate-950 transition hover:bg-cyan-300 disabled:cursor-not-allowed disabled:opacity-60"
+						class="inline-flex w-full items-center justify-center rounded-2xl bg-yellow-400 px-5 py-4 font-semibold text-black transition hover:bg-yellow-300 disabled:cursor-not-allowed disabled:opacity-60"
 						type="button"
 						onclick={startWalletSignIn}
 						disabled={walletStage !== 'idle'}
@@ -274,7 +274,7 @@
 						{buttonLabel()}
 					</button>
 
-					<p class="text-sm leading-6 text-slate-400">
+					<p class="text-sm leading-6 text-neutral-600">
 						Freighter must be installed and unlocked in this browser. The signed challenge never
 						replaces the backend verify step. Agent access is intentionally outside this UI flow.
 					</p>

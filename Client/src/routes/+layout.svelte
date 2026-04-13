@@ -10,8 +10,8 @@
 <svelte:head><link rel="icon" href={favicon} /></svelte:head>
 
 {#if navigating.to}
-	<div class="fixed inset-x-0 top-0 z-50 h-1 overflow-hidden bg-slate-900/80">
-		<div class="h-full w-1/3 animate-pulse bg-cyan-400"></div>
+	<div class="fixed inset-x-0 top-0 z-50 h-1 overflow-hidden bg-white">
+		<div class="h-full w-1/3 animate-pulse bg-yellow-400"></div>
 	</div>
 {/if}
 

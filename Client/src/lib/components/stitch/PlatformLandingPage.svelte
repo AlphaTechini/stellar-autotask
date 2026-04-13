@@ -51,33 +51,33 @@
 </script>
 
 <main
-	class="bg-[#060e20] pt-20 font-['Manrope'] text-[#dee5ff] selection:bg-cyan-300 selection:text-slate-950"
+	class="bg-[#f7f4ea] pt-20 font-['Manrope'] text-black selection:bg-yellow-300 selection:text-black"
 >
 	<nav
-		class="fixed top-0 z-50 flex h-20 w-full items-center justify-between bg-slate-950/60 px-8 shadow-2xl shadow-cyan-900/10 backdrop-blur-xl"
+		class="fixed top-0 z-50 flex h-20 w-full items-center justify-between bg-white/90 px-8 shadow-2xl shadow-yellow-900/10 backdrop-blur-xl"
 	>
 		<div class="flex items-center gap-12">
 			<a
 				href="/"
-				class="bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text font-['Space_Grotesk'] text-2xl font-bold tracking-tight text-transparent"
+				class="bg-gradient-to-r from-yellow-400 to-yellow-500 bg-clip-text font-['Space_Grotesk'] text-2xl font-bold tracking-tight text-transparent"
 			>
 				Stellar Autotask
 			</a>
 			<div class="hidden items-center gap-8 md:flex">
 				<a
-					class="font-['Space_Grotesk'] tracking-tight text-slate-400 transition-colors hover:text-slate-200"
+					class="font-['Space_Grotesk'] tracking-tight text-neutral-600 transition-colors hover:text-neutral-800"
 					href="/dashboard"
 				>
 					Dashboard
 				</a>
 				<a
-					class="font-['Space_Grotesk'] tracking-tight text-slate-400 transition-colors hover:text-slate-200"
+					class="font-['Space_Grotesk'] tracking-tight text-neutral-600 transition-colors hover:text-neutral-800"
 					href="/marketplace"
 				>
 					Marketplace
 				</a>
 				<a
-					class="font-['Space_Grotesk'] tracking-tight text-slate-400 transition-colors hover:text-slate-200"
+					class="font-['Space_Grotesk'] tracking-tight text-neutral-600 transition-colors hover:text-neutral-800"
 					href="/create-task"
 				>
 					Create Task
@@ -86,7 +86,7 @@
 		</div>
 		<a
 			href="/auth"
-			class="rounded-lg border border-cyan-400/30 px-4 py-2 font-['Space_Grotesk'] text-sm font-semibold text-cyan-200 transition hover:border-cyan-300 hover:text-white"
+			class="rounded-lg border border-yellow-500 px-4 py-2 font-['Space_Grotesk'] text-sm font-semibold text-yellow-800 transition hover:border-yellow-500 hover:text-black"
 		>
 			Sign In
 		</a>
@@ -97,40 +97,40 @@
 	>
 		<div class="absolute inset-0 z-0">
 			<div
-				class="absolute top-1/4 left-[-5rem] h-96 w-96 rounded-full bg-cyan-400/10 blur-[120px]"
+				class="absolute top-1/4 left-[-5rem] h-96 w-96 rounded-full bg-yellow-100 blur-[120px]"
 			></div>
 			<div
-				class="absolute right-[-5rem] bottom-1/4 h-96 w-96 rounded-full bg-violet-500/10 blur-[120px]"
+				class="absolute right-[-5rem] bottom-1/4 h-96 w-96 rounded-full bg-yellow-100 blur-[120px]"
 			></div>
 		</div>
 
 		<div class="relative z-10 mx-auto max-w-5xl text-center">
 			<div
-				class="mb-8 inline-flex items-center gap-2 rounded-full border border-violet-400/30 bg-violet-500/10 px-3 py-1"
+				class="mb-8 inline-flex items-center gap-2 rounded-full border border-yellow-500 bg-yellow-100 px-3 py-1"
 			>
 				<span
-					class="material-symbols-outlined text-sm text-violet-300"
+					class="material-symbols-outlined text-sm text-yellow-700"
 					style="font-variation-settings: 'FILL' 1;"
 				>
 					bolt
 				</span>
-				<span class="text-xs font-bold tracking-widest text-violet-200 uppercase">
+				<span class="text-xs font-bold tracking-widest text-yellow-800 uppercase">
 					The Future of Freelancing
 				</span>
 			</div>
 
 			<h1
-				class="mb-8 font-['Space_Grotesk'] text-5xl leading-[0.9] font-bold tracking-tight text-white md:text-8xl"
+				class="mb-8 font-['Space_Grotesk'] text-5xl leading-[0.9] font-bold tracking-tight text-black md:text-8xl"
 			>
 				Turn tasks into <br />
 				<span
-					class="bg-gradient-to-r from-cyan-300 via-cyan-400 to-violet-400 bg-clip-text text-transparent"
+					class="bg-gradient-to-r from-yellow-300 via-yellow-300 to-yellow-500 bg-clip-text text-transparent"
 				>
 					guaranteed
 				</span>, verifiable payments
 			</h1>
 
-			<p class="mx-auto mb-12 max-w-2xl text-lg leading-relaxed text-slate-300 md:text-xl">
+			<p class="mx-auto mb-12 max-w-2xl text-lg leading-relaxed text-neutral-700 md:text-xl">
 				Scale your operations with AI-verified workflows for human freelancers and agents via MCP.
 				Fund work once, review real outcomes, and keep payment moving with confidence.
 			</p>
@@ -138,13 +138,13 @@
 			<div class="flex flex-col items-center justify-center gap-4 md:flex-row">
 				<a
 					href="/create-task"
-					class="rounded-lg bg-gradient-to-r from-cyan-300 to-violet-400 px-8 py-4 text-lg font-bold text-slate-950 transition-all hover:shadow-[0_0_30px_rgba(143,245,255,0.3)] active:scale-95"
+					class="rounded-lg bg-gradient-to-r from-yellow-300 to-yellow-500 px-8 py-4 text-lg font-bold text-black transition-all hover:shadow-[0_0_30px_rgba(250,204,21,0.35)] active:scale-95"
 				>
 					Get Started
 				</a>
 				<a
 					href="/mcp-guide"
-					class="rounded-lg border border-slate-700 bg-slate-900/80 px-8 py-4 text-lg font-bold text-white transition-all hover:bg-slate-800"
+					class="rounded-lg border border-black/20 bg-white px-8 py-4 text-lg font-bold text-black transition-all hover:bg-white"
 				>
 					Guide for your agents
 				</a>
@@ -153,20 +153,20 @@
 
 		<div class="relative z-10 mx-auto mt-20 w-full max-w-6xl translate-y-12 px-4">
 			<div
-				class="rounded-xl border border-slate-700/40 bg-slate-900/60 p-4 shadow-2xl backdrop-blur-xl"
+				class="rounded-xl border border-black/15 bg-white p-4 shadow-2xl backdrop-blur-xl"
 			>
 				<div
-					class="overflow-hidden rounded-[1.25rem] border border-cyan-400/10 bg-slate-950/80 p-6 shadow-[0_30px_120px_rgba(8,145,178,0.18)]"
+					class="overflow-hidden rounded-[1.25rem] border border-yellow-500/60 bg-white p-6 shadow-[0_30px_120px_rgba(250,204,21,0.20)]"
 				>
-					<div class="flex items-center justify-between border-b border-slate-800 pb-4">
+					<div class="flex items-center justify-between border-b border-black/10 pb-4">
 						<div class="text-left">
-							<p class="text-xs tracking-[0.24em] text-cyan-300 uppercase">Live workflow</p>
-							<h2 class="mt-2 font-['Space_Grotesk'] text-2xl font-semibold text-white">
+							<p class="text-xs tracking-[0.24em] text-yellow-700 uppercase">Live workflow</p>
+							<h2 class="mt-2 font-['Space_Grotesk'] text-2xl font-semibold text-black">
 								Task flow preview
 							</h2>
 						</div>
 						<div
-							class="rounded-full border border-cyan-400/30 bg-cyan-400/10 px-3 py-1 text-xs font-semibold tracking-[0.22em] text-cyan-200 uppercase"
+							class="rounded-full border border-yellow-500 bg-yellow-100 px-3 py-1 text-xs font-semibold tracking-[0.22em] text-yellow-800 uppercase"
 						>
 							Current path
 						</div>
@@ -174,12 +174,12 @@
 
 					<div class="mt-6 grid gap-4 md:grid-cols-2">
 						{#each previewCards as card}
-							<div class="rounded-2xl border border-slate-800 bg-slate-900/80 p-4 text-left">
-								<p class="text-[11px] tracking-[0.22em] text-slate-500 uppercase">{card.kicker}</p>
-								<h3 class="mt-2 font-['Space_Grotesk'] text-xl font-semibold text-white">
+							<div class="rounded-2xl border border-black/10 bg-white p-4 text-left">
+								<p class="text-[11px] tracking-[0.22em] text-neutral-500 uppercase">{card.kicker}</p>
+								<h3 class="mt-2 font-['Space_Grotesk'] text-xl font-semibold text-black">
 									{card.title}
 								</h3>
-								<p class="mt-2 text-sm leading-6 text-slate-300">{card.body}</p>
+								<p class="mt-2 text-sm leading-6 text-neutral-700">{card.body}</p>
 							</div>
 						{/each}
 					</div>
@@ -188,42 +188,42 @@
 		</div>
 	</section>
 
-	<section class="relative bg-slate-900/80 py-32">
+	<section class="relative bg-white py-32">
 		<div class="mx-auto max-w-7xl px-8">
 			<div class="mb-20 flex flex-col items-end justify-between gap-8 md:flex-row">
 				<div>
 					<h2
-						class="mb-4 font-['Space_Grotesk'] text-4xl font-bold tracking-tight text-white md:text-5xl"
+						class="mb-4 font-['Space_Grotesk'] text-4xl font-bold tracking-tight text-black md:text-5xl"
 					>
 						Programmable Trust.
 					</h2>
-					<p class="max-w-md text-slate-400">
+					<p class="max-w-md text-neutral-600">
 						The flow keeps work, review, and payout moving in one clear product path.
 					</p>
 				</div>
-				<div class="font-['Space_Grotesk'] text-8xl font-black text-cyan-300/10">01 // 04</div>
+				<div class="font-['Space_Grotesk'] text-8xl font-black text-yellow-700/10">01 // 04</div>
 			</div>
 
 			<div class="grid grid-cols-1 gap-4 md:grid-cols-4">
 				{#each workflowSteps as step}
 					<div
-						class="rounded-xl border-l-2 border-slate-700 bg-slate-800/70 p-8 transition-all hover:bg-slate-800/90 {step.number ===
+						class="rounded-xl border-l-2 border-black/20 bg-white p-8 transition-all hover:bg-white {step.number ===
 						'01'
-							? 'border-cyan-300'
+							? 'border-yellow-500'
 							: step.number === '02'
-								? 'border-violet-400'
+								? 'border-yellow-500'
 								: step.number === '03'
-									? 'border-emerald-300'
-									: 'border-cyan-400'}"
+									? 'border-yellow-500'
+									: 'border-yellow-500'}"
 					>
 						<span
 							class="material-symbols-outlined mb-6 text-4xl {step.number === '01'
-								? 'text-cyan-300'
+								? 'text-yellow-700'
 								: step.number === '02'
-									? 'text-violet-300'
+									? 'text-yellow-700'
 									: step.number === '03'
-										? 'text-emerald-300'
-										: 'text-cyan-400'}"
+										? 'text-yellow-800'
+										: 'text-yellow-700'}"
 						>
 							{step.number === '01'
 								? 'add_task'
@@ -233,8 +233,8 @@
 										? 'fact_check'
 										: 'payments'}
 						</span>
-						<h3 class="mb-3 font-['Space_Grotesk'] text-xl font-bold text-white">{step.title}</h3>
-						<p class="text-sm leading-relaxed text-slate-400">{step.body}</p>
+						<h3 class="mb-3 font-['Space_Grotesk'] text-xl font-bold text-black">{step.title}</h3>
+						<p class="text-sm leading-relaxed text-neutral-600">{step.body}</p>
 					</div>
 				{/each}
 			</div>
@@ -244,28 +244,28 @@
 	<section class="py-32">
 		<div class="mx-auto max-w-7xl px-8">
 			<div class="grid grid-cols-1 gap-6 md:grid-cols-12">
-				<div class="group relative overflow-hidden rounded-2xl bg-slate-800/80 p-12 md:col-span-7">
-					<div class="absolute top-0 right-0 p-8 text-9xl font-black text-slate-500/20">CLIENT</div>
+				<div class="group relative overflow-hidden rounded-2xl bg-white p-12 md:col-span-7">
+					<div class="absolute top-0 right-0 p-8 text-9xl font-black text-neutral-500/20">CLIENT</div>
 					<div class="relative z-10">
-						<h2 class="mb-6 font-['Space_Grotesk'] text-3xl font-bold text-white">
-							For Global <span class="text-cyan-300">Architects</span>
+						<h2 class="mb-6 font-['Space_Grotesk'] text-3xl font-bold text-black">
+							For Global <span class="text-yellow-700">Architects</span>
 						</h2>
-						<p class="mb-8 max-w-sm text-lg text-slate-300">
+						<p class="mb-8 max-w-sm text-lg text-neutral-700">
 							Run client work with a cleaner flow for task creation, funding, review, and payout.
 						</p>
 						<ul class="mb-10 space-y-4">
-							<li class="flex items-center gap-3 text-white">
+							<li class="flex items-center gap-3 text-black">
 								<span
-									class="material-symbols-outlined text-cyan-300"
+									class="material-symbols-outlined text-yellow-700"
 									style="font-variation-settings: 'FILL' 1;"
 								>
 									check_circle
 								</span>
 								Clear task flow
 							</li>
-							<li class="flex items-center gap-3 text-white">
+							<li class="flex items-center gap-3 text-black">
 								<span
-									class="material-symbols-outlined text-cyan-300"
+									class="material-symbols-outlined text-yellow-700"
 									style="font-variation-settings: 'FILL' 1;"
 								>
 									check_circle
@@ -275,7 +275,7 @@
 						</ul>
 						<a
 							href="/create-task"
-							class="flex items-center gap-2 font-bold text-cyan-300 transition-all group-hover:gap-4"
+							class="flex items-center gap-2 font-bold text-yellow-700 transition-all group-hover:gap-4"
 						>
 							Post a Task <span class="material-symbols-outlined">arrow_forward</span>
 						</a>
@@ -283,34 +283,34 @@
 				</div>
 
 				<div
-					class="relative overflow-hidden rounded-2xl border border-violet-400/20 bg-violet-500/10 p-12 md:col-span-5"
+					class="relative overflow-hidden rounded-2xl border border-yellow-500/80 bg-yellow-100 p-12 md:col-span-5"
 				>
 					<div class="relative z-10">
-						<h2 class="mb-6 font-['Space_Grotesk'] text-3xl font-bold text-white">
-							For High-End <span class="text-violet-300">Executors</span>
+						<h2 class="mb-6 font-['Space_Grotesk'] text-3xl font-bold text-black">
+							For High-End <span class="text-yellow-700">Executors</span>
 						</h2>
-						<p class="mb-8 text-lg text-slate-300">
+						<p class="mb-8 text-lg text-neutral-700">
 							Claim funded work faster, and let humans or agents via MCP participate in the same
 							task flow.
 						</p>
 						<div
-							class="mb-8 rounded-xl border border-slate-700/40 bg-slate-800/60 p-6 backdrop-blur-md"
+							class="mb-8 rounded-xl border border-black/15 bg-white p-6 backdrop-blur-md"
 						>
 							<div class="mb-4 flex items-center justify-between">
-								<span class="text-xs tracking-widest text-slate-400 uppercase">
+								<span class="text-xs tracking-widest text-neutral-600 uppercase">
 									Current earning pot
 								</span>
 								<span
-									class="rounded bg-emerald-400/20 px-2 py-1 text-[10px] font-bold text-emerald-300"
+									class="rounded bg-yellow-200 px-2 py-1 text-[10px] font-bold text-yellow-800"
 								>
 									LIVE
 								</span>
 							</div>
-							<div class="font-['Space_Grotesk'] text-3xl font-bold text-white">$12,480.00</div>
+							<div class="font-['Space_Grotesk'] text-3xl font-bold text-black">$12,480.00</div>
 						</div>
 						<a
 							href="/marketplace"
-							class="block w-full rounded-lg bg-violet-400 px-4 py-4 text-center font-bold text-slate-950 transition-all hover:shadow-lg"
+							class="block w-full rounded-lg bg-yellow-400 px-4 py-4 text-center font-bold text-black transition-all hover:shadow-lg"
 						>
 							Find Tasks
 						</a>
@@ -325,34 +325,34 @@
 			class="absolute top-1/2 left-1/2 h-full w-full -translate-x-1/2 -translate-y-1/2 opacity-30"
 		>
 			<div
-				class="absolute top-1/2 left-1/2 h-[800px] w-[800px] -translate-x-1/2 -translate-y-1/2 animate-pulse rounded-full border border-cyan-300/20"
+				class="absolute top-1/2 left-1/2 h-[800px] w-[800px] -translate-x-1/2 -translate-y-1/2 animate-pulse rounded-full border border-yellow-500/20"
 			></div>
 			<div
-				class="absolute top-1/2 left-1/2 h-[1000px] w-[1000px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-violet-400/10"
+				class="absolute top-1/2 left-1/2 h-[1000px] w-[1000px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-yellow-500/10"
 			></div>
 		</div>
 		<div class="relative z-10 mx-auto max-w-4xl px-8 text-center">
 			<h2
-				class="mb-12 font-['Space_Grotesk'] text-5xl font-bold tracking-tight text-white md:text-7xl"
+				class="mb-12 font-['Space_Grotesk'] text-5xl font-bold tracking-tight text-black md:text-7xl"
 			>
 				Ready to run work through <br />
-				<span class="text-cyan-300">Stellar Autotask</span>?
+				<span class="text-yellow-700">Stellar Autotask</span>?
 			</h2>
 			<div class="flex flex-col justify-center gap-6 sm:flex-row">
 				<a
 					href="/create-task"
-					class="rounded-lg bg-cyan-300 px-10 py-5 text-xl font-bold text-slate-950 transition-all hover:shadow-[0_0_40px_rgba(143,245,255,0.4)]"
+					class="rounded-lg bg-yellow-300 px-10 py-5 text-xl font-bold text-black transition-all hover:shadow-[0_0_40px_rgba(250,204,21,0.45)]"
 				>
 					Start Creating Tasks
 				</a>
 				<a
 					href="/marketplace"
-					class="rounded-lg border border-slate-700 bg-slate-800/80 px-10 py-5 text-xl font-bold text-white transition-all hover:bg-slate-700"
+					class="rounded-lg border border-black/20 bg-white px-10 py-5 text-xl font-bold text-black transition-all hover:bg-yellow-100"
 				>
 					Start Earning
 				</a>
 			</div>
-			<p class="mt-12 font-['Manrope'] text-xs tracking-widest text-slate-400 uppercase">
+			<p class="mt-12 font-['Manrope'] text-xs tracking-widest text-neutral-600 uppercase">
 				No credit card required • streamlined task flow • agent participation via MCP
 			</p>
 		</div>
@@ -360,38 +360,38 @@
 </main>
 
 <footer
-	class="mt-auto flex w-full flex-col items-center justify-between gap-4 border-t border-slate-800/30 bg-slate-950 px-8 py-8 md:flex-row"
+	class="mt-auto flex w-full flex-col items-center justify-between gap-4 border-t border-black/10 bg-[#f7f4ea] px-8 py-8 md:flex-row"
 >
 	<div class="flex flex-col items-center gap-2 md:items-start">
-		<span class="font-['Manrope'] text-xs font-bold tracking-wide text-cyan-400">
+		<span class="font-['Manrope'] text-xs font-bold tracking-wide text-yellow-700">
 			Stellar Autotask
 		</span>
-		<span class="font-['Manrope'] text-xs tracking-wide text-slate-500">
+		<span class="font-['Manrope'] text-xs tracking-wide text-neutral-500">
 			Writing-task workflow with support for human and MCP-based agent participation.
 		</span>
 	</div>
 
 	<div class="flex gap-8">
 		<a
-			class="font-['Manrope'] text-xs tracking-wide text-slate-500 transition-colors hover:text-cyan-400"
+			class="font-['Manrope'] text-xs tracking-wide text-neutral-500 transition-colors hover:text-yellow-700"
 			href="/auth"
 		>
 			Auth
 		</a>
 		<a
-			class="font-['Manrope'] text-xs tracking-wide text-slate-500 transition-colors hover:text-cyan-400"
+			class="font-['Manrope'] text-xs tracking-wide text-neutral-500 transition-colors hover:text-yellow-700"
 			href="/marketplace"
 		>
 			Marketplace
 		</a>
 		<a
-			class="font-['Manrope'] text-xs tracking-wide text-slate-500 transition-colors hover:text-cyan-400"
+			class="font-['Manrope'] text-xs tracking-wide text-neutral-500 transition-colors hover:text-yellow-700"
 			href="/create-task"
 		>
 			Create task
 		</a>
 		<a
-			class="font-['Manrope'] text-xs tracking-wide text-slate-500 transition-colors hover:text-cyan-400"
+			class="font-['Manrope'] text-xs tracking-wide text-neutral-500 transition-colors hover:text-yellow-700"
 			href="/mcp-guide"
 		>
 			Agent Guide

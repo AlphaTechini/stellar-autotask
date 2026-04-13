@@ -3,57 +3,57 @@
 @plugin '@tailwindcss/typography';
 
 @theme {
-	--color-inverse-primary: #006a71;
-	--color-inverse-on-surface: #4d556b;
-	--color-tertiary-dim: #58e7ab;
-	--color-surface-bright: #1f2b49;
-	--color-primary-fixed: #00eefc;
-	--color-on-secondary-container: #d9c8ff;
-	--color-primary-dim: #00deec;
-	--color-error-container: #9f0519;
-	--color-secondary: #ac8aff;
+	--color-inverse-primary: #111111;
+	--color-inverse-on-surface: #f7f4ea;
+	--color-tertiary-dim: #facc15;
+	--color-surface-bright: #ffffff;
+	--color-primary-fixed: #facc15;
+	--color-on-secondary-container: #111111;
+	--color-primary-dim: #eab308;
+	--color-error-container: #fef08a;
+	--color-secondary: #111111;
 	--color-surface-container-lowest: #000000;
-	--color-surface-dim: #060e20;
-	--color-tertiary: #9bffce;
-	--color-primary-fixed-dim: #00deec;
-	--color-on-background: #dee5ff;
-	--color-on-primary-fixed: #003f43;
-	--color-tertiary-fixed-dim: #58e7ab;
-	--color-on-secondary: #280067;
-	--color-tertiary-fixed: #69f6b8;
-	--color-on-secondary-fixed-variant: #5f28c8;
-	--color-surface-container-low: #091328;
-	--color-surface-container-highest: #192540;
-	--color-inverse-surface: #faf8ff;
-	--color-on-primary-container: #005359;
-	--color-surface-container-high: #141f38;
-	--color-secondary-fixed-dim: #ceb9ff;
-	--color-error-dim: #d7383b;
-	--color-on-primary-fixed-variant: #005e64;
-	--color-on-tertiary: #006443;
-	--color-surface-variant: #192540;
-	--color-secondary-fixed: #dac9ff;
-	--color-error: #ff716c;
-	--color-on-primary: #005d63;
-	--color-on-error: #490006;
-	--color-primary-container: #00eefc;
-	--color-on-surface: #dee5ff;
-	--color-primary: #8ff5ff;
-	--color-outline-variant: #40485d;
-	--color-secondary-container: #5516be;
-	--color-surface-container: #0f1930;
-	--color-on-error-container: #ffa8a3;
-	--color-surface-tint: #8ff5ff;
-	--color-on-tertiary-fixed-variant: #006544;
-	--color-outline: #6d758c;
-	--color-on-surface-variant: #a3aac4;
-	--color-on-tertiary-container: #005a3c;
-	--color-secondary-dim: #8455ef;
-	--color-tertiary-container: #69f6b8;
-	--color-background: #060e20;
-	--color-surface: #060e20;
-	--color-on-secondary-fixed: #40009b;
-	--color-on-tertiary-fixed: #00452d;
+	--color-surface-dim: #f7f4ea;
+	--color-tertiary: #facc15;
+	--color-primary-fixed-dim: #eab308;
+	--color-on-background: #111111;
+	--color-on-primary-fixed: #111111;
+	--color-tertiary-fixed-dim: #eab308;
+	--color-on-secondary: #ffffff;
+	--color-tertiary-fixed: #facc15;
+	--color-on-secondary-fixed-variant: #111111;
+	--color-surface-container-low: #fffdf5;
+	--color-surface-container-highest: #ffffff;
+	--color-inverse-surface: #111111;
+	--color-on-primary-container: #111111;
+	--color-surface-container-high: #ffffff;
+	--color-secondary-fixed-dim: #fef08a;
+	--color-error-dim: #111111;
+	--color-on-primary-fixed-variant: #111111;
+	--color-on-tertiary: #111111;
+	--color-surface-variant: #fff7cc;
+	--color-secondary-fixed: #facc15;
+	--color-error: #111111;
+	--color-on-primary: #111111;
+	--color-on-error: #ffffff;
+	--color-primary-container: #facc15;
+	--color-on-surface: #111111;
+	--color-primary: #facc15;
+	--color-outline-variant: #d6d0bd;
+	--color-secondary-container: #111111;
+	--color-surface-container: #ffffff;
+	--color-on-error-container: #111111;
+	--color-surface-tint: #facc15;
+	--color-on-tertiary-fixed-variant: #111111;
+	--color-outline: #1f1f1f;
+	--color-on-surface-variant: #4a4a4a;
+	--color-on-tertiary-container: #111111;
+	--color-secondary-dim: #111111;
+	--color-tertiary-container: #facc15;
+	--color-background: #f7f4ea;
+	--color-surface: #ffffff;
+	--color-on-secondary-fixed: #111111;
+	--color-on-tertiary-fixed: #111111;
 
 	--font-headline: 'Space Grotesk', sans-serif;
 	--font-body: 'Manrope', sans-serif;
@@ -78,12 +78,12 @@
 	}
 
 	.glass-panel {
-		background: rgba(25, 37, 64, 0.6);
+		background: rgba(255, 255, 255, 0.82);
 		backdrop-filter: blur(20px);
 	}
 
 	.gradient-text {
-		background: linear-gradient(45deg, var(--color-primary), var(--color-secondary));
+		background: linear-gradient(45deg, #111111, #ca8a04);
 		-webkit-background-clip: text;
 		-webkit-text-fill-color: transparent;
 	}
