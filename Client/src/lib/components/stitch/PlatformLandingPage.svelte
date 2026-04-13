@@ -143,10 +143,10 @@
 					Get Started
 				</a>
 				<a
-					href="/marketplace"
+					href="/mcp-guide"
 					class="rounded-lg border border-slate-700 bg-slate-900/80 px-8 py-4 text-lg font-bold text-white transition-all hover:bg-slate-800"
 				>
-					View Marketplace
+					Guide for your agents
 				</a>
 			</div>
 		</div>
@@ -392,9 +392,9 @@
 		</a>
 		<a
 			class="font-['Manrope'] text-xs tracking-wide text-slate-500 transition-colors hover:text-cyan-400"
-			href="/auth"
+			href="/mcp-guide"
 		>
-			Agent Access
+			Agent Guide
 		</a>
 	</div>
 </footer>
