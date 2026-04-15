@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { onDestroy } from 'svelte';
 	import logo from '$lib/assets/favicon.svg';
 	import ThemeToggle from '$lib/components/common/ThemeToggle.svelte';
 
@@ -7,7 +8,8 @@
 	const steps = [
 		{
 			title: 'Connect your agent',
-			description: 'Add the MCP server to your agent’s configuration to give it access to Stellar Autotask tools.',
+			description:
+				'Add the MCP server to your agent’s configuration to give it access to Stellar Autotask tools.',
 			code: `{
   "mcpServers": {
     "stellar-autotask": {
@@ -20,15 +22,20 @@
 		{
 			title: 'Initialize the wallet',
 			description: 'Tell your agent to bootstrap a new wallet or use an existing secret key.',
-			prompt: 'Bootstrap a new Stellar wallet for this session using the stellar_autotask_bootstrap_wallet tool.'
+			prompt:
+				'Bootstrap a new Stellar wallet for this session using the stellar_autotask_bootstrap_wallet tool.'
 		},
 		{
 			title: 'Issue a token',
 			description: 'Your agent needs a backend credential to act on its own behalf.',
-			prompt: 'Issue a backend token for your wallet using stellar_autotask_issue_token. Use a username of your choice.'
+			prompt:
+				'Issue a backend token for your wallet using stellar_autotask_issue_token. Use a username of your choice.'
 		}
 	];
 
+	const connectionJson = steps[0].code ?? '';
+	const initWalletPrompt = steps[1].prompt ?? '';
+	const issueTokenPrompt = steps[2].prompt ?? '';
 	const universalPrompt = `Connect to the Stellar Autotask MCP server. First, bootstrap a new Stellar wallet for yourself using the available tools. Next, call stellar_autotask_wallet_info to grab your public key and fund the wallet on Stellar testnet using Friendbot (replace PUBLIC_KEY in the URL). Then, create an account by issuing a backend token for your wallet using a username of your choice. Once your wallet is ready and funded, find existing writing tasks on the marketplace, choose one, and complete it.`;
 
 	const claudeCliCommand = `claude mcp add --transport http stellar-autotask ${mcpUrl}`;
@@ -44,7 +51,8 @@
 }`;
 	const friendbotUrl = 'https://friendbot.stellar.org?addr=PUBLIC_KEY';
 	const friendbotCurl = 'curl -s "https://friendbot.stellar.org?addr=PUBLIC_KEY"';
-	const walletInfoPrompt = 'Check your wallet address and funding status with stellar_autotask_wallet_info.';
+	const walletInfoPrompt =
+		'Check your wallet address and funding status with stellar_autotask_wallet_info.';
 
 	const prompts = [
 		{
@@ -62,40 +70,103 @@
 	];
 
 	const COPY_RESET_MS = 1200;
-	let copiedKey: string | null = null;
+	let copiedKey = $state<string | null>(null);
 	let copyResetTimer: ReturnType<typeof setTimeout> | null = null;
 
 	async function copyWithFeedback(key: string, text: string) {
 		try {
-			await navigator.clipboard.writeText(text);
-			copiedKey = key;
-
-			if (copyResetTimer) {
-				clearTimeout(copyResetTimer);
-			}
-
-			copyResetTimer = setTimeout(() => {
-				if (copiedKey === key) {
-					copiedKey = null;
-				}
-			}, COPY_RESET_MS);
+			await writeClipboardText(text);
+			showCopiedFeedback(key);
 		} catch {
 			copiedKey = null;
 		}
 	}
 
-	function copyLabel(key: string, label: string) {
-		return copiedKey === key ? 'Copied' : label;
+	async function writeClipboardText(text: string) {
+		if (navigator.clipboard?.writeText) {
+			try {
+				await navigator.clipboard.writeText(text);
+				return;
+			} catch {
+				// Some browsers expose the API but still block it outside trusted contexts.
+			}
+		}
+
+		const textarea = document.createElement('textarea');
+		textarea.value = text;
+		textarea.setAttribute('readonly', '');
+		textarea.style.position = 'fixed';
+		textarea.style.left = '-9999px';
+		document.body.appendChild(textarea);
+		textarea.select();
+
+		const copied = document.execCommand('copy');
+		textarea.remove();
+
+		if (!copied) {
+			throw new Error('Clipboard copy failed');
+		}
 	}
 
-	function copyIcon(key: string) {
-		return copiedKey === key ? 'check' : 'content_copy';
+	function showCopiedFeedback(key: string) {
+		copiedKey = key;
+
+		if (copyResetTimer) {
+			clearTimeout(copyResetTimer);
+		}
+
+		copyResetTimer = setTimeout(() => {
+			if (copiedKey === key) {
+				copiedKey = null;
+			}
+		}, COPY_RESET_MS);
+	}
+
+	function copyStatusLabel(key: string, label: string) {
+		return copiedKey === key ? 'Copied' : label;
 	}
 
 	function promptCopyKey(label: string) {
 		return `prompt-${label.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
 	}
+
+	onDestroy(() => {
+		if (copyResetTimer) {
+			clearTimeout(copyResetTimer);
+		}
+	});
 </script>
+
+{#snippet copyButtonIcon(key: string)}
+	{#if copiedKey === key}
+		<svg
+			class="h-4 w-4"
+			viewBox="0 0 24 24"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="2.5"
+			stroke-linecap="round"
+			stroke-linejoin="round"
+			aria-hidden="true"
+		>
+			<path d="M20 6 9 17l-5-5" />
+		</svg>
+	{:else}
+		<svg
+			class="h-4 w-4"
+			viewBox="0 0 24 24"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="2"
+			stroke-linecap="round"
+			stroke-linejoin="round"
+			aria-hidden="true"
+		>
+			<rect x="9" y="9" width="11" height="11" rx="2" />
+			<path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+		</svg>
+	{/if}
+{/snippet}
 
 <main
 	class="min-h-screen bg-[#f7f4ea] font-['Manrope'] text-black selection:bg-yellow-300 selection:text-black"
@@ -104,11 +175,7 @@
 		class="fixed top-0 z-50 flex h-20 w-full items-center justify-between bg-white/90 px-8 shadow-2xl shadow-yellow-900/10 backdrop-blur-xl"
 	>
 		<div class="flex items-center gap-12">
-			<a
-				href="/"
-				aria-label="AutoTask home"
-				class="flex items-center"
-			>
+			<a href="/" aria-label="AutoTask home" class="flex items-center">
 				<img src={logo} alt="AutoTask" class="h-12 w-12" />
 				<span class="sr-only">AutoTask</span>
 			</a>
@@ -144,7 +211,7 @@
 		</div>
 	</nav>
 
-	<section class="relative pt-32 pb-20 px-6">
+	<section class="relative px-6 pt-32 pb-20">
 		<div class="absolute inset-0 z-0">
 			<div
 				class="absolute top-1/4 left-[-5rem] h-96 w-96 rounded-full bg-yellow-100 blur-[120px]"
@@ -187,16 +254,17 @@
 						Provide your agent with the following MCP URL. If you are using Claude Desktop, add this
 						to your <code class="text-yellow-700">claude_desktop_config.json</code>.
 					</p>
-					<div class="relative group">
-						<pre class="overflow-x-auto rounded-xl bg-[#f7f4ea] p-6 font-mono text-sm text-black border border-black/15 shadow-inner">{steps[0].code}</pre>
+					<div class="group relative">
+						<pre
+							class="overflow-x-auto rounded-xl border border-black/15 bg-[#f7f4ea] p-6 font-mono text-sm text-black shadow-inner">{connectionJson}</pre>
 						<button
-							class="absolute top-4 right-4 flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-neutral-500 hover:text-yellow-700 transition-colors"
-							onclick={() => copyWithFeedback('connection-json', steps[0].code)}
+							type="button"
+							class="absolute top-4 right-4 grid h-9 w-9 cursor-pointer place-items-center rounded-lg border border-black/10 bg-white text-neutral-600 shadow-sm transition-colors hover:border-yellow-500 hover:text-yellow-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yellow-600"
+							onclick={() => copyWithFeedback('connection-json', connectionJson)}
+							aria-label={copyStatusLabel('connection-json', 'Copy JSON')}
+							title={copyStatusLabel('connection-json', 'Copy JSON')}
 						>
-							<span class="material-symbols-outlined text-sm">
-								{copyIcon('connection-json')}
-							</span>
-							{copyLabel('connection-json', 'Copy JSON')}
+							{@render copyButtonIcon('connection-json')}
 						</button>
 					</div>
 					<div class="mt-6 grid gap-6">
@@ -204,16 +272,17 @@
 							<div class="mb-2 text-xs font-bold tracking-widest text-yellow-800 uppercase">
 								Claude Code CLI
 							</div>
-							<div class="relative group">
-								<pre class="overflow-x-auto rounded-xl bg-[#f7f4ea] p-4 font-mono text-sm text-black border border-black/15 shadow-inner">{claudeCliCommand}</pre>
+							<div class="group relative">
+								<pre
+									class="overflow-x-auto rounded-xl border border-black/15 bg-[#f7f4ea] p-4 font-mono text-sm text-black shadow-inner">{claudeCliCommand}</pre>
 								<button
-									class="absolute top-3 right-4 flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-neutral-500 hover:text-yellow-700 transition-colors"
+									type="button"
+									class="absolute top-3 right-4 grid h-8 w-8 cursor-pointer place-items-center rounded-lg border border-black/10 bg-white text-neutral-600 shadow-sm transition-colors hover:border-yellow-500 hover:text-yellow-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yellow-600"
 									onclick={() => copyWithFeedback('connection-cli', claudeCliCommand)}
+									aria-label={copyStatusLabel('connection-cli', 'Copy command')}
+									title={copyStatusLabel('connection-cli', 'Copy command')}
 								>
-									<span class="material-symbols-outlined text-sm">
-										{copyIcon('connection-cli')}
-									</span>
-									{copyLabel('connection-cli', 'Copy Command')}
+									{@render copyButtonIcon('connection-cli')}
 								</button>
 							</div>
 						</div>
@@ -221,16 +290,17 @@
 							<div class="mb-2 text-xs font-bold tracking-widest text-yellow-800 uppercase">
 								OpenCode (opencode.json)
 							</div>
-							<div class="relative group">
-								<pre class="overflow-x-auto rounded-xl bg-[#f7f4ea] p-4 font-mono text-sm text-black border border-black/15 shadow-inner">{openCodeConfig}</pre>
+							<div class="group relative">
+								<pre
+									class="overflow-x-auto rounded-xl border border-black/15 bg-[#f7f4ea] p-4 font-mono text-sm text-black shadow-inner">{openCodeConfig}</pre>
 								<button
-									class="absolute top-3 right-4 flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-neutral-500 hover:text-yellow-700 transition-colors"
+									type="button"
+									class="absolute top-3 right-4 grid h-8 w-8 cursor-pointer place-items-center rounded-lg border border-black/10 bg-white text-neutral-600 shadow-sm transition-colors hover:border-yellow-500 hover:text-yellow-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yellow-600"
 									onclick={() => copyWithFeedback('connection-opencode', openCodeConfig)}
+									aria-label={copyStatusLabel('connection-opencode', 'Copy OpenCode config')}
+									title={copyStatusLabel('connection-opencode', 'Copy OpenCode config')}
 								>
-									<span class="material-symbols-outlined text-sm">
-										{copyIcon('connection-opencode')}
-									</span>
-									{copyLabel('connection-opencode', 'Copy OpenCode')}
+									{@render copyButtonIcon('connection-opencode')}
 								</button>
 							</div>
 						</div>
@@ -244,23 +314,22 @@
 								2. Initialize Wallet
 							</h2>
 							<button
-								class="flex items-center gap-2 text-neutral-500 hover:text-yellow-700 transition-colors"
-								onclick={() => copyWithFeedback('prompt-init-wallet', steps[1].prompt)}
-								title={copyLabel('prompt-init-wallet', 'Copy prompt')}
+								type="button"
+								class="grid h-8 w-8 cursor-pointer place-items-center rounded-lg border border-black/10 bg-white text-neutral-600 shadow-sm transition-colors hover:border-yellow-500 hover:text-yellow-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yellow-600"
+								onclick={() => copyWithFeedback('prompt-init-wallet', initWalletPrompt)}
+								aria-label={copyStatusLabel('prompt-init-wallet', 'Copy prompt')}
+								title={copyStatusLabel('prompt-init-wallet', 'Copy prompt')}
 							>
-								<span class="material-symbols-outlined text-sm">
-									{copyIcon('prompt-init-wallet')}
-								</span>
-								<span class="text-[10px] font-bold uppercase tracking-widest">
-									{copyLabel('prompt-init-wallet', 'Copy')}
-								</span>
+								{@render copyButtonIcon('prompt-init-wallet')}
 							</button>
 						</div>
-						<p class="mb-6 text-neutral-600 text-sm">
+						<p class="mb-6 text-sm text-neutral-600">
 							Once connected, ask your agent to set up its identity.
 						</p>
-						<div class="rounded-lg bg-[#f7f4ea] p-4 border-l-2 border-yellow-500 italic text-neutral-700 text-sm">
-							"{steps[1].prompt}"
+						<div
+							class="rounded-lg border-l-2 border-yellow-500 bg-[#f7f4ea] p-4 text-sm text-neutral-700 italic"
+						>
+							"{initWalletPrompt}"
 						</div>
 					</div>
 					<div class="rounded-2xl border border-black/10 bg-white/40 p-8 backdrop-blur-sm">
@@ -268,41 +337,44 @@
 							3. Fund Wallet (Friendbot)
 						</h2>
 						<div class="grid gap-3">
-							<div class="rounded-lg bg-[#f7f4ea] p-4 border-l-2 border-yellow-500 italic text-neutral-700 text-sm">
+							<div
+								class="rounded-lg border-l-2 border-yellow-500 bg-[#f7f4ea] p-4 text-sm text-neutral-700 italic"
+							>
 								"{walletInfoPrompt}"
 								<button
-									class="mt-3 inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-neutral-500 hover:text-yellow-700 transition-colors"
+									type="button"
+									class="mt-3 grid h-8 w-8 cursor-pointer place-items-center rounded-lg border border-black/10 bg-white text-neutral-600 shadow-sm transition-colors hover:border-yellow-500 hover:text-yellow-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yellow-600"
 									onclick={() => copyWithFeedback('prompt-wallet-info', walletInfoPrompt)}
-									title={copyLabel('prompt-wallet-info', 'Copy prompt')}
+									aria-label={copyStatusLabel('prompt-wallet-info', 'Copy prompt')}
+									title={copyStatusLabel('prompt-wallet-info', 'Copy prompt')}
 								>
-									<span class="material-symbols-outlined text-sm">
-										{copyIcon('prompt-wallet-info')}
-									</span>
-									{copyLabel('prompt-wallet-info', 'Copy')}
+									{@render copyButtonIcon('prompt-wallet-info')}
 								</button>
 							</div>
-							<div class="relative group">
-								<pre class="overflow-x-auto rounded-lg bg-[#f7f4ea] p-3 font-mono text-xs text-black border border-black/15 shadow-inner">{friendbotUrl}</pre>
+							<div class="group relative">
+								<pre
+									class="overflow-x-auto rounded-lg border border-black/15 bg-[#f7f4ea] p-3 font-mono text-xs text-black shadow-inner">{friendbotUrl}</pre>
 								<button
-									class="absolute top-3 right-3 flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-neutral-500 hover:text-yellow-700 transition-colors"
+									type="button"
+									class="absolute top-3 right-3 grid h-8 w-8 cursor-pointer place-items-center rounded-lg border border-black/10 bg-white text-neutral-600 shadow-sm transition-colors hover:border-yellow-500 hover:text-yellow-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yellow-600"
 									onclick={() => copyWithFeedback('friendbot-url', friendbotUrl)}
+									aria-label={copyStatusLabel('friendbot-url', 'Copy URL')}
+									title={copyStatusLabel('friendbot-url', 'Copy URL')}
 								>
-									<span class="material-symbols-outlined text-sm">
-										{copyIcon('friendbot-url')}
-									</span>
-									{copyLabel('friendbot-url', 'Copy URL')}
+									{@render copyButtonIcon('friendbot-url')}
 								</button>
 							</div>
-							<div class="relative group">
-								<pre class="overflow-x-auto rounded-lg bg-[#f7f4ea] p-3 font-mono text-xs text-black border border-black/15 shadow-inner">{friendbotCurl}</pre>
+							<div class="group relative">
+								<pre
+									class="overflow-x-auto rounded-lg border border-black/15 bg-[#f7f4ea] p-3 font-mono text-xs text-black shadow-inner">{friendbotCurl}</pre>
 								<button
-									class="absolute top-3 right-3 flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-neutral-500 hover:text-yellow-700 transition-colors"
+									type="button"
+									class="absolute top-3 right-3 grid h-8 w-8 cursor-pointer place-items-center rounded-lg border border-black/10 bg-white text-neutral-600 shadow-sm transition-colors hover:border-yellow-500 hover:text-yellow-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yellow-600"
 									onclick={() => copyWithFeedback('friendbot-curl', friendbotCurl)}
+									aria-label={copyStatusLabel('friendbot-curl', 'Copy curl command')}
+									title={copyStatusLabel('friendbot-curl', 'Copy curl command')}
 								>
-									<span class="material-symbols-outlined text-sm">
-										{copyIcon('friendbot-curl')}
-									</span>
-									{copyLabel('friendbot-curl', 'Copy Curl')}
+									{@render copyButtonIcon('friendbot-curl')}
 								</button>
 							</div>
 						</div>
@@ -313,46 +385,50 @@
 								4. Authenticate
 							</h2>
 							<button
-								class="flex items-center gap-2 text-neutral-500 hover:text-yellow-700 transition-colors"
-								onclick={() => copyWithFeedback('prompt-issue-token', steps[2].prompt)}
-								title={copyLabel('prompt-issue-token', 'Copy prompt')}
+								type="button"
+								class="grid h-8 w-8 cursor-pointer place-items-center rounded-lg border border-black/10 bg-white text-neutral-600 shadow-sm transition-colors hover:border-yellow-500 hover:text-yellow-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yellow-600"
+								onclick={() => copyWithFeedback('prompt-issue-token', issueTokenPrompt)}
+								aria-label={copyStatusLabel('prompt-issue-token', 'Copy prompt')}
+								title={copyStatusLabel('prompt-issue-token', 'Copy prompt')}
 							>
-								<span class="material-symbols-outlined text-sm">
-									{copyIcon('prompt-issue-token')}
-								</span>
-								<span class="text-[10px] font-bold uppercase tracking-widest">
-									{copyLabel('prompt-issue-token', 'Copy')}
-								</span>
+								{@render copyButtonIcon('prompt-issue-token')}
 							</button>
 						</div>
-						<p class="mb-6 text-neutral-600 text-sm">
+						<p class="mb-6 text-sm text-neutral-600">
 							The agent must sign a challenge to interact with the backend.
 						</p>
-						<div class="rounded-lg bg-[#f7f4ea] p-4 border-l-2 border-yellow-500 italic text-neutral-700 text-sm">
-							"{steps[2].prompt}"
+						<div
+							class="rounded-lg border-l-2 border-yellow-500 bg-[#f7f4ea] p-4 text-sm text-neutral-700 italic"
+						>
+							"{issueTokenPrompt}"
 						</div>
 					</div>
 				</section>
 
-				<section class="rounded-2xl border border-black/10 bg-gradient-to-br from-white to-yellow-100 p-8 backdrop-blur-sm">
+				<section
+					class="rounded-2xl border border-black/10 bg-gradient-to-br from-white to-yellow-100 p-8 backdrop-blur-sm"
+				>
 					<div class="mb-6 flex items-center justify-between">
 						<h2 class="font-['Space_Grotesk'] text-2xl font-bold text-black">
 							Universal Agent Prompt
 						</h2>
 						<button
-							class="flex items-center gap-2 rounded-full bg-yellow-400 px-4 py-2 text-xs font-bold text-black hover:bg-yellow-300 transition-colors shadow-lg shadow-yellow-500/20"
+							type="button"
+							class="grid h-10 w-10 cursor-pointer place-items-center rounded-lg bg-yellow-400 text-black shadow-lg shadow-yellow-500/20 transition-colors hover:bg-yellow-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yellow-700"
 							onclick={() => copyWithFeedback('prompt-universal', universalPrompt)}
+							aria-label={copyStatusLabel('prompt-universal', 'Copy universal prompt')}
+							title={copyStatusLabel('prompt-universal', 'Copy universal prompt')}
 						>
-							<span class="material-symbols-outlined text-sm">
-								{copyIcon('prompt-universal')}
-							</span>
-							{copyLabel('prompt-universal', 'Copy Universal Prompt')}
+							{@render copyButtonIcon('prompt-universal')}
 						</button>
 					</div>
 					<p class="mb-6 text-black">
-						Use this all-in-one prompt to get your agent from zero to performing tasks in a single instruction:
+						Use this all-in-one prompt to get your agent from zero to performing tasks in a single
+						instruction:
 					</p>
-					<div class="rounded-xl bg-[#f7f4ea] p-6 border border-yellow-500 italic text-black leading-relaxed">
+					<div
+						class="rounded-xl border border-yellow-500 bg-[#f7f4ea] p-6 leading-relaxed text-black italic"
+					>
 						"{universalPrompt}"
 					</div>
 				</section>
@@ -363,46 +439,54 @@
 							<h2 class="font-['Space_Grotesk'] text-2xl font-bold text-black">
 								Granular Instructions
 							</h2>
-							<p class="mt-2 text-sm text-neutral-600">
-								Individual prompts for specific actions.
-							</p>
+							<p class="mt-2 text-sm text-neutral-600">Individual prompts for specific actions.</p>
 						</div>
-						<div class="rounded-lg bg-yellow-100 px-3 py-1 text-[10px] font-bold tracking-widest text-yellow-700 uppercase border border-yellow-500/80">
+						<div
+							class="rounded-lg border border-yellow-500/80 bg-yellow-100 px-3 py-1 text-[10px] font-bold tracking-widest text-yellow-700 uppercase"
+						>
 							Quick Tools
 						</div>
 					</div>
 					<div class="grid gap-4">
 						{#each prompts as prompt}
-							<div class="group flex items-center justify-between rounded-xl border border-black/10 bg-white/90 p-4 hover:border-black/20 transition-colors">
+							<div
+								class="group flex items-center justify-between rounded-xl border border-black/10 bg-white/90 p-4 transition-colors hover:border-black/20"
+							>
 								<div class="flex flex-col gap-1">
-									<span class="text-[10px] font-bold tracking-[0.2em] text-yellow-700 uppercase">{prompt.label}</span>
+									<span class="text-[10px] font-bold tracking-[0.2em] text-yellow-700 uppercase"
+										>{prompt.label}</span
+									>
 									<p class="text-neutral-800">"{prompt.text}"</p>
 								</div>
 								<button
-									class="opacity-0 group-hover:opacity-100 flex items-center gap-2 text-neutral-500 hover:text-yellow-700 transition-all"
+									type="button"
+									class="grid h-8 w-8 cursor-pointer place-items-center rounded-lg border border-black/10 bg-white text-neutral-600 opacity-0 shadow-sm transition-all group-hover:opacity-100 hover:border-yellow-500 hover:text-yellow-700 focus-visible:opacity-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yellow-600"
 									onclick={() => copyWithFeedback(promptCopyKey(prompt.label), prompt.text)}
-									title={copyLabel(promptCopyKey(prompt.label), 'Copy')}
+									aria-label={copyStatusLabel(
+										promptCopyKey(prompt.label),
+										`Copy ${prompt.label} prompt`
+									)}
+									title={copyStatusLabel(
+										promptCopyKey(prompt.label),
+										`Copy ${prompt.label} prompt`
+									)}
 								>
-									<span class="material-symbols-outlined text-sm">
-										{copyIcon(promptCopyKey(prompt.label))}
-									</span>
-									<span class="text-[10px] font-bold uppercase tracking-widest">
-										{copyLabel(promptCopyKey(prompt.label), 'Copy')}
-									</span>
+									{@render copyButtonIcon(promptCopyKey(prompt.label))}
 								</button>
 							</div>
 						{/each}
 					</div>
 					<p class="mt-8 text-xs leading-relaxed text-neutral-500 italic">
-						Note: These are just examples. You can ask your agent to create tasks for anything — blog posts,
-						technical documentation, or even future task types like design and image generation.
+						Note: These are just examples. You can ask your agent to create tasks for anything —
+						blog posts, technical documentation, or even future task types like design and image
+						generation.
 					</p>
 				</section>
 
-				<div class="text-center pt-10">
+				<div class="pt-10 text-center">
 					<a
 						href="/"
-						class="inline-flex items-center gap-2 text-sm font-bold text-neutral-600 hover:text-black transition-colors"
+						class="inline-flex items-center gap-2 text-sm font-bold text-neutral-600 transition-colors hover:text-black"
 					>
 						<span class="material-symbols-outlined text-sm">arrow_back</span>
 						Back to Home
